@@ -1,22 +1,32 @@
-require('dotenv/config');
-const express = require('express');
-const cors = require('cors');
-const { join } = require('path');
+const express = require("express")
+const cors = require("cors")
+const dotenv = require("dotenv")
+const bodyParser = require("body-parser")
 
-const PORT = process.env.PORT || 8000;
-const app = express();
-app.use(cors());
+dotenv.config()
 
-app.use(express.json());
+const PORT = process.env.PORT
+const {sequelize} = require("./lib/sequelize")
+const userController = require("./routes/user")
 
-app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API`);
-});
+const app = express()
+app.use(bodyParser.urlencoded({extended: true}))
 
-app.listen(PORT, (err) => {
-  if (err) {
-    console.log(`ERROR: ${err}`);
-  } else {
-    console.log(`APP RUNNING at ${PORT} ✅`);
-  }
-});
+//command this code after making new model.
+// sequelize.sync({ alter: true })
+
+app.use(bodyParser.urlencoded({ extended : true  }))
+app.use(bodyParser.json())
+
+app.use(cors())
+app.use(express.json())
+
+app.use("user", userController)
+
+app.get("/", (req, res) => {
+    res.send("API is running")
+})
+
+app.listen(PORT, ()=> {
+    console.log("Server is running in port " + PORT)
+})
