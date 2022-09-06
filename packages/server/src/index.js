@@ -21,7 +21,7 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(express.json())
 
-app.use("user", userController)
+app.use("/user", userController)
 
 app.get("/", (req, res) => {
     res.send("API is running")

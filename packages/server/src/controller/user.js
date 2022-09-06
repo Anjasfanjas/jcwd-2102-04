@@ -61,15 +61,15 @@ const userController = {
     },
     register: async(req, res) => {
         try{
-            const {username, password, email, name} = req.body
+            const {phoneNum, password, email} = req.body
             const findUser = await User.findOne({
                 where: {
-                    [Op.or]: [{username},{email}]
+                    [Op.or]: [{phoneNum},{email}]
                 }
             })
 
             if(findUser){
-                throw new Error("Username/Email has been taken")
+                throw new Error("PhoneNumber/Email has been taken")
             }
 
             console.log(findUser)
@@ -77,15 +77,15 @@ const userController = {
             const hashedPassword = bcrypt.hashSync(password,5)
 
             const user = await User.create({
-                username,
+                phoneNum,
                 password: hashedPassword,
                 email,
-                name,
             })
 
             const token = await generateToken({ id: user.id, isEmailVerification: true })
 
-            const verToken = await SendVerification(user.id, email, username)
+            const verToken = await SendVerification(user.id, email, phoneNum)
+
         } catch (err) {
             console.log(err)
             return res.status(500).json({
@@ -125,10 +125,11 @@ const userController = {
             console.log(req.body)
 
             await User.update({
-                username,
                 name,
                 email,
                 dob,
+                gender,
+                username,
             },
             {
                 where: {
