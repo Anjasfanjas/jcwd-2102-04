@@ -1,25 +1,18 @@
-const express = require("express")
-const router = express.Router()
-const multer = require("multer")
-const {authorizedLoggedInUser} = require("../middleware/authMiddleware")
+const express = require("express");
+const { userController } = require("../controller");
+const { authorizedLoggedInUser } = require("../middleware/authMiddleware");
+const router = express.Router();
 
-const upload = multer({
-    limits: {
-        fileSize: 1000000000000000, //Byte
-    },
-    fileFilter(req, file, cb) {
-        if(!file.originalname.match(/\.(jpg|jpeg|png)$/)){
-            return cb(new Error("File must be PNG, JPG, JPEG"), false)
-        }
-        cb(null,true)
-    },
-})
 
-const userController = require("../controller/user")
-const fileUploader = require("../lib/uploader")
+router.patch("/:id", userController.editProfile);
+router.post(`/login`, userController.login);
+router.get("/refresh-token", authorizedLoggedInUser, userController.keepLogin);
+router.get("/:id", userController.getUserById)
+router.get("/", userController.getAllUsers)
 
-router.post("/login", userController.login)
+router.post('/address', userController.addUserAddress)
+router.get('/address/:user_id', userController.getAddressByUser)
+router.patch('/address/:user_id', userController.editUserAddress)
+router.delete('/address/:id', userController.deleteUserAddress)
 
-router.post("/register", userController.register)
-
-module.exports = router;
+module.exports = router

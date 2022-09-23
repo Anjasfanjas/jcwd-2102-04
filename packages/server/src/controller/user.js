@@ -1,29 +1,14 @@
-const { User } = require("../lib/sequelize")
-const { Op } = require("sequelize")
-const bcrypt = require("bcrypt")
-const {generateToken, verifyToken} = require("../lib/jwt")
-const mailer = require("../lib/mailer")
-
-async function SendVerification(id, email, username){
-    const verToken = await generateToken({id, isEmailVerification: true})
-    const url_verify = process.env.LINK_VERIFY + verToken
-
-    await mailer({
-        to: email,
-        subject: "Account Verification",
-        html: `<div> <h1> Hello ${username}, your account has been registered </h1> </div>
-        <div> Please verify your account with the button below </div>
-        <div> <button> <a href="${url_verify}"> Verify </a> </button>`,
-    })
-
-    return verToken
-}
-
+const { User, User_address,  } = require('../library/sequelize')
+const { Op } = require("sequelize");
+const bcrypt = require('bcrypt')
+const { generateToken, verifyToken } = require("../library/jwt");
+const { json } = require('body-parser');
+const user_address = require('../model/user_address');
 
 const userController = {
-    login: async (req, res) => {
+    login: async (req, res) =>{
         try{
-            const { email, password, username } = req.body
+            const { username, password, email } = req.body;
 
             const user = await User.findOne({
                 where: {
@@ -31,150 +16,288 @@ const userController = {
                 },
             })
 
-            if(!user) {
-                throw new Error("Username/Email not found")
+            if(!user){
+                throw new Error("username/email/password not found gggg");
             }
+            console.log(user )
 
-            const checkPw = await bcrypt.compareSync(password, user.password)
-            console.log(checkPw)
+            const checkPass = await bcrypt.compareSync(password, user.password);
 
-            if(!checkPw){
-                throw new Error("Password is incorrect")
+            if(!checkPass){
+                throw new Error("username/email/password not found")
             }
-            const token = generateToken({id:user.id})
+            const token = generateToken({ id: user.id });
 
-            delete user.dataValues.createdAt
-            delete user.dataValues.updatedAt
+            delete user.dataValues.password;
+            delete user.dataValues.createAt;
+            delete user.dataValues.updateAt;
 
             console.log(user)
 
             res.status(200).json({
-                message: "Login succeed",
-                result: {user, token}
+                message : "Login succed",
+                result : { user, token },
             })
-        } catch (err) {
+
+        } catch (err){
             console.log(err)
             res.status(400).json({
-                message: err.toString()
-            })
+                message: err.toString(),
+            });
         }
     },
-    register: async(req, res) => {
-        try{
-            const {phoneNum, password, email} = req.body
+
+    getUserById: async (req, res) => {
+        try {
+            const { id } = req.params;
+
             const findUser = await User.findOne({
                 where: {
-                    [Op.or]: [{phoneNum},{email}]
+                    id,
                 }
             })
-
-            if(findUser){
-                throw new Error("PhoneNumber/Email has been taken")
-            }
-
-            console.log(findUser)
-
-            const hashedPassword = bcrypt.hashSync(password,5)
-
-            const user = await User.create({
-                phoneNum,
-                password: hashedPassword,
-                email,
-            })
-
-            const token = await generateToken({ id: user.id, isEmailVerification: true })
-
-            const verToken = await SendVerification(user.id, email, phoneNum)
+            
+            return res.status(200).json({
+                message: "fetched data user id :" + id,
+                result : findUser
+            });
 
         } catch (err) {
-            console.log(err)
-            return res.status(500).json({
-                message: err.toString()
-            })
+            console.log(err);
+            res.status(500).json({
+                message: err.toString(),
+            });
         }
     },
-    stayLoggedIn: async(req, res) => {
-        try{
-            const { token } = req
 
-            const renewedToken = generateToken({id: token.id, password: token.password})
+    getAllUsers: async (req, res) =>{
+        try {
 
-            const findUser = await User.findByPk(token.id)
-            console.log(findUser)
+            const findUser = await User.findAll({
+                attributes: ['username', 'email'],
+                raw:true
+            })
 
-            delete findUser.password
+            const username = findUser.map(user => user.username);
+            const email = findUser.map(user => user.email);
+            
+            return res.status(200).json({
+                message: "fetched all data users",
+                result : {username, email}
+            });
 
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                message: err.toString(),
+            });
+        }
+    },
+
+    keepLogin: async (req,res) =>{
+        try {
+            const { token } = req;
+            const renewedToken = generateToken({ id: token.id, password: token.password });
+      
+            const findUser = await User.findByPk(token.id);
+      
+            delete findUser.dataValues.password;
+      
             return res.status(200).json({
                 message: "Renewed user token",
                 result: {
                     user: findUser,
                     token: renewedToken,
-                }
-            })
+                },
+            });
+
         } catch (err) {
-            console.log(err)
+            console.log(err);
             return res.status(500).json({
-                message: "Server Error",
-            })
+              message: err.toString(),
+            });
         }
     },
-    editProfile: async (req, res) => {
-        try{
-            const {id_user} = req.params
-            const {username, name, gender, email, dob} = req.body
-            console.log(req.body)
 
-            await User.update({
-                name,
-                email,
-                dob,
-                gender,
-                username,
-            },
-            {
-                where: {
-                    id: id_user
+    editProfile: async (req,res) => {
+        try {
+            const { id } = req.params
+
+            await User.update(
+                {
+                    ...req.body
+                },
+                {
+                    where: {
+                        id: id
+                    }
                 }
-            })
-
-            const user = await User.findByPk(id_user)
-            console.log(user)
+            )
+            const user = await User.findByPk(id)
 
             return res.status(200).json({
-                message: "Changes Saved",
-                result: user
+                message: "profile has been edited",
+                user: user
             })
-        } catch (err) {
-            console.log(err)
+
+        } catch (error) {
+            console.log(error);
             res.status(500).json({
-                message: "Error",
+                message: 'Your data is incorrect'
             })
         }
     },
-    editProfilePic: async (req, res) => {
-        try{
-            const {id_user} = req.params
-            const {filename} = req.file
 
-            await User.update({
-                profile_picture: `${process.env.UPLOAD_FILE_DOMAIN}/${process.env.PATH_PROFILEPIC}/${filename}`
-            },
-            {
-                where: {
-                    id: id_user
-                },
+    changePassword: async (res,req) => {
+        try {
+            const { id } = req.params
+            const { password } = req.body
+
+            const newPassowrd = bcrypt.hashSync(password, 5)
+            
+            const user = await User.findOne(
+                {
+                    where: {
+                        id
+                    }
+                }
+            )
+
+            const checkPassword = bcrypt.compareSync(password, user.password)
+            if(checkPassword){
+                await User.update(
+                    {
+                        where: {
+                            id
+                        }
+                    },
+                    {
+                        password: newPassowrd
+                    }
+                )
+            } else {
+                throw new Error('your password is incorrect')
+            }
+
+            res.status(202).json({
+                message: "your password has been changed successfully"
             })
 
-            return res.status(200).json ({
-                message: "Profile Picture Updated"
-            })
-        } catch(err){
-            console.log(err)
-            return res.status(500).json({
-                message: "Error in updating profile picture"
+        } catch (error) {
+            console.log(error)
+            res.status(406).json({
+                message: 'error when changing the password'
             })
         }
     },
+
+    addUserAddress: async (req, res) => {
+        try {
+            const { 
+                address_line, 
+                province,
+                province_id,
+                city, 
+                city_id, 
+                post_code,
+                user_id,
+                name, 
+                phone_number 
+                
+            } = req.body
+
+            await User_address.create({
+                ...req.body
+            })
+
+            res.status(200).json({
+                message: `new addres from user id : ${user_id} has neem added`
+            })
+
+        } catch (error){
+            console.log(error)
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+    },
+
+    getAddressByUser: async (req, res) => {
+        try {
+            const { user_id } = req.params
+            
+            const result = await User_address.findAll(
+                {
+                    where : {
+                        user_id
+                    }
+                }
+            )
+
+            res.status(200).json({
+                message: `addres from user id : ${user_id} has been fetched`,
+                result: result,
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+    },
+
+    editUserAddress : async (req, res) => {
+        try {
+            const { user_id } = req.params
+            const { 
+                address_line, 
+                province, city, 
+                post_code,
+                name, 
+                phone_number 
+            } = req.body
+
+            await User_address.update(
+                {
+                   where: { user_id}
+                }, 
+                {
+                    ...req.body
+                }
+            )
+
+            res.status(200).json({
+                message: `user addres from user id : ${user_id} has been updated`,
+                user: user
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+
+    },
+
+    deleteUserAddress: async (req, res) => {
+        try {
+            const { id } = req.params
+
+            await User_address.destroy({
+                where : {
+                    id
+                }
+            })
+
+            res.status(200).json({
+                message: `address has been deleted`
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+    }
 }
 
 module.exports = userController

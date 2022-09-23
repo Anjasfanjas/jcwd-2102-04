@@ -1,0 +1,88 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link div{
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.active {
+  color: #fff
+}
+
+.active-icons {
+  color: #005E9D !important 
+}
+
+.profile-menu {
+  color: grey;
+  font-size: large;
+}
+
+.profile-menu:hover {
+  color: grey;
+}
+
+.profile-menu:hover p{
+  color: #fff;
+}
+
+.profile-menu:hover svg {
+  color: #005E9D;
+}
+
+.icon-rotate{
+  -webkit-transition: 0.6s ease-out;
+  -moz-transition:  0.6s ease-out;
+  transition:  0.6s ease-out;
+}
+
+.icon-rotate:hover {
+  -webkit-transform: rotateZ(180deg);
+  -moz-transform: rotateZ(180deg);
+  transform: rotateZ(180deg);
+}
+
+.product-card {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.product-card:hover{
+  box-shadow: 0 3px 6px rgb(0,0,0,0.16), 0 3px 6px rgb(0,0,0,0.23);
+  transform: translate(0px, -8px);
+  transition-duration: .8s;
+
+  &.product-card img{
+    transform: scale(1.1);
+    transition: 0.6s;
+  }
+}
+
+.hover-rotate svg {
+  -webkit-transition: 0.6s ease-out;
+  -moz-transition:  0.6s ease-out;
+  transition:  0.6s ease-out;
+}
+
+.hover-rotate:hover {
+  color:#005E9D;
+  &.hover-rotate svg {
+    -webkit-transform: rotateZ(180deg);
+    -moz-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
+  }
+  
+}
