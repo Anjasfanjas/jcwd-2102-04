@@ -1,4 +1,4 @@
-import { Button, GridItem, Link, Stack, Text, useToast, VStack } from "@chakra-ui/react"
+import { Button, GridItem, HStack, Link, Stack, Text, useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
@@ -65,7 +65,16 @@ const ProductCard = (props) => {
 
                         <Stack align='center' justify='center' w='full' spacing={2} textAlign='center'>
                             <Text fontWeight='bold' fontSize={14}>{product_name}</Text>
-                            <Text fontSize={12} color='grey' border='1px' borderColor='grey' p={1} borderRadius={15}>{product_category}</Text>
+                            <HStack>
+                                { product_category.map((val) => {
+                                    return (
+                                            <>
+                                                <Text fontSize={12} color='grey' border='1px' borderColor='grey' p={1} borderRadius={15}>{val.category.category}</Text>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </HStack>
                             <Text fontWeight='bold'>{Number(product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Stack>
                     </Link>

@@ -1,6 +1,6 @@
 import { Avatar, AvatarBadge, Box, Button, Flex, FormControl, HStack, Icon, Input, InputGroup, InputRightElement, Link, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, Text } from "@chakra-ui/react"
 import Image from "next/image"
-import { BiSearchAlt, BiCartAlt } from 'react-icons/bi'
+import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
 import { MdOutlineStorefront, MdOutlineHome, MdOutlineFileUpload, MdNotificationsNone } from 'react-icons/md'
 import Logo_navbar from "../../public/logo/Logo_navbar.png"
 import { useRouter } from "next/router"
@@ -90,46 +90,74 @@ const Navbar = () => {
             </Box>
 
             {/* Menu Box */}
-            <HStack flex={3} align='center' justify='space-evenly'>
+            <HStack flex={userSelector?.id ? 3 : 2} align='center' justify='space-evenly'>
                 <DrawerCart/>
+                {
+                    userSelector?.id ? (
+                        <Flex 
+                            cursor='pointer'
+                            justify='space-evenly'
+                            align='center'
+                        >
+                            <Icon as={MdNotificationsNone} fontSize='2xl'mr={1}/>
+                            <Text fontSize={14}>Notification</Text>
+                        </Flex>
+                    ) : (
+                        null
+                    )
+                }
+                
 
-                <Flex 
-                    cursor='pointer'
-                    justify='space-evenly'
-                    align='center'
-                >
-                    <Icon as={MdNotificationsNone} fontSize='2xl'mr={1}/>
-                    <Text fontSize={14}>Notification</Text>
-                </Flex>
+                {
+                    userSelector?.id ? (
+                        <Flex justify='space-between' align='center'>
+                            <Text fontSize={14} fontWeight='bold' mr={2}>{userSelector?.username}</Text>
+                            <Menu 
+                                cursor='pointer'
+                                justify='space-between'
+                                align='center'
+                            >
+                                <MenuButton>
+                                    <Avatar
+                                        name='user'
+                                        size='md'
+                                        src={`http://${userSelector?.avatar_url}`}
+                                    />
+                                </MenuButton>
 
-                <Flex justify='space-between' align='center'>
-                    <Text fontSize={14} fontWeight='bold' mr={2}>{userSelector?.username}</Text>
-                    <Menu 
-                        cursor='pointer'
-                        justify='space-between'
-                        align='center'
-                    >
-                        <MenuButton>
-                            <Avatar
-                                name='user'
-                                size='md'
-                                src={`http://${userSelector?.avatar_url}`}
-                            />
-                        </MenuButton>
+                                <MenuList>
+                                    <Link href='user/profile' _hover={{textDecoration: 'none'}}>
+                                        <MenuItem>
+                                            Profile
+                                        </MenuItem>
+                                    </Link>
 
-                        <MenuList>
-                            <Link href='user/profile' _hover={{textDecoration: 'none'}}>
-                                <MenuItem>
-                                    Profile
-                                </MenuItem>
-                            </Link>
+                                    <Link href='user/order' _hover={{textDecoration: 'none'}}>
+                                        <MenuItem>
+                                            Order Histories
+                                        </MenuItem>
+                                    </Link>
+                                    
+                                    <MenuDivider/>
+                                    <MenuItem>Logout</MenuItem>
+                                </MenuList>
+                            </Menu>
+                        </Flex>
+                    ) : ( 
+                        <Link 
+                                display='flex' 
+                                align='center' 
+                                _hover={{textDecoration: 'none'}}
+                                href="/auth"
+                            >
+                                <Button colorScheme="green" leftIcon={<BiLogIn/>}>                                
+                                    Login
+                                </Button>
+                        </Link>
+                    )
 
-                            <MenuItem>Order Histories</MenuItem>
-                            <MenuDivider/>
-                            <MenuItem>Logout</MenuItem>
-                        </MenuList>
-                </Menu>
-                </Flex>
+                }
+                
             </HStack>
         </Flex>
     )

@@ -125,7 +125,6 @@ const ModalAddress = () => {
         validateOnChange: false,
 
         onSubmit: async () => {
-            alert("aa")
             const {
                 phone_number,
                 name,
