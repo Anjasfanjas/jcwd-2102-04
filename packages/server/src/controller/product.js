@@ -1,7 +1,7 @@
 const e = require('express')
 const sequelize = require('sequelize')
 const { Op } = require('sequelize')
-const { Product, Product_categories, Product_description, Product_img, Product_stock, Product_unit, Categories, } = require('../library/sequelize')
+const { Product, Product_categories, Product_description, Product_img, Product_stock, Categories, } = require('../library/sequelize')
 const productController = {
     getAllProduct: async (req, res) => {
         const {page, limit , search, category, sort, orderBy, min, max } =  req.query
@@ -19,12 +19,8 @@ const productController = {
                     {
                         model : Product_stock,
                         where : min&&max ? {
-                            is_converted: false,
                             sell_price : {[Op.between] : [+min, +max]}
-                        } : {is_converted: false},
-                        include: [
-                            Product_unit
-                        ],
+                        } : {},
                     },
                     { model: Product_categories,
                         include: [
@@ -41,8 +37,6 @@ const productController = {
                     : (orderBy == 'sell_price' && sort ? [[Product_stock,  orderBy, sort]] : null )
                 : [['createdAt', 'DESC']]
             })
-
-            // a? a++ : (b? b++ : (c? c++ : x++)) cara nasted if pake (? dan :)
 
             return res.status(200).json({
                 message: "All product has fetched",
@@ -71,7 +65,6 @@ const productController = {
     
                         {
                             model : Product_stock,
-                            include: [{model: Product_unit}]
                         },
                         
                         {

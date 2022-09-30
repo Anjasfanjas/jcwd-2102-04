@@ -4,6 +4,7 @@ const avatarController= require("./avatar")
 const cartController = require("./cart")
 const prescriptionController = require("./prescription")
 const paymentController = require("./payment")
+const orderController = require("./order")
 
 module.exports = {
     userController,
@@ -11,5 +12,6 @@ module.exports = {
     avatarController,
     cartController,
     prescriptionController,
-    paymentController
+    paymentController,
+    orderController
 }  

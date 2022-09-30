@@ -2,22 +2,18 @@ const { DataTypes } = require("sequelize");
 
 const order = (sequelize) => {
     return sequelize.define("order", {
-        invoice: {
-            type: DataTypes.INTEGER,
+        no_invoice: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 
         shipping_price: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.INTEGER,
         },
 
         order_price: { // total harga dengan tambahan shipping
             type: DataTypes.DECIMAL,
         },
-        
-        cancle_desc: {
-            type: DataTypes.STRING,
-        }
     });
 
 };

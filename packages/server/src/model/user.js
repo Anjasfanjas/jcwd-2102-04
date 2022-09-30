@@ -42,7 +42,7 @@ const user = (sequelize) =>{
         },
 
         phone_number: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER(12),
         },
 
         gender: {
