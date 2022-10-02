@@ -50,7 +50,7 @@ const ModalDeleteAddress = (props) => {
                 w="1em"
                 h="1em"
                 cursor="pointer"
-                _hover={{ color: "red" }}
+                color='red'
                 onClick={() => {
                     onOpen();
                 }}

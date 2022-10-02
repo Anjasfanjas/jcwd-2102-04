@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer"
 import Navbar from "../../components/Navbar"
-import ProductStore from "../../components/ProductStore"
+import ProductStore from "../../components/Page/StorePage"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 

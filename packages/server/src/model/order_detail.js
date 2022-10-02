@@ -6,17 +6,13 @@ const order_detail = (sequelize) => {
             type: DataTypes.INTEGER,
         },
 
-        item_price: {
+        product_price: {
             type: DataTypes.DECIMAL,
         },
 
-        tota_price: { // total harga product X quantity
-            type: DataTypes.DECIMAL,
+        total_price: { // total harga product X quantity
+            type: DataTypes.INTEGER,
         },
-
-        note: {
-            type: DataTypes.STRING,
-        }
     });
 
 };

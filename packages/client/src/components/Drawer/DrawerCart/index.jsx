@@ -29,11 +29,12 @@ import { useDispatch, useSelector } from "react-redux"
 import CartCard from "../../Card/CartCard";
 import { DeleteIcon } from "@chakra-ui/icons";
 import render_types from "../../../redux/reducers/types/render";
+import qs from "qs";
 
 const DrawerCart = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ cart, setCart ] = useState([])
-    // const [ totalCartPrice, setTotalCartPrice ] = useState(0)
+    const [ totalCartPrice, setTotalCartPrice ] = useState(0)
     const btnRef = React.useRef();
     const toast = useToast()
     
@@ -45,7 +46,6 @@ const DrawerCart = () => {
         try {
             await axiosInstance.get(`/cart/${userSelector?.id}`).then((res) => {
                 const data = res.data.result
-                console.log(data)
                 setCart([...data])
             })
         } catch (error) {
@@ -73,10 +73,10 @@ const DrawerCart = () => {
             console.log(error)
         }
     }
-
+    
     let totalPrice = 0
     const renderDataCart = () => {
-        return cart.map((val) => {
+        return cart ? cart?.map((val) => {
             totalPrice += (val.product_price * val.quantity)
             return (
                 <>
@@ -85,20 +85,19 @@ const DrawerCart = () => {
                         product_price = {val.product_price}
                         quantity = {val.quantity}
                         image_url = {val.product.product_imgs[0].img_url}
-                        product_stock = {val.product.product_stocks[0].stock}
+                        product_stock = {val.product.product_stocks[0].main_stock}
                         product_id = {val.product.id}
                         user_id = {userSelector?.id}
                     />
                 </>
             )
-        })
+        }): <div></div>
     }
-
 
     useEffect(() => {
         fetchDataCart()
         renderDataCart()
-    }, [])
+    }, [autoRender])
 
     return (
         <>
@@ -146,7 +145,7 @@ const DrawerCart = () => {
                             Cancel
                         </Button>
                         <Link href={`/order/${userSelector?.id}`} _hover={{textDecoration : "none"}}>
-                            <Button colorScheme="blue" isDisabled={cart.length < 1 ? true : false}>Checkout!</Button>
+                            <Button colorScheme="blue" isDisabled={cart?.length < 1 ? true : false}>Checkout!</Button>
                         </Link>
                     </DrawerFooter>
                 </DrawerContent>

@@ -1,6 +1,6 @@
 import Auth from "../../components/Auth"
 
-const userAuth = () =>{
+const UserAuth = () =>{
     return (
         <>
             <Auth/>
@@ -8,4 +8,4 @@ const userAuth = () =>{
     )
 }
 
-export default userAuth
+export default UserAuth

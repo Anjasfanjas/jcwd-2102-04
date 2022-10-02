@@ -1,5 +1,5 @@
 import { DeleteIcon } from "@chakra-ui/icons"
-import { Box, Button, HStack, Icon, Input, Stack, Text, useToast, VStack } from "@chakra-ui/react"
+import { Box, Button, HStack, Icon, IconButton, Input, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 import { useEffect } from "react"
 import { useState } from "react"
@@ -10,12 +10,26 @@ import render_types from "../../../redux/reducers/types/render"
 
 
 const CartCard = (props) => {
-    const { product_name, product_price, product_category, quantity, image_url, product_stock, product_id, user_id } = props
+    const { product_name, product_price, product_category, quantity, image_url, product_stock, product_id, user_id, cart_id } = props
     const [ counter, setCounter ] = useState(quantity)
     const toast = useToast()
 
     const autoRender = useSelector((state) => state.render)
     const dispatch = useDispatch()
+
+    const totalQuantity = async() => {
+        try {
+            await axiosInstance.patch("/cart/quantity", {
+                params : {
+                    cart_id: cart_id,
+                    quantity: counter,
+                    user_id: user_id
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const deletProductCart = async() => {
         try {
@@ -69,15 +83,31 @@ const CartCard = (props) => {
                         <Text>{Number(product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         <Text px={1} fontWeight='bold'>X</Text>
                         <HStack>
-                            <Button onClick={() => {setCounter(counter - 1)}} size='xs'>
-                                <Icon as={HiMinus}/>
-                            </Button>
+                            <IconButton 
+                                icon={<HiMinus/>} 
+                                onClick={() => {setCounter( counter > 0 ? counter - 1 : 0); totalQuantity()}} 
+                                size='sm'
+                            />
                             
                             <Input value={counter} type='number'w={30} mx='auto' size='xs' justifySelf='center'/>
-                            
-                            <Button onClick={() => {setCounter(counter + 1)}} size='xs'>
-                                <Icon as={HiPlus}/>
-                            </Button>
+                            { 
+                                counter < product_stock ? (
+                                    <IconButton
+                                        icon={<HiPlus/>} 
+                                        size='sm' 
+                                        onClick={() => {setCounter(counter + 1); totalQuantity()}}
+                                    />
+                                ) :  (
+                                    <Tooltip label='we out of stock' fontSize='md'>
+                                        <IconButton
+                                            icon={<HiPlus/>} 
+                                            size='sm' 
+                                            disabled='true'
+                                        />
+                                    </Tooltip>
+                                )
+
+                            }
                             <Text fontSize={11}>/ Stock {product_stock}</Text>
                         </HStack>
                     </HStack>

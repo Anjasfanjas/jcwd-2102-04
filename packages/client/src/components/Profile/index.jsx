@@ -4,12 +4,14 @@ import { CgProfile, CgLogOut } from "react-icons/cg"
 import { RiUserSettingsLine } from "react-icons/ri"
 import { MdOutlineLocalShipping } from "react-icons/md"
 import UserProfile from "./UserProfile"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import UserOrder from "./UserOrder"
+import { useRouter } from "next/router"
 
 
 const Profile = () => {
-    const [menuActive, setMenuActive] = useState("profile")
+    const router = useRouter()
+    const { option } = router.query
 
     return (
         <Flex
@@ -56,12 +58,12 @@ const Profile = () => {
                                 w="full"
                                 cursor='pointer'
                                 onClick={
-                                    () => {setMenuActive("profile")}
+                                    () => {router.push("/user/profile")}
                                 }
                                 align='center'
                             >
-                                <Icon as={CgProfile} fontSize='2xl' className={menuActive== 'profile'? 'active-icons' : ''}/>
-                                <Text ml='1em' className={menuActive == 'profile' ? "active" : ''}>Profile</Text>
+                                <Icon as={CgProfile} fontSize='2xl' className={option== 'profile'? 'active-icons' : ''}/>
+                                <Text ml='1em' className={option == 'profile' ? "active" : ''}>Profile</Text>
                             </Flex>
 
                             <Flex 
@@ -70,12 +72,12 @@ const Profile = () => {
                                 cursor='pointer'
                                 w='full'
                                 onClick={
-                                    () => {setMenuActive("order")}
+                                    () => {router.push("/user/order")}
                                 }
                                 align='center'
                             >
-                                <Icon as={MdOutlineLocalShipping} fontSize='2xl' className={menuActive== 'order'? 'active-icons' : ''}/>
-                                <Text ml='1em' className={menuActive == 'order' ? "active" : ''}>Order</Text>
+                                <Icon as={MdOutlineLocalShipping} fontSize='2xl' className={option== 'order'? 'active-icons' : ''}/>
+                                <Text ml='1em' className={option == 'order' ? "active" : ''}>Order</Text>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -94,11 +96,11 @@ const Profile = () => {
             {/* Content */}
             <Flex minW='70%' justify='center' p={3}>
                 {(() => {
-                    if(menuActive == "profile"){
+                    if(option == "profile"){
                         return <UserProfile/>
                     }
 
-                    if(menuActive == "order"){
+                    if(option == "order"){
                         return <UserOrder/>
                     }
                 })()}

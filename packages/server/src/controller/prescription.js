@@ -12,8 +12,8 @@ const prescriptionController = {
             await User_doctor_prescription.create(
                 {
                     img_url : `${uploadFileDomain}/${filePath}/${filename}`,
-                    user_id
-                },
+                    user_id   
+                }
             )
             
             return res.status(200).json({

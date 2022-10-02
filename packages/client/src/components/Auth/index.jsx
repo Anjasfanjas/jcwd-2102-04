@@ -6,7 +6,7 @@ import LoginPic from "../../public/logo/Logo.gif"
 import { useState } from "react";
 
 
-const userAuth = () => {
+const UserAuth = () => {
     const [ formChange, setFormChange ] = useState(false)
 
     return (
@@ -34,4 +34,4 @@ const userAuth = () => {
     )
 }
 
-export default userAuth
+export default UserAuth

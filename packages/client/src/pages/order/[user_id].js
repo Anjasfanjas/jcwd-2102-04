@@ -1,14 +1,14 @@
-import BreadcrumbPage from "../../components/BreadcrumbPage"
+import BreadcrumbPage from "../../components/Breadcrumb"
 import Footer from "../../components/Footer"
 import Navbar from "../../components/Navbar"
-import OrderPage from "../../components/OrderPage"
+import OrderPage from "../../components/Page/OrderPage"
 
 
 const Order = () => {
     return (
         <>
             <Navbar/>
-                <BreadcrumbPage page={['store', 'payment']}/>
+                <BreadcrumbPage page={['store', 'order']}/>
                 <OrderPage/>
             <Footer/>
         </>

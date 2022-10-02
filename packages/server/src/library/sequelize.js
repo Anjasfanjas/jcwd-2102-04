@@ -25,7 +25,6 @@ const Categories = require("../model/categories")(sequelize)
 const Product_description = require("../model/product_description")(sequelize)
 const Product_img = require("../model/product_img")(sequelize)
 const Product_stock_reserved = require("../model/product_stock_reserved")(sequelize)
-const Product_unit = require("../model/product_unit")(sequelize)
 const Stock_histories = require("../model/stock_histories")(sequelize)
 const Token = require("../model/token")(sequelize)
 
@@ -58,14 +57,17 @@ Order.belongsTo(Order, {foreignKey: "user_address_id"})
 Order.hasMany(Order_detail, {foreignKey: "order_id"})
 Order_detail.belongsTo(Order, {foreignKey: "order_id"})
 
-Order.hasOne(Order_status, {foreignKey: "order_status_id"})
-Order_status.belongsTo(Order, {foreignKey: "order_status_id"})
+User.hasMany(Order_detail, {foreignKey: "user_id"})
+Order_detail.belongsTo(User, {foreignKey: "user_id"})
 
-User_doctor_prescription.hasMany(Order, {foreignKey: "order_id"})
-Order.belongsTo(User_doctor_prescription, {foreignKey: "order_id"})
+Order_status.hasMany(Order, {foreignKey: "order_status_id"})
+Order.belongsTo(Order_status, {foreignKey: "order_status_id"})
 
-Payment.hasMany(Order, {foreignKey: "order_id"})
-Order.belongsTo(Payment, {foreignKey: "order_id"})
+User_doctor_prescription.hasMany(Order, {foreignKey: "user_prescription_id"})
+Order.belongsTo(User_doctor_prescription, {foreignKey: "user_prescription_id"})
+
+Order.hasMany(Payment, {foreignKey: "order_id"}) 
+Payment.belongsTo(Order, {foreignKey: "order_id"})
 
 Product.hasMany(Product_img, {foreignKey: "product_id"})
 Product_img.belongsTo(Product, {foreignKey: "product_id"})
@@ -82,19 +84,11 @@ Stock_histories.belongsTo(Product, {foreignKey: "product_id"})
 Product.hasMany(Cart, {foreignKey: "product_id"})
 Cart.belongsTo(Product, {foreignKey: "product_id"})
 
-Product_unit.hasMany(Product_stock, {foreignKey: "product_unit_id"})
-Product_stock.belongsTo(Product_unit, {foreignKey: "product_unit_id"})
-
 //M : M
 Product.hasMany(Product_categories, {foreignKey: "product_id"})
 Product_categories.belongsTo(Product, {foreignKey: "product_id"})
 Categories.hasMany(Product_categories, {foreignKey: "categories_id"})
 Product_categories.belongsTo(Categories, {foreignKey: "categories_id"})
-
-Product_stock.hasMany(Product_stock_reserved, {foreignKey: "product_stock_id"})
-Product_stock_reserved.belongsTo(Product_stock, {foreignKey: "product_stock_id"})
-Order.hasMany(Product_stock_reserved, {foreignKey: "product_stock_id"})
-Product_stock_reserved.belongsTo(Order, {foreignKey: "product_stock_id"})
 
 module.exports ={
     sequelize,
@@ -110,7 +104,6 @@ module.exports ={
     Product_stock,
     Product_stock_reserved,
     Stock_histories,
-    Product_unit,
     Order,
     Order_detail,
     Order_status,

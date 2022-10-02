@@ -191,7 +191,7 @@ const ModalEditAddress = (props) => {
 
     return (
         <>
-            <EditIcon w='1em' h='1em' _hover={{color: "green"}} cursor='pointer' onClick={() =>{onOpen()}}/>
+            <EditIcon w='1em' h='1em' color='green' cursor='pointer' onClick={() =>{onOpen()}}/>
 
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size='lg'>
                 <ModalOverlay />

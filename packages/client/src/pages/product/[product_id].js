@@ -1,7 +1,7 @@
-import BreadcrumbPage from "../../components/BreadcrumbPage"
+import BreadcrumbPage from "../../components/Breadcrumb"
 import Footer from "../../components/Footer"
 import Navbar from "../../components/Navbar"
-import ProductDetail from "../../components/ProductDetail"
+import ProductDetail from "../../components/Page/ProductDetailPage"
 
 const productDetail = () => {
     return (

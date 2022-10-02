@@ -9,7 +9,7 @@ router.post(
     fileUploader({
         destinationFolder: process.env.PATH_PRESCRIPTION,
         fileType: "image",
-        preflix: "POST",
+        preflix: "Prescription",
     }).single("prescription"),
     prescriptionController.addPrescription
 )
