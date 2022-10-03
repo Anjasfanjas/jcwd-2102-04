@@ -1,11 +1,12 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { Box, Button, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
+import moment from "moment/moment"
 import Image from "next/image"
 
 
 
 const UserOrderCard = (props) => {
-    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img } = props
+    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date } = props
 
     const ButtonContainer = () => {
         return (
@@ -31,6 +32,7 @@ const UserOrderCard = (props) => {
                 <Flex justifyContent='space-between' mb={1}>
                     <Flex fontSize={12} fontWeight='bold'>
                         <Text mr={2} pr={2} borderRight='1px' borderColor="black">{no_invoice}</Text>
+                        <Text mr={2} pr={2} borderRight='1px solid black'>{moment(date).format("L")}</Text>
                         <Text>{order_status}</Text>
                     </Flex>
                     

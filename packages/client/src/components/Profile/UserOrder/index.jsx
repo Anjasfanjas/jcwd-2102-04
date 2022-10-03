@@ -28,10 +28,10 @@ const UserOrder = () => {
             order = 'createdAt';
             sort = "DESC"
         } else if (filter == 'price_desc') {
-            order = 'sell_price';
+            order = 'order_price';
             sort = "DESC"
         } else if (filter == 'price_asc') {
-            order = 'sell_price';
+            order = 'order_price';
             sort = "ASC"
         } else {
             order = '';
@@ -96,6 +96,7 @@ const UserOrder = () => {
                         order_status = {val.order_status.status_name}
                         product_img = {val.order_details[0].product.product_imgs[0].img_url}
                         no_invoice = {val.no_invoice}
+                        date = {val.createdAt}
                     />
                 </>
             )

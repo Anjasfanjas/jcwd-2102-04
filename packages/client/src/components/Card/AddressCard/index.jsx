@@ -7,7 +7,7 @@ import ModalEditAddress from "../../Modal/ModalEditAddress"
 const AddressCard = (props) => {
     const { name, phone_number, address_line, province, city, post_code, is_default, address_id } = props
     return (
-        <Box p={3} boxShadow='xl' borderRadius={5} minW='full' p={5}>
+        <Box p={3} boxShadow='xl' borderRadius={5} minW='full' >
             <VStack minW='full'>
                 <Box minW='full'>
                     <Flex align='center' justify='space-between' mb={2}>

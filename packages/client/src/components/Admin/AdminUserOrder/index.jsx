@@ -3,22 +3,62 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
 import AdminOrderCard from "../Card/AdminOrderCard"
+import AdminPrescriptionCard from "../Card/AdminPrescriptionCard"
 
 
 const AdminUserOrder = () => {
     const [ allOrder, setAllOrder ] = useState([])
     const [ orderStatus, setOrderStatus ] = useState([])
+    const [ prescriptionOrder, setPrescriptionOrder ] = useState([])
     const [ recentStatus, setRecentStatus ] = useState("")
     const [ page, setPage ] = useState(1)
 
-    const fetchAllOrder = async () => {
+    const fetchAllOrder = async (filter) => {
+        let order = ""
+        let sort = ""
+
+        if (filter == 'date_asc') {
+            order = 'createdAt';
+            sort = "ASC"
+        } else if (filter == 'date_desc') {
+            order = 'createdAt';
+            sort = "DESC"
+        } else if (filter == 'price_desc') {
+            order = 'sell_price';
+            sort = "DESC"
+        } else if (filter == 'price_asc') {
+            order = 'sell_price';
+            sort = "ASC"
+        } else {
+            order = '';
+            sort = ""
+        }
+
         try {
-            await axiosInstance.get("/order/admin/order").then((res) => {
+            await axiosInstance.get("/order/admin/order", {params : {
+                limit: 5,
+                page: 1,
+                status: recentStatus,
+                sort,
+                orderBy : order,
+            }}).then((res) => {
                 const data = res.data.result
                 setAllOrder([...data])
             })
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const fetchPrescriptionOrder = async() => {
+        try {
+            await axiosInstance.get("/prescription").then((res) => {
+                const data = res.data.result
+                setPrescriptionOrder([...data])
+                console.log(data)
+            })
+        } catch (error) {
+            
         }
     }
 
@@ -51,17 +91,40 @@ const AdminUserOrder = () => {
     }
 
     const renderOrderCard = () => {
-        return (
-            <>
-                <AdminOrderCard/>
-            </>
-        )
+        return allOrder.map((val) => {
+            return (
+                <>
+                    <AdminOrderCard
+                        product_order = {val.order_details}
+                        total_price = {val.order_price}
+                        no_invoice = {val.no_invoice}
+                        date= {val.createdAt}
+                        order_status = {val.order_status.status_name}
+                    />
+                </>
+            )
+        })
+    }
+
+    const renderPrescriptionCard = () => {
+        return prescriptionOrder.map((val) => {
+            return (
+                <>
+                    <AdminPrescriptionCard
+                        date = {val.createdAt}
+                        user_name = {val.user.username}
+                        prescription_img = {val.img_url}
+                    />
+                </>
+            )
+        })
     }
 
     useEffect(() => {
         fetchAllOrder()
         fetchOrderStatus()
-    }, [])
+        fetchPrescriptionOrder()
+    }, [recentStatus])
 
     return (
         <VStack
@@ -78,7 +141,7 @@ const AdminUserOrder = () => {
                     <Text fontSize={18} fontWeight='bold'>user orders List</Text>
                     <Text>These are all the orders form user</Text>
                 </Box>
-                <Select onChange={(event) => {fetchUserOrder(event.target.value)}} flex={1}>
+                <Select onChange={(event) => {fetchAllOrder(event.target.value)}} flex={1}>
                     <option value=''>Urutkan</option>
                     <option value='date_asc'>DateAscending</option>
                     <option value='date_desc'>Date Descending</option>
@@ -92,13 +155,15 @@ const AdminUserOrder = () => {
             <Box w='full' p={3}>
                 <Tabs isFitted variant='enclosed-colored' color='#005E9D'>
                     <TabList mb='1em'>
-                        <Tab>
+                        <Tab onClick ={() => {setRecentStatus("")}}>
+                            ALL
+                        </Tab>
+                        <Tab onClick ={() => {setRecentStatus("prescription")}}>
                             Konfirmasi Resep
                         </Tab>
-                        
                         {renderOrderStatus()}
                     </TabList>
-                    {renderOrderCard()}
+                    { recentStatus === "prescription" ? renderPrescriptionCard() : renderOrderCard() }
                 </Tabs>
             </Box>
 
