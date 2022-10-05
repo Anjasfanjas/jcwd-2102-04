@@ -2,14 +2,30 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { Box, Button, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
 import moment from "moment/moment"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { axiosInstance } from "../../../../library/api"
 import AdminModalPrescription from "../../Modal/AdminModalPrescription"
 
-
-
-
 const AdminPrescriptionCard = (props) => {
-    const {date, prescription_img, user_name } = props
+    const {date, prescription_img, user_name, user_id, no_invoice, user_address_id } = props
+    const [ userAddress, setUserAddress ] = useState([])
+    
+    const fetchUserAddress = async() => {
+        try {
+            await axiosInstance.get(`/user/address/byid/${user_address_id}`).then((res) => {
+                const data = res.data.result
+                console.log(data)
+                setUserAddress([...data])
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    console.log(userAddress)
+    
+    useEffect(() => {
+        fetchUserAddress()
+    }, [])
 
     return (
         <Grid templateColumns = 'repeat(1, 1fr)' gap={3} mb={5}> 
@@ -32,15 +48,21 @@ const AdminPrescriptionCard = (props) => {
                         />
                     </Box>
                     <VStack flex={3} align='left'>
-                        <Text fontSize={20}>{user_name}</Text>
+                        <HStack>
+                            <Text>{no_invoice}</Text>
+                            <Text>{user_name}</Text>
+                        </HStack>
+                        <VStack>
+                            <Text w='full' fontWeight='bold'>{userAddress[0]?.name}, +62{userAddress[0]?.phone_number}</Text>
+                            <Text w='100%'>{userAddress[0]?.address_line}, {userAddress[0]?.province}, {userAddress[0]?.city}, {userAddress[0]?.post_code} </Text>
+                        </VStack>
                     </VStack>
                     
                     <AdminModalPrescription
                         img_url = {prescription_img ? prescription_img : ""}
+                        user_id = {user_id}
                     />
                 </HStack>
-
-
                 {/* ini buat divider dan total order kebawah */}
             </Box>
         </Grid>

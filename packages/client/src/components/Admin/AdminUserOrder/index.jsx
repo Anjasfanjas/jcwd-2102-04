@@ -44,15 +44,40 @@ const AdminUserOrder = () => {
             }}).then((res) => {
                 const data = res.data.result
                 setAllOrder([...data])
+                
             })
         } catch (error) {
             console.log(error)
         }
     }
 
-    const fetchPrescriptionOrder = async() => {
+    const fetchPrescriptionOrder = async(filter) => {
+        let order = ""
+        let sort = ""
+
+        if (filter == 'date_asc') {
+            order = 'createdAt';
+            sort = "ASC"
+        } else if (filter == 'date_desc') {
+            order = 'createdAt';
+            sort = "DESC"
+        } else if (filter == 'price_desc') {
+            order = 'sell_price';
+            sort = "DESC"
+        } else if (filter == 'price_asc') {
+            order = 'sell_price';
+            sort = "ASC"
+        } else {
+            order = '';
+            sort = ""
+        }
         try {
-            await axiosInstance.get("/prescription").then((res) => {
+            await axiosInstance.get("/order/admin/prescription", {params : {
+                limit: 5,
+                page: 1,
+                sort,
+                orderBy : order,
+            }}).then((res) => {
                 const data = res.data.result
                 setPrescriptionOrder([...data])
                 console.log(data)
@@ -63,7 +88,6 @@ const AdminUserOrder = () => {
     }
 
     const fetchOrderStatus = async () => {
-        
         try {
             await axiosInstance.get("/order/status").then((res) => {
                 const data = res.data.result
@@ -91,10 +115,11 @@ const AdminUserOrder = () => {
     }
 
     const renderOrderCard = () => {
-        return allOrder.map((val) => {
+        return allOrder.map((val, index) => {
             return (
                 <>
                     <AdminOrderCard
+                        key = {index}
                         product_order = {val.order_details}
                         total_price = {val.order_price}
                         no_invoice = {val.no_invoice}
@@ -107,13 +132,17 @@ const AdminUserOrder = () => {
     }
 
     const renderPrescriptionCard = () => {
-        return prescriptionOrder.map((val) => {
+        return prescriptionOrder.map((val, index) => {
             return (
                 <>
                     <AdminPrescriptionCard
+                        key = {index}
                         date = {val.createdAt}
-                        user_name = {val.user.username}
-                        prescription_img = {val.img_url}
+                        user_name = {val.user_doctor_prescription.user.username}
+                        prescription_img = {val.user_doctor_prescription.img_url}
+                        user_id = {val.user_id}
+                        no_invoice = {val.no_invoice}
+                        user_address_id = {val.user_address_id}
                     />
                 </>
             )

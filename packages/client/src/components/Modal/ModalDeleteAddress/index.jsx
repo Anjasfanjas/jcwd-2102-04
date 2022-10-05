@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../library/api";
+import render_types from "../../../redux/reducers/types/render";
 
 const ModalDeleteAddress = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();

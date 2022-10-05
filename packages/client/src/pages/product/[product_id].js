@@ -3,7 +3,7 @@ import Footer from "../../components/Footer"
 import Navbar from "../../components/Navbar"
 import ProductDetail from "../../components/Page/ProductDetailPage"
 
-const productDetail = () => {
+const ProductDetailPage = () => {
     return (
         <>
             <Navbar/>
@@ -14,4 +14,4 @@ const productDetail = () => {
     )
 }
 
-export default productDetail
+export default ProductDetailPage

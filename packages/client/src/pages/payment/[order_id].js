@@ -1,7 +1,7 @@
 import PaymentPage from "../../components/Page/PaymentPage"
 import Navbar from "../../components/Navbar"
 
-const paymentPage = () => {
+const PaymentPageA = () => {
     return (
         <>
             <Navbar/>
@@ -10,4 +10,4 @@ const paymentPage = () => {
     )
 }
 
-export default paymentPage
+export default PaymentPageA
