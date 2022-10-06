@@ -79,12 +79,6 @@ const OrderPage = () => {
                 </HStack>
                 
                 <Text w='60%'>{addressDefault.address_line}, {addressDefault.province}, {addressDefault.city}, {addressDefault.post_code} </Text>
-
-                <HStack border='1px solid #b41974' p={2}>
-                    <Text>Tambah Alamat</Text>
-                    <ModalAddress/>
-                </HStack>
-
             </VStack>
         )
     }
@@ -119,7 +113,7 @@ const OrderPage = () => {
         console.log(courier)
         const body = {
             origin: 457,
-            destination: addressDefault.city_id,
+            destination: addressDefault?.city_id,
             weight: 10000,
             courier: courier
         }
@@ -157,8 +151,11 @@ const OrderPage = () => {
 
             <VStack flex={2} spacing={10} p={3}>
                 <VStack w='full'>
-                    <HStack w='full' borderBottom='1px solid #b41974' pb={2} mb={2} justify='space-between' align='center'>
+                    <HStack w='full' borderBottom='1px solid #b41974' pb={2} mb={2} align='center'>
                         <Text fontWeight='bold'>Alamat Pengirim</Text>
+                        <Box hidden={ userAddress.length >= 3 ? true : false}>
+                            <ModalAddress/>
+                        </Box>
                     </HStack>
                     {selectedAddress()}
                 </VStack>
@@ -176,7 +173,7 @@ const OrderPage = () => {
                     <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilh jasa penigirman</Text>
 
                     <FormControl w='full'>
-                        <Select placeholder='Daftar ekspedisi' onChange={(event) => {deliveryCost(event.target.value); alert('aa')}}>
+                        <Select placeholder='Daftar ekspedisi' onChange={(event) => {deliveryCost(event.target.value); alert('aa'); console.log(deliveryCost)}}>
                             <option value='jne'>JNE</option>
                             <option value='post'>Post Indonesia</option>
                             <option value='tiki'>Tiki</option>

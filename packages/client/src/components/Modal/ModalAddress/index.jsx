@@ -7,6 +7,7 @@ import { axiosInstance } from "../../../library/api";
 import qs from "qs";
 import axios from "axios";
 import * as Yup from 'yup'
+import render_types from "../../../redux/reducers/types/render";
 
 
 const ModalAddress = () => {
@@ -112,15 +113,15 @@ const ModalAddress = () => {
             address_line: '',
         },
 
-        validationSchema: Yup.object().shape({
-            name: Yup.string()
-            .required("Your full name can not be empty ")
-            .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
+        // validationSchema: Yup.object().shape({
+        //     name: Yup.string()
+        //     .required("Your full name can not be empty ")
+        //     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
 
-            phone_number: Yup.string()
-            .required('Phone number is required')
-            .max(12, 'too long! caannot be more than 12 number')
-        }),
+        //     phone_number: Yup.string()
+        //     .required('Phone number is required')
+        //     .max(12, 'too long! caannot be more than 12 number')
+        // }),
 
         validateOnChange: false,
 
@@ -146,10 +147,8 @@ const ModalAddress = () => {
                 user_id: userSelector?.id,
             }
 
-            console.log(body)
-
             try {
-                await axiosInstance.post(`/user/address/${userSelector?.id}`, qs.stringify(body)).then(() => {
+                await axiosInstance.post(`/user/address`, qs.stringify(body)).then(() => {
                     toast({
                         title: 'Your address has been added',
                         status: 'success',
@@ -209,7 +208,7 @@ const ModalAddress = () => {
                             <HStack w='full' spacing={3}>
                                 <FormControl>
                                     <FormLabel w='full'>
-                                        <Input placeholder="Fullname" type='text' onChange={(event) => formik.setFieldValue('fullname', event.target.value)} />
+                                        <Input placeholder="Fullname" type='text' onChange={(event) => formik.setFieldValue('name', event.target.value)} />
                                     </FormLabel>
                                 </FormControl>
 
@@ -250,7 +249,7 @@ const ModalAddress = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={() => {formik.handleSubmit()}}>
+                        <Button colorScheme='blue' mr={3} onClick={() => formik.handleSubmit()}>
                             Save
                         </Button>
                         

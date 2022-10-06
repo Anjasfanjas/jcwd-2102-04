@@ -1,7 +1,7 @@
 import AdminUserOrder from "../../../../components/Admin/AdminUserOrder"
 
 
-const userOrder = () => {
+const UserOrder = () => {
     return (
         <>
             <AdminUserOrder/>
@@ -9,4 +9,4 @@ const userOrder = () => {
     )
 }
 
-export default userOrder
+export default UserOrder
