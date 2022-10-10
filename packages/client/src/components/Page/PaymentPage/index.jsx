@@ -2,6 +2,7 @@ import { Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useState } from "react"
+import moment from 'moment'
 import { axiosInstance } from "../../../library/api"
 import OrderDetailCard from "../../Card/OrderDetailCard"
 import ModalUploadPayment from "../../Modal/ModalUploadPayment"
@@ -10,21 +11,26 @@ import ModalUploadPayment from "../../Modal/ModalUploadPayment"
 const PaymentPage = () => {
     const [dataOrder, setDataOrder] = useState()
     const [dataOrderDetail, setDataOrderDetail] = useState()
+    const [dateLine, setDateLine] = useState()
     
     const router = useRouter()
+    const { order_id } = router?.query
+    
 
     const fetchDataOrder = async() => {
         try {
-            const { order_id } = router?.query
             const order = await axiosInstance.get(`/order/${order_id}`).then((res) => {
                 const data = res.data.result
                 setDataOrder(data)
-
+                const date = (moment((moment(data.createdAt)).add(3, "days").toString()).format("LLL"))
+                console.log(data.createdAt)
+                setDateLine(date)
             })
             
             const orderDetail = await axiosInstance.get(`/order/detail/${order_id}`).then((res) => {
                 const data = res.data.result
                 setDataOrderDetail(data)
+                console.log(data)
             })
             
             
@@ -38,6 +44,7 @@ const PaymentPage = () => {
             return (
                 <>
                     <OrderDetailCard
+                        key = {index}
                         nomor= {index+1}
                         image_url = {val?.product.product_imgs[0].img_url}
                         product_name = {val?.product.product_name}
@@ -70,7 +77,8 @@ const PaymentPage = () => {
             <HStack w='full' p={5} justify='space-between' borderBottom='1px solid #b41974'>
                 <VStack align='left' spacing={0}>
                     <Text fontWeight={400} color='grey'>Batas akhir pembayaran</Text>
-                    <Text fontWeight='bold' fontSize={18}>Kamis, 22 September 2022</Text>
+                    <Text fontWeight='bold' fontSize={18}>{dateLine}</Text>
+                    <Text color = 'grey' fontSize={12} >{moment(dateLine).fromNow()}</Text>
                 </VStack>
 
                 <VStack>
@@ -134,12 +142,12 @@ const PaymentPage = () => {
 
                         <Flex w='full' justify='space-between'>
                             <Text flex={4}>Biaya Pengiriman</Text>
-                            <Text flex={1}>{Number(0).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text flex={1}>{Number(dataOrder?.shipping_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Flex>
 
                         <Flex w='full' justify='space-between' fontWeight='bold' borderTop='solid 1px #b41974' pt={2}>
                             <Text flex={4}>Total Belanja</Text>
-                            <Text flex={1}>{Number(dataOrder?.order_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text flex={1}>{(Number(dataOrder?.order_price) + Number(dataOrder?.shipping_price)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Flex>
                     </VStack>
 
@@ -147,7 +155,9 @@ const PaymentPage = () => {
                         <Text fontSize={14} color='red'>* Perhatikan nominal pembayaran samapi tiga digit terakhir, kekurangan digit angka pembayaran akan dikenakan sangsi pembayaran</Text>
                         <HStack display='flex' spacing={5} justify='space-between' w='full'>
                             <Button colorScheme="red">Batalkan Order</Button>
-                            <ModalUploadPayment/>
+                            <ModalUploadPayment 
+                                order_id = {order_id}
+                            />
                         </HStack>
                     </VStack>
                 </HStack>

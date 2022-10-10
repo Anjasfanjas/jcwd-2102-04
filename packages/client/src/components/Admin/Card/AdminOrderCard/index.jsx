@@ -2,13 +2,15 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { Box, Button, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
 import moment from "moment/moment"
 import Image from "next/image"
+import { useEffect } from "react"
 import { useState } from "react"
-
-
-
+import { axiosInstance } from "../../../../lib/hoc/api"
+import CancleButton from "../../Button/CancleButton"
+import AdminModalCheckPayment from "../../Modal/AdminCheckUploadPayment"
+// import AdminModalCheckPayment from "../../Modal/AdminModelCheckPayment"
 
 const AdminOrderCard = (props) => {
-    const {order_status, date, total_price, no_invoice, product_order } = props
+    const {order_status, date, total_price, no_invoice, product_order, order_id, shipping_price, user_address_id } = props
     const [ product, setProduct ] = useState(product_order)
     const [ recentSeeMore, setRecentSeeMore ] = useState(false)
 
@@ -74,20 +76,28 @@ const AdminOrderCard = (props) => {
 
     const ButtonContainer = () => {
         return (
-            <HStack>
-                { order_status === "Menunggu Pembayaran" || "Menunggu Konfirmasi Pembayaran" ? (
-                        <Button size='xs' colorScheme="red">Cancle Order</Button>
+            <>
+                { order_status === "Menunggu Pembayaran" ||  "Diproses" ? (
+                        <HStack>
+                            <CancleButton size = {'xs'} order_id = {order_id}/>
+                        </HStack>
                     ) : null
                 }
 
-                { order_status === "Menunggu Konfirmasi Pembayaran" ? (
-                        <>
-                            <Button size='xs' colorScheme="yellow">Check Upload Pembayaran</Button>
-                            <Button size='xs' colorScheme="green">Konfirmasi Pembayaran</Button>
-                        </>
+            
+                { order_status === "Menunggu Konfirmasi Pembayaran"? 
+                    (
+                        <HStack>
+                            <AdminModalCheckPayment
+                                order_id = {order_id}
+                                user_address_id = {user_address_id}
+                                shipping_price = {shipping_price}
+                                total_price = {total_price}
+                            />
+                        </HStack>
                     ) : null
                 }
-            </HStack>
+            </>
         )
     }
 
@@ -100,8 +110,9 @@ const AdminOrderCard = (props) => {
                         <Text>{order_status}</Text>
                         <Text ml={2} color='grey'>{moment(date).format("LLL")}</Text>
                     </Flex>
-                    
-                    {ButtonContainer()}
+                    <HStack>
+                        {ButtonContainer()}
+                    </HStack>
                 </Flex>
 
                 {/* ini adalah box item satuan */}
@@ -116,7 +127,7 @@ const AdminOrderCard = (props) => {
 
                 <Flex justify='center' fontWeight='bold' borderColor='#005E9D' mt={2} px={2}>
                     <Text mt={2} flex={8}>TOTAL ORDER</Text>
-                    <Text mt={2} flex={2} align='end'>{Number(total_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                    <Text mt={2} flex={2} align='end'>{(Number(total_price) + Number(shipping_price)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                 </Flex>
             </Box>
         </Grid>

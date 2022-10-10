@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { axiosInstance } from "../../library/api"
 import { useSelector } from "react-redux"
 import DrawerCart from "../Drawer/DrawerCart"
+import ModalUploadPrescription from "../Modal/ModalUploadPrescription"
 
 const Navbar = () => {
     const router = useRouter()
@@ -20,48 +21,34 @@ const Navbar = () => {
     })
 
     return (        
-        <Flex position='sticky' top={0} bgColor='#eee' p={1} zIndex={3} boxShadow='xl' w='full' align='center' justify='center'>
+        <Flex position='sticky' color= "#004776" cursor='pointer' top={0} bgColor='#eee' p={1} zIndex={3} boxShadow='xl' w='full' align='center' justify='center'>
             {/* Logo Box */}
-            <Flex ml={5} justify='center'>
+            <Link ml={5} justify='center' href='../'>
                 <Image
                     src={Logo_navbar}
                     alt='Logo'
                     width={120}
                     height={30}
                 />
-            </Flex>
+            </Link>
 
             <HStack flex={3} spacing={3} justify='center'>
-            <Link 
-                    justify='space-evenly'
-                    align='center'
-                    display='flex'
-                    _hover={{textDecoration: 'none'}}
-                    href='../'
-                >
-                    <Icon as={MdOutlineHome} fontSize='2xl' mr={1}/>
-                    <Text fontSize={14}>Home</Text>
-                </Link>
-
                 <Link 
                     justify='space-evenly'
                     align='center'
                     display='flex'
                     _hover={{textDecoration: 'none'}}
                     href='../store'
+                    color="#004776"
+                    
                 >
                     <Icon as={MdOutlineStorefront} fontSize='2xl' mr={1}/>
                     <Text fontSize={14}>Store</Text>
                 </Link>
                 
-                <Flex 
-                    cursor='pointer'
-                    justify='space-evenly'
-                    align='center'
-                >
-                    <Icon as={MdOutlineFileUpload} fontSize='2xl' mr={1}/>
-                    <Text fontSize={14}>Upload Prescriptions</Text>
-                </Flex>
+                <ModalUploadPrescription 
+                    border = {'#eee'}
+                />
             </HStack>
 
             {/* Search Box */}

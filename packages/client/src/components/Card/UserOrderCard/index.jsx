@@ -1,12 +1,15 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, Button, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
 import moment from "moment/moment"
 import Image from "next/image"
+import { useRouter } from "next/router"
 
 
 
 const UserOrderCard = (props) => {
-    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date } = props
+    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date, order_id } = props
+
+    const router = useRouter()
 
     const ButtonContainer = () => {
         return (
@@ -17,8 +20,8 @@ const UserOrderCard = (props) => {
                 }
 
                 { order_status === "Menunggu Pembayaran" ? (
-                        <Button size='xs' colorScheme="blue">Upload Pembayaran</Button>
-                    ) : order_status === "Pesanan Dikonfirmasi" ? (
+                        <Button size='xs' colorScheme="blue" onClick={() => {router.push(`/payment/${order_id}`)}}>Upload Pembayaran</Button>
+                    ) : order_status === "Dikirim" ? (
                         <Button size='xs' colorScheme="green">Konfirmasi</Button>
                     ) : null
                 }
@@ -42,12 +45,20 @@ const UserOrderCard = (props) => {
                 {/* ini adalah box item satuan */}
                 <HStack display='flex' px={2}> 
                     <Box alignItems='center' flex={1}>
-                        <Image
-                            src={ product_img ? `http:/${product_img}` : ""}
-                            alt=""
-                            width={120}
-                            height={120}
-                        />
+                        {
+                            product_img === "" ? (
+                                <Center width={120} height={120}>Resep Docter </Center>
+                            ) : 
+                            (
+                                <Image
+                                    src={ product_img ? `http:/${product_img}` : ""}
+                                    alt=""
+                                    width={120}
+                                    height={120}
+                                />
+                            )
+                        }
+                        
                     </Box>
                     
                     <VStack flex={3}>

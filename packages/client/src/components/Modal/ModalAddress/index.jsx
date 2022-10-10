@@ -93,13 +93,14 @@ const ModalAddress = () => {
     const city_name = async () => {
         try {
             await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
-                setCityName(val.data.rajaongkir.results.city)
+                setCityName(val.data.rajaongkir.results.city_name)
             }) 
 
         } catch (error) {
             console.log(error)
         }
     }
+
     
     const formik = useFormik({
         initialValues: {
@@ -188,8 +189,7 @@ const ModalAddress = () => {
         render_province()
         province_name()
         city_name()
-
-    }, [formik.values.province])
+    }, [formik.values.province_id])
 
 
     return (

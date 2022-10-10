@@ -1,9 +1,12 @@
-import { Box, Button, Center, Flex, HStack, Tab, TabList, Tabs, Text, VStack, Select } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, HStack, Tab, TabList, Tabs, Text, VStack, Select, FormControl, InputGroup, Input, InputRightElement } from "@chakra-ui/react"
 import { useEffect } from "react"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
 import AdminOrderCard from "../Card/AdminOrderCard"
 import AdminPrescriptionCard from "../Card/AdminPrescriptionCard"
+import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
+import { useRouter } from "next/router"
+import { useFormik } from "formik"
 
 
 const AdminUserOrder = () => {
@@ -12,6 +15,18 @@ const AdminUserOrder = () => {
     const [ prescriptionOrder, setPrescriptionOrder ] = useState([])
     const [ recentStatus, setRecentStatus ] = useState("")
     const [ page, setPage ] = useState(1)
+    const router = useRouter()
+
+    const { search } = router.query
+    console.log(search)
+
+
+    const formik = useFormik({
+        initialValues: {
+            search: ""
+        }
+    })
+
 
     const fetchAllOrder = async (filter) => {
         let order = ""
@@ -41,6 +56,7 @@ const AdminUserOrder = () => {
                 status: recentStatus,
                 sort,
                 orderBy : order,
+                search: search? search : ''
             }}).then((res) => {
                 const data = res.data.result
                 setAllOrder([...data])
@@ -125,6 +141,9 @@ const AdminUserOrder = () => {
                         no_invoice = {val.no_invoice}
                         date= {val.createdAt}
                         order_status = {val.order_status.status_name}
+                        order_id = {val.id}
+                        shipping_price = {val.shipping_price}
+                        user_address_id = {val.user_address_id}
                     />
                 </>
             )
@@ -143,6 +162,7 @@ const AdminUserOrder = () => {
                         user_id = {val.user_id}
                         no_invoice = {val.no_invoice}
                         user_address_id = {val.user_address_id}
+                        order_id = {val.id}
                     />
                 </>
             )
@@ -153,7 +173,7 @@ const AdminUserOrder = () => {
         fetchAllOrder()
         fetchOrderStatus()
         fetchPrescriptionOrder()
-    }, [recentStatus])
+    }, [recentStatus, router?.isReady, search])
 
     return (
         <VStack
@@ -165,19 +185,45 @@ const AdminUserOrder = () => {
             mb={10}
             p={5}
         >
-            <Flex w='full' justify='space-between'>
-                <Box alignSelf='left' flex={4}>
+            <HStack display='flex' w='full' justify='space-between'>
+                <Box alignSelf='left' flex={3}>
                     <Text fontSize={18} fontWeight='bold'>user orders List</Text>
                     <Text>These are all the orders form user</Text>
                 </Box>
-                <Select onChange={(event) => {fetchAllOrder(event.target.value)}} flex={1}>
+
+                <Box
+                    flex={7}
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                >
+                    <FormControl w='full' borderEndRadius={5}>
+                        <InputGroup>
+                            <Input
+                                type={"text"}
+                                defaultValue={formik.values.search ? formik.values.search : null}
+                                placeholder={"Search..."}
+                                bgColor={"white"}
+                                onChange = {(event) => {formik.setFieldValue('search', event.target.value)}}
+                            />
+                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => {
+                                router.push(`/admin/user/order?search=${formik.values.search}`)
+                            }}>
+                                <BiSearchAlt />
+                            </InputRightElement>
+                        </InputGroup>
+                    </FormControl>
+                </Box>
+
+                <Select onChange={(event) => {fetchAllOrder(event.target.value)}} flex={2}>
                     <option value=''>Urutkan</option>
                     <option value='date_asc'>DateAscending</option>
                     <option value='date_desc'>Date Descending</option>
                     <option value='price_desc'>Highest Price</option>
                     <option value='price_asc'>Lowest Price</option>
                 </Select>
-            </Flex>
+            </HStack>
+
             <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>
             
 

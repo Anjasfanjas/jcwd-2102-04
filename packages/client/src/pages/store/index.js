@@ -5,16 +5,16 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 
 const Store = () => {
-    const { search } = useRouter().query
+    const { search, category } = useRouter().query
     
     useEffect(() => {
-        search
+        search, category
     }, [useRouter().isReady])
     
     return (
         <>
             <Navbar/>
-            <ProductStore search={search}/>
+            <ProductStore search={search} category={category} pageList = {[1, 1]}/>
             <Footer/>
         </>
     )

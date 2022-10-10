@@ -14,13 +14,15 @@ import ModalChangeAddress from "../../Modal/ModalChangeAddress"
 
 const OrderPage = () => {
     const [ userAddress, setUserAddress ] = useState([])
-    const [addressDefault, setAddressDefault ] = useState({})
+    const [addressDefault, setAddressDefault ] = useState([])
     const [ cart, setCart ] = useState([])
     const [ deliveryOption, setDeliveryOption ] = useState()
+    const [ shippingPrice, setShippingPrice] = useState()
     
     let totalPrice = 0
     const router = useRouter()
     const userSelector = useSelector((state) => state.auth)
+    console.log(shippingPrice)
 
     const fetchUserAddress = async() => {
         try {
@@ -87,7 +89,8 @@ const OrderPage = () => {
         const order = await axiosInstance.post("/order", {
             user_id: userSelector?.id,
             order_price: totalPrice,
-            user_address_id: addressDefault?.id
+            user_address_id: addressDefault?.id,
+            shipping_price: shippingPrice
         })
         
         cart.map(async(val) => {
@@ -119,10 +122,10 @@ const OrderPage = () => {
         }
 
         try {
-            await axios.post("https://api.rajaongkir.com/starter/cost" , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}, qs.stringify(body)).then((res) => {
+            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${addressDefault?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}, qs.stringify(body)).then((res) => {
                 console.log(res)
-                const data = res.data.rajaongkir.results
-                setDeliveryOption(data)
+                const data = res.data.rajaongkir.results[0]
+                setDeliveryOption(data.costs)
             })
         } catch (error) {
             console.log(error)
@@ -173,58 +176,52 @@ const OrderPage = () => {
                     <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilh jasa penigirman</Text>
 
                     <FormControl w='full'>
-                        <Select placeholder='Daftar ekspedisi' onChange={(event) => {deliveryCost(event.target.value); alert('aa'); console.log(deliveryCost)}}>
+                        <Select onChange={(event) => {deliveryCost(event.target.value)}}>
                             <option value='jne'>JNE</option>
-                            <option value='post'>Post Indonesia</option>
+                            <option value='pos'>Post Indonesia</option>
                             <option value='tiki'>Tiki</option>
                         </Select>
                     </FormControl>
+                        <VStack w='full' align='left'>
+                            <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilih Paket Pengiriman dari</Text>
 
-                    {
-                        deliveryOption ? (
-                            <VStack w='full' align='left'>
-                                <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilih Paket Pengiriman dari</Text>
-
-                                <FormControl w='full'>
-                                    <Select placeholder='Daftar ekspedisi' onChange={(event) => {deliveryCost(event.target.value)}}>
-                                        {deliveryOption.costs[0].map((val) => {
-                                            return (
-                                                <>
-                                                    <option value={val.cost[0].value}>
-                                                        <VStack>
-                                                            <Text fontWeight='bold'>{val.service}</Text>
-                                                            <Text>{val.description}</Text>
-                                                        </VStack>
-                                                        <Text>Estimasi Waktu {val.cost[0].etd} Hari</Text>
+                            <FormControl w='full'>
+                                <Select onChange={(event) => {setShippingPrice(event.target.value)}} >
+                                    {deliveryOption?.map((val) => {
+                                        return (
+                                            <>
+                                                <option value={val.cost[0].value}>
+                                                    <Flex>
+                                                        <Text>{val.service} </Text>
+                                                        <Text>{val.cost[0].etd} Hari </Text>
                                                         <Text>{Number(val.cost[0].value).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
-                                                    </option>
-                                                </>
-                                            )
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </VStack>
-                        ) : null
-                    }
+                                                    </Flex>
+                                                </option>
+                                            </>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </VStack>
                 </VStack>
 
                 <VStack borderRadius='1em' boxShadow='dark-lg' align='center' w='full' p={3}>
                     <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={2} mb={2}>Payment</Text>
                     
-                    <VStack w='90%'>
+                    <VStack w='90%' py={2}>
                         <HStack fontSize={14} w='full' justify='space-between'>
-                            <Text>Total Harga Barang</Text>
-                            <Text>{Number(totalPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text flex={7}>Total Harga Barang</Text>
+                            <Text flex={3} textAlign='start'>{Number(totalPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </HStack>
 
-                        <HStack fontSize={14} w='full'>
-                            <Text flex={1}>Total Harga Pengiriman</Text>
-                            <Text flex={1}></Text>
+                        <HStack fontSize={14} w='full'> 
+                            <Text flex={7}>Total Harga Pengiriman</Text>
+                            <Text flex={3} textAlign='start'>{Number(shippingPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </HStack>
                     </VStack>
 
                     <VStack fontSize={16} justify='center' fontWeight='bold'  w='full' borderTop='1px solid #b41974' pt={1} spacing={5}>
-                        <Flex justify='space-between' w='90%'>
+                        <Flex w='full' justify='space-between' pt={2}>
                             <Text>Total Payment</Text>
                             <Text>{Number(totalPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Flex>
