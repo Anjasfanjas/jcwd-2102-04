@@ -7,7 +7,7 @@ import { axiosInstance } from "../../../../library/api"
 import AdminModalPrescription from "../../Modal/AdminModalPrescription"
 
 const AdminPrescriptionCard = (props) => {
-    const {date, prescription_img, user_name, user_id, no_invoice, user_address_id } = props
+    const {date, prescription_img, user_name, user_id, no_invoice, user_address_id, order_id } = props
     const [ userAddress, setUserAddress ] = useState([])
     
     const fetchUserAddress = async() => {
@@ -61,6 +61,8 @@ const AdminPrescriptionCard = (props) => {
                     <AdminModalPrescription
                         img_url = {prescription_img ? prescription_img : ""}
                         user_id = {user_id}
+                        user_address = {userAddress}
+                        order_id = {order_id}
                     />
                 </HStack>
                 {/* ini buat divider dan total order kebawah */}

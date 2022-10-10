@@ -13,7 +13,8 @@ const ProductStore = (props) => {
     const [sliderValue, setSliderValue] = useState(0)
     const [ allProduct, setAllProduct ] = useState([])
     const [ allCategories, setAllCategories ] = useState([])
-    const [ recentCategory, setRecentCategory ] = useState("")
+    const [ recentCategory, setRecentCategory ] = useState(props.category)
+    const [ page, setPage ] = useState(1)
     const autoRender = useSelector((state) => {return state.render})
 
     const dispatch = useDispatch()
@@ -56,8 +57,8 @@ const ProductStore = (props) => {
         try {
             await axiosInstance.get(`/product/`, {params: {
                 category: recentCategory,
-                limit : 21,
-                page: 1,
+                limit : 12,
+                page: page,
                 sort : sort,
                 orderBy : order,
                 min: (sliderValue[0] ? sliderValue[0]*1000 : 0),
@@ -110,7 +111,7 @@ const ProductStore = (props) => {
     useEffect(() => {
         fetchDataProduct()
         fetchDataCategories()
-    }, [recentCategory ,sliderValue, props.search])
+    }, [recentCategory ,sliderValue, props.search, page])
 
     
     // useEffect(()=> {
@@ -249,26 +250,27 @@ const ProductStore = (props) => {
                     </Grid>
                     <Center my={5}>
                         <HStack>
-                            <Button onClick={() => {setCounter(counter - 1)}} size='sm' 
-                                bgColor='#005E9D' 
-                                color='white'
-                                _hover={{
-                                    backgroundColor: "#e3eeee",
-                                    color: "#005E9D"
-                                }}
+                            <Button onClick={() => {setPage(page - 1)}} size='sm' 
+                                hidden = {page <= 1 ? true : false }
+                                colorScheme='blue'
                             >
                                 Prev
                             </Button>
                             
-                            <Box sz='sm'>1</Box>
+                            <HStack sz='sm'>
+                                {props.pageList.map((val, index) => {
+                                    return (
+                                        <>
+                                            <Button size='sm' colorScheme='blue' onClick={() => {setPage(index +1)}} >{index + 1}</Button>
+                                        </>
+                                    )
+                                })
+                                }
+                            </HStack>
                             
-                            <Button onClick={() => {setCounter(counter + 1)}} size='sm'
-                                bgColor='#005E9D' 
-                                color='white'
-                                _hover={{
-                                    backgroundColor: "#e3eeee",
-                                    color: "#005E9D"
-                                }}
+                            <Button onClick={() => {setPage(page + 1)}} size='sm'
+                                colorScheme='blue'
+                                hidden = {allProduct.length < 12 ? true : false }
                             >
                                 Next
                             </Button>

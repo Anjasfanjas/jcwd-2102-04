@@ -13,6 +13,8 @@ const Profile = () => {
     const router = useRouter()
     const { option } = router.query
 
+    option === "order" ? option = "order" : option = 'profile'
+
     return (
         <Flex
             flexDir='row'
@@ -95,15 +97,7 @@ const Profile = () => {
 
             {/* Content */}
             <Flex minW='70%' justify='center' p={3}>
-                {(() => {
-                    if(option == "profile"){
-                        return <UserProfile/>
-                    }
-
-                    if(option == "order"){
-                        return <UserOrder/>
-                    }
-                })()}
+                {option == "profile" ?<UserProfile/> :  <UserOrder/> }
             </Flex>
         </Flex>
     )

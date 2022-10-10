@@ -1,4 +1,4 @@
-import { Avatar, border, Box, Button, Flex, Grid, HStack, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, Select, Center } from "@chakra-ui/react"
+import { Avatar, border, Box, Button, Flex, Grid, HStack, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, Select, Center, Input, FormControl, InputGroup, InputRightElement } from "@chakra-ui/react"
 import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons"
 import obat_3 from "../../../public/gambar_obat/obat_3.png"
 import obat_2 from "../../../public/gambar_obat/obat_2.png"
@@ -8,12 +8,23 @@ import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
+import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
+import { useFormik } from "formik"
+import moment from "moment"
 
 const UserOrder = () => {
     const [ userOrder, setUserOrder ] = useState([])
     const [ orderStatus, setOrderStatus ] = useState([])
     const [ recentStatus, setRecentStatus ] = useState("")
     const [ page, setPage ] = useState(1)
+
+    const formik = useFormik({
+        initialValues: {
+            search: "",
+            dateFrom: "" ,
+            dateTo: "" 
+        }
+    })
 
     const userSelector = useSelector((state) => {return state.auth})
 
@@ -45,8 +56,10 @@ const UserOrder = () => {
                 sort,
                 orderBy : order,
                 limit: 5,
-                page
-
+                page,
+                dateFrom : formik.values.dateFrom ? formik.values.dateFrom : null,
+                dateTo : formik.values.dateTo ? formik.values.dateTo  : null,
+                search: formik.values.search ? formik.values.search : ''
             }}).then((res) => {
                 const data = res.data.result
                 setUserOrder([...data])
@@ -85,37 +98,100 @@ const UserOrder = () => {
         })
     }
     const renderOrderCard = () => {
-        return userOrder.map((val) => {
-            return (
-                <>
-                    <UserOrderCard
-                        product_name = {val.order_details[0].product.product_name}
-                        product_price = {val.order_details[0].product_price}
-                        quantity = {val.order_details[0].quantity}
-                        total_price = {val.order_price}
-                        order_status = {val.order_status.status_name}
-                        product_img = {val.order_details[0].product.product_imgs[0].img_url}
-                        no_invoice = {val.no_invoice}
-                        date = {val.createdAt}
-                    />
-                </>
-            )
+        return userOrder.map((val, index) => {
+            if(val.order_details.length >= 1) {
+                return (
+                    <>
+                        <UserOrderCard
+                            key = {index}
+                            product_name = {val.order_details[0].product.product_name}
+                            product_price = {val.order_details[0].product_price}
+                            quantity = {val.order_details[0].quantity}
+                            total_price = {val.order_price}
+                            order_status = {val.order_status.status_name}
+                            product_img = {val.order_details[0].is_racikan === true ? "" : val.order_details[0].product.product_imgs[0].img_url } 
+                            no_invoice = {val.no_invoice}
+                            date = {val.createdAt}
+                            order_id = {val.id}
+                        />
+                    </>
+                )
+            }
         })
     }
+
+    console.log(formik.values)
 
     useEffect(() => {
         fetchUserOrder()
         fetchOrderStatus()
-    }, [page, recentStatus])
+    }, [page, recentStatus, formik.values.dateFrom, formik.values.dateTo ])
 
     return (
         <VStack w="54em" spacing={3} p={1}>
             <Flex w='full' justify='space-between'>
-                <Box alignSelf='left' flex={4}>
+                <Box alignSelf='left' flex={3}>
                     <Text fontSize={18} fontWeight='bold'>Order</Text>
                     <Text>See your order in here</Text>
                 </Box>
-                <Select onChange={(event) => {fetchUserOrder(event.target.value)}} flex={1}>
+
+                <Box
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    flex={7}
+                >
+                    <FormControl w='full' borderEndRadius={5}>
+                        <InputGroup>
+                            <Input
+                                type={"text"}
+                                defaultValue={formik.values.search ? formik.values.search : null}
+                                placeholder={"Search..."}
+                                bgColor={"white"}
+                                onChange = {(event) => {formik.setFieldValue('search', event.target.value)}}
+                            />
+                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => {
+                                router.push(`/admin/user/order?search=${formik.values.search}`)
+                            }}>
+                                <BiSearchAlt />
+                            </InputRightElement>
+                        </InputGroup>
+                    </FormControl>
+                </Box>
+            </Flex>
+
+            <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>
+            
+            <Flex align='center' w='full'>
+                <Flex flex={7}>
+                    <HStack flex={1} >
+                        <Text w='30%' textAlign='end'>From : </Text>
+                        <Input
+                            size="md"
+                            type="date"
+                            onChange = {(event) => {
+                                formik.setFieldValue('dateFrom', moment(event.target.value).format("YYYY-MM-DD")); 
+                                formik.values.dateTo ? fetchUserOrder()
+                                : null
+                            }}
+                        />
+                    </HStack>
+
+                    <HStack flex={1} mr={2}>
+                        <Text w='20%' textAlign='end'>To : </Text>
+                        <Input
+                            size="md"
+                            type="date"
+                            onChange = {(event) => {
+                                formik.setFieldValue('dateTo', moment(event.target.value).format("YYYY-MM-DD"));
+                                formik.values.dateFrom ? fetchUserOrder() : null
+                            }}
+                        />
+                    </HStack>
+                </Flex>
+                
+
+                <Select onChange={(event) => {fetchUserOrder(event.target.value)}} flex={2}>
                     <option value=''>Urutkan</option>
                     <option value='date_asc'>DateAscending</option>
                     <option value='date_desc'>Date Descending</option>
@@ -123,7 +199,6 @@ const UserOrder = () => {
                     <option value='price_asc'>Lowest Price</option>
                 </Select>
             </Flex>
-            <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>
             
 
             <Box w='full' p={3}>

@@ -60,6 +60,7 @@ const UserProfile = () => {
     }
 
     const boxAddress = () => {
+        console.log(userAddress)
         return userAddress?.map((val) => {
             return (
                 <>

@@ -51,7 +51,7 @@ const HomePage = () => {
         return allCategories?.map((val) => {
             return (
                 <>
-                    <Flex justify='space-between' w='75%' align='center'>
+                    <Flex justify='space-between' w='75%' align='center' onClick={() => {router.push(`/store?category=${val.category}`)}} cursor='pointer'>
                         <Image
                             alt=""
                             src={`http://${val.img_url}`}

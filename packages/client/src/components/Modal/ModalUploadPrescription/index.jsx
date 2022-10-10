@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { axiosInstance } from "../../../library/api";
 import ModalChangeAddress from "../ModalChangeAddress";
 
-const ModalUploadPrescription = () => {
+const ModalUploadPrescription = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ selectedFile, setSelectedFile ] = useState(null)
     const [ userAddress, setUserAddress ] = useState([])
@@ -97,7 +97,7 @@ const ModalUploadPrescription = () => {
             <Button 
                 variant='outline'
                 color='#004776'
-                borderColor="#5F656B"
+                borderColor= {props.border}
                 leftIcon={<MdOutlineFileUpload/>}
                 onClick={onOpen}
             >
