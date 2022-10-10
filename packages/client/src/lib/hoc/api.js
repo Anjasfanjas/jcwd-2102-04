@@ -3,7 +3,7 @@ import jsCookie from "js-cookie"
 import auth_types from "../../redux/reducer/auth/type"
 
 export const axiosInstance = axios.create({
-    baseURL:"http://localhost:2000"
+    baseURL:"https://jcwd210204api.purwadhikabootcamp.com/"
 })
 
 axiosInstance.interceptors.request.use((config) => {
