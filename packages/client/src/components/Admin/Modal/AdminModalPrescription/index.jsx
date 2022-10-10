@@ -58,10 +58,9 @@ const AdminModalPrescription = (props) => {
         return AllProduct.map((val, index) => {
             return (
                 <>
-                    <Tr>
-                        <Td>
+                    <Tr >
+                        <Td >
                             <AdminAddProductOrder 
-                                key = {index}
                                 product_name = {val.product_name}
                                 main_stock = {val.product_stocks[0].main_stock}
                                 converted_stock = {val.product_stocks[0].converted_stock}
@@ -70,8 +69,9 @@ const AdminModalPrescription = (props) => {
                                 product_id = {val.id}
                                 user_id = {user_id}
                                 order_id = {order_id}
-                            />
-                            <Button size='sm' leftIcon = {<GiCardExchange/>}> Convert</Button>
+                                key={index}
+                            /> 
+                            <Button key={index} size='sm' leftIcon = {<GiCardExchange/>}> Convert</Button>
                         </Td>
 
                         <Td>{val.product_name}</Td>
@@ -113,13 +113,13 @@ const AdminModalPrescription = (props) => {
             totalOrder += val.total_price
         })
 
-        return arrRacikan.map((val) => {
+        return arrRacikan.map((val,index) => {
             return  (
                 <> 
-                    <VStack w='full'>
+                    <VStack w='full' key={index}>
                         <Text w='full' textAlign='center' p={2} fontWeight='bold' bgColor='lightGrey'>DAFTAR ORDER {val? `OBAT RACIKAN : ${val}` : 'PRODUCT SATUAN'}</Text>
                         <Box maxH={250} w='full' overflow='scroll'>
-                            <TableContainer w='full'>
+                            <TableContainer w='full' key={index}>
                                 <Table size='xs' variant='striped'>
                                     <Thead>
                                         <Tr fontSize={12}>
@@ -132,10 +132,10 @@ const AdminModalPrescription = (props) => {
                                     </Thead>
                                     <Tbody>
                                         {   
-                                            orderDetail.map((val2) => {
+                                            orderDetail.map((val2,index) => {
                                                 if(val2.nama_racikan === val){
                                                     return (
-                                                        <Tr>
+                                                        <Tr key={index}>
                                                             <Td>
                                                                 <Button size='sm' leftIcon = {<EditIcon size='sm'/>}></Button>
                                                                 <Button size='sm' leftIcon = {<DeleteIcon size='sm'/>}></Button>
@@ -195,7 +195,7 @@ const AdminModalPrescription = (props) => {
                                         <Text w='100%'>{user_address[0]?.address_line}, {user_address[0]?.province}, {user_address[0]?.city}, {user_address[0]?.post_code} </Text>
                                     </VStack>
                                     
-                                        {renderProductDetailTable()}
+                                        {/* {renderProductDetailTable()} */}
                                     <Flex w='full' justify='space-between' fontWeight='bold' p={2} bgColor='lightGrey'>
                                         <Text flex={9} textAlign='center'>TOTAL ORDER</Text>
                                         <Text flex={1}>{Number(totalOrder).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
@@ -218,7 +218,7 @@ const AdminModalPrescription = (props) => {
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {renderProductTable()}
+                                            {/* {renderProductTable()} */}
                                         </Tbody>
                                     </Table>
                                 </TableContainer>

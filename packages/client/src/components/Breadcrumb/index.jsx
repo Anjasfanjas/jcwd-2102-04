@@ -7,14 +7,14 @@ const BreadcrumbPage = (props) => {
         return props.page.map((val, index) => {
             if(index < (props.page.length - 1)){
                 return (
-                    <BreadcrumbItem color='grey'>
-                        <BreadcrumbLink href={`/${val}`}>{val}</BreadcrumbLink>
+                    <BreadcrumbItem color='grey' key={index}>
+                        <BreadcrumbLink key={index} href={`/${val}`}>{val}</BreadcrumbLink>
                     </BreadcrumbItem>
                 )
             } else {
                 return (
-                    <BreadcrumbItem isCurrentPage>
-                        <Text color='#b41974'>{val}</Text>
+                    <BreadcrumbItem isCurrentPage key={index}>
+                        <Text key={index}  color='#b41974'>{val}</Text>
                     </BreadcrumbItem>
                 )
             }

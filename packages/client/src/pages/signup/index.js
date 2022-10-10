@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import RegisterForm from "../../component/auth/RegisterForm";
+// import RegisterForm from "../../component/auth/RegisterForm";
 
 export default function Signup(){
     
@@ -20,6 +20,8 @@ export default function Signup(){
     }, [!userSelector?.id])
 
     return(
-        <RegisterForm></RegisterForm>
+        <>
+        </>
+        // <RegisterForm></RegisterForm>
     )
 }
