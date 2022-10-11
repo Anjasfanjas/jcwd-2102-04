@@ -1,5 +1,5 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, Button, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
 import moment from "moment/moment"
 import Image from "next/image"
 import { useEffect } from "react"
@@ -10,7 +10,7 @@ import AdminModalCheckPayment from "../../Modal/AdminCheckUploadPayment"
 // import AdminModalCheckPayment from "../../Modal/AdminModelCheckPayment"
 
 const AdminOrderCard = (props) => {
-    const {order_status, date, total_price, no_invoice, product_order, order_id, shipping_price, user_address_id } = props
+    const {order_status, date, total_price, no_invoice, product_order, order_id, shipping_price, user_address_id, user_prescription, user_prescription_url } = props
     const [ product, setProduct ] = useState(product_order)
     const [ recentSeeMore, setRecentSeeMore ] = useState(false)
 
@@ -19,23 +19,34 @@ const AdminOrderCard = (props) => {
             recentSeeMore === false ? (
                 <>
                     <HStack display='flex' px={2}> 
-                        <Box alignItems='center' flex={1}>
+                        <Center flex={1}>
+                        { user_prescription === false ? (
                             <Image
                                 src={product ? `http:/${product[0].product.product_imgs[0].img_url}` : ""}
                                 alt=""
                                 width={120}
                                 height={120}
-                            />
-                        </Box>
+                            /> ) : (
+                                <Image
+                                    src={ product ? `http:/${user_prescription_url}` : ''}
+                                    alt=""
+                                    width={120}
+                                    height={120}
+                                />
+                            ) 
+                        }
+                        </Center>
                         
                         <VStack flex={3}>
                             <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
-                                <Text>{product[0].product.product_name}</Text>
+                                <Text>{ user_prescription === false ?
+                                    product[0].product.product_name : 'RESEP DOKTER'
+                                }</Text>
                             </Flex>
-                            <Text w='full' flex={1} align='left'>{product[0].quantity} X {Number(product[0].product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text hidden={user_prescription === false ? false : true} w='full' flex={1} align='left'>{product[0].quantity} X {Number(product[0].product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </VStack>
     
-                        <VStack align='start' fontWeight='bold'>
+                        <VStack align='start' fontWeight='bold' hidden={user_prescription === false ? false : true}>
                             <Text w='full' mt={2} flex={8}>TOTAL HARGA</Text>
                             <Text w='full' mt={2} flex={2}>{Number(product[0].quantity * product[0].product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </VStack>
@@ -46,14 +57,14 @@ const AdminOrderCard = (props) => {
                     return (
                         <>
                             <HStack display='flex' px={2}> 
-                                <Box alignItems='center' flex={1}>
+                                <Center alignItems='center' flex={1}>
                                     <Image
                                         src={val ? `http:/${val.product.product_imgs[0].img_url}` : ""}
                                         alt=""
                                         width={120}
                                         height={120}
                                     />
-                                </Box>
+                                </Center>
                                 
                                 <VStack flex={3}>
                                     <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
@@ -85,10 +96,11 @@ const AdminOrderCard = (props) => {
                 }
 
             
-                { order_status === "Menunggu Konfirmasi Pembayaran"? 
+                { order_status === "Menunggu Konfirmasi Pembayaran" || order_status === "Diproses" ? 
                     (
                         <HStack>
                             <AdminModalCheckPayment
+                                btn_title = {order_status === "Menunggu Konfirmasi Pembayaran" ? 'Check Paypment Upload' : "Buat Order"}
                                 order_id = {order_id}
                                 user_address_id = {user_address_id}
                                 shipping_price = {shipping_price}
@@ -119,7 +131,7 @@ const AdminOrderCard = (props) => {
                     {renderBoxProduct()}
 
                 {/* ini buat divider dan total order kebawah */}
-                <HStack w='full' textAlign='center'>
+                <HStack w='full' textAlign='center' hidden={user_prescription === true ? true : false}>
                     <Divider borderColor='#005E9D'/>
                     <Text w='15%' cursor='pointer' fontSize={16} onClick ={() => {setRecentSeeMore(!recentSeeMore)}}>{recentSeeMore === false ? "see more" : "see less"}</Text>
                     <Divider borderColor='#005E9D'/>

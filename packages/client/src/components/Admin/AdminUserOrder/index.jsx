@@ -60,7 +60,7 @@ const AdminUserOrder = () => {
             }}).then((res) => {
                 const data = res.data.result
                 setAllOrder([...data])
-                
+                console.log(data)
             })
         } catch (error) {
             console.log(error)
@@ -96,7 +96,6 @@ const AdminUserOrder = () => {
             }}).then((res) => {
                 const data = res.data.result
                 setPrescriptionOrder([...data])
-                console.log(data)
             })
         } catch (error) {
             
@@ -144,6 +143,8 @@ const AdminUserOrder = () => {
                         order_id = {val.id}
                         shipping_price = {val.shipping_price}
                         user_address_id = {val.user_address_id}
+                        user_prescription = {val.user_prescription_id ? true : false}
+                        user_prescription_url = {val.user_prescription_id ? val.user_doctor_prescription.img_url : ''}
                     />
                 </>
             )
@@ -163,6 +164,7 @@ const AdminUserOrder = () => {
                         no_invoice = {val.no_invoice}
                         user_address_id = {val.user_address_id}
                         order_id = {val.id}
+                        order_status = {val.order_status.status_name}
                     />
                 </>
             )

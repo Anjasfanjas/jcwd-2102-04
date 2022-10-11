@@ -47,7 +47,7 @@ const ModalUploadPayment = (props) => {
 
     return (
         <>
-            <Button colorScheme='green' onClick={onOpen}>Upload Bukti Pembayaran</Button>
+            <Button colorScheme='green' onClick={onOpen} size = {props.size}>Upload Bukti Pembayaran</Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

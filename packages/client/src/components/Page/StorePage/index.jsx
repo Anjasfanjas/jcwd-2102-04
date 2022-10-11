@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { axiosInstance } from "../../../library/api"
 import { useRouter } from "next/router"
-import ProductCard from "../../Card/productCard"
+import ProductCard from "../../Card/ProductCard"
 import { useDispatch, useSelector } from "react-redux"
 import render_types from "../../../redux/reducers/types/render"
 

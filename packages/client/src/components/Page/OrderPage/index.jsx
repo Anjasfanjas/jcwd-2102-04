@@ -51,8 +51,6 @@ const OrderPage = () => {
         }
     }
 
-    
-
     const renderDataCart = () => {
         return cart.map((val) => {
             totalPrice += (val.product_price * val.quantity)
@@ -182,27 +180,28 @@ const OrderPage = () => {
                             <option value='tiki'>Tiki</option>
                         </Select>
                     </FormControl>
-                        <VStack w='full' align='left'>
-                            <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilih Paket Pengiriman dari</Text>
 
-                            <FormControl w='full'>
-                                <Select onChange={(event) => {setShippingPrice(event.target.value)}} >
-                                    {deliveryOption?.map((val) => {
-                                        return (
-                                            <>
-                                                <option value={val.cost[0].value}>
-                                                    <Flex>
-                                                        <Text>{val.service} </Text>
-                                                        <Text>{val.cost[0].etd} Hari </Text>
-                                                        <Text>{Number(val.cost[0].value).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
-                                                    </Flex>
-                                                </option>
-                                            </>
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </VStack>
+                    <VStack w='full' align='left'>
+                        <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilih Paket Pengiriman dari</Text>
+
+                        <FormControl w='full'>
+                            <Select onChange={(event) => {setShippingPrice(event.target.value)}} >
+                                {deliveryOption?.map((val) => {
+                                    return (
+                                        <>
+                                            <option value={val.cost[0].value}>
+                                                <Flex>
+                                                    <Text>{val.service} </Text>
+                                                    <Text>{val.cost[0].etd} Hari </Text>
+                                                    <Text>{Number(val.cost[0].value).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                                </Flex>
+                                            </option>
+                                        </>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                    </VStack>
                 </VStack>
 
                 <VStack borderRadius='1em' boxShadow='dark-lg' align='center' w='full' p={3}>
@@ -223,7 +222,7 @@ const OrderPage = () => {
                     <VStack fontSize={16} justify='center' fontWeight='bold'  w='full' borderTop='1px solid #b41974' pt={1} spacing={5}>
                         <Flex w='full' justify='space-between' pt={2}>
                             <Text>Total Payment</Text>
-                            <Text>{Number(totalPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text>{(Number(totalPrice) + Number(shippingPrice)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Flex>
                         
                         <Link w='full' _hover={{textDecoration: 'none'}}>

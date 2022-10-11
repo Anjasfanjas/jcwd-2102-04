@@ -20,15 +20,19 @@ import { useRef, useState } from "react";
 import { axiosInstance } from "../../../../library/api";
 import AdminAddProductOrder from "../AdminAddProductOrder";
 import { GiCardExchange } from "react-icons/gi"
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const AdminModalPrescription = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { img_url, user_id, user_address, order_id } = props
+    const { img_url, user_id, user_address, order_id, total_price, shipping_price } = props
     const [ AllProduct, setAllProduct ] = useState([])
     const [ orderDetail, setOrderDetail ] = useState([])
+    const [ deliveryOption, setDeliveryOption ] = useState()
+    const [ shippingPrice, setShippingPrice] = useState(0)
 
+    const autoRender = useSelector((state) => {return state.render})
     const toast = useToast()
-    
 
     const fetchAllProductName = async () => {
         try {
@@ -48,6 +52,26 @@ const AdminModalPrescription = (props) => {
                 const data = res.data.result
                 setOrderDetail(data)
                 console.log(data)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deliveryCost = async (courier) => {
+        console.log(courier)
+        const body = {
+            origin: 457,
+            destination: user_address[0]?.city_id,
+            weight: 10000,
+            courier: courier,
+        }
+
+        try {
+            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${user_address[0]?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}, qs.stringify(body)).then((res) => {
+                console.log(res)
+                const data = res.data.rajaongkir.results[0]
+                setDeliveryOption(data.costs)
             })
         } catch (error) {
             console.log(error)
@@ -94,7 +118,7 @@ const AdminModalPrescription = (props) => {
     const buatOrder = async() => {
         try {
             await axiosInstance.patch(`/order/update/${order_id}`, qs.stringify({
-                shipping_price : 0,
+                shipping_price : shippingPrice,
                 order_price: totalOrder
             })).then((res) => {
                 toast({
@@ -165,8 +189,16 @@ const AdminModalPrescription = (props) => {
     useEffect(() => {
         fetchAllProductName()
         fetchOrderDetail()
+        deliveryCost()
+
     }, [])
    
+    useEffect(() => {
+        console.log(autoRender)
+        fetchAllProductName()
+        fetchOrderDetail()
+        
+    }, [autoRender])
     return (
         <>
             <Button colorScheme='blue' onClick={onOpen}>Buat Pesanan</Button>
@@ -187,22 +219,82 @@ const AdminModalPrescription = (props) => {
                                         width="400em"
                                         height="400em"
                                     />
+
+                                <VStack w='full' align='left' p={5}>
+                                    <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={2} mb={2}>Pilh jasa penigirman</Text>
+
+                                    <FormControl w='full'>
+                                        <Select defaultValue={"jne"} onChange={(event) => {deliveryCost(event.target.value)}}>
+                                            <option value='jne'>JNE</option>
+                                            <option value='pos'>Post Indonesia</option>
+                                            <option value='tiki'>Tiki</option>
+                                        </Select>
+                                    </FormControl>
+
+                                    <VStack w='full' align='left'>
+                                        <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilih Paket Pengiriman dari</Text>
+
+                                        <FormControl w='full'>
+                                            <Select onChange={(event) => {setShippingPrice(event.target.value)}} >
+                                                {deliveryOption?.map((val) => {
+                                                    return (
+                                                        <>
+                                                            <option value={val.cost[0].value}>
+                                                                <Flex>
+                                                                    <Text>{val.service} </Text>
+                                                                    <Text>{val.cost[0].etd} Hari </Text>
+                                                                    <Text>{Number(val.cost[0].value).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                                                </Flex>
+                                                            </option>
+                                                        </>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </VStack>
+                                </VStack>
+                                
                                 </Stack>
 
-                                <VStack flex={3} w='full' justify={'start'} align='center' p={3} minH='80vh' spacing={5} overflow='scroll' maxH={300}>
-                                    <VStack>
-                                        <Text w='full' fontWeight='bold'>{user_address[0]?.name}, +62{user_address[0]?.phone_number}</Text>
-                                        <Text w='100%'>{user_address[0]?.address_line}, {user_address[0]?.province}, {user_address[0]?.city}, {user_address[0]?.post_code} </Text>
+                                <VStack flex={3} w='full' >
+                                    <VStack justify={'start'} align='center' p={3} minH='80vh' spacing={5} overflow='scroll' maxH={300}>
+                                        <VStack>
+                                            <Text w='full' fontWeight='bold'>{user_address[0]?.name}, +62{user_address[0]?.phone_number}</Text>
+                                            <Text w='100%'>{user_address[0]?.address_line}, {user_address[0]?.province}, {user_address[0]?.city}, {user_address[0]?.post_code} </Text>
+                                        </VStack>
+                                        
+
+                                        {renderProductDetailTable()}
+                                        <Flex w='full' justify='space-between' fontWeight='bold' p={2} bgColor='lightGrey'>
+                                            <Text flex={9} textAlign='center'>TOTAL ORDER</Text>
+                                            <Text flex={1}>{Number(totalOrder).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                        </Flex>
                                     </VStack>
                                     
-                                        {/* {renderProductDetailTable()} */}
-                                    <Flex w='full' justify='space-between' fontWeight='bold' p={2} bgColor='lightGrey'>
-                                        <Text flex={9} textAlign='center'>TOTAL ORDER</Text>
-                                        <Text flex={1}>{Number(totalOrder).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
-                                    </Flex>
+                                    <VStack align='center' w='full' px={10}>
+                                        <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={2} mb={2}>Payment</Text>
+                                        
+                                        <VStack w='full'>
+                                            <HStack fontSize={14} w='full' justify='space-between'>
+                                                <Text flex={7}>Total Harga Barang</Text>
+                                                <Text flex={3} textAlign='end'>{Number(totalOrder).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                            </HStack>
+
+                                            <HStack fontSize={14} w='full'> 
+                                                <Text flex={7}>Total Harga Pengiriman</Text>
+                                                <Text flex={3} textAlign='end'>{Number(shippingPrice).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                            </HStack>
+                                        </VStack>
+
+                                        <VStack fontSize={16} justify='center' fontWeight='bold'  w='full' borderTop='1px solid #b41974' pt={1} spacing={5}>
+                                            <Flex w='full' justify='space-between' pt={2}>
+                                                <Text flex={7}>Total Payment</Text>
+                                                <Text flex={3} textAlign='end'>{(Number(totalOrder) + Number(shippingPrice)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                                            </Flex>
+                                        </VStack>
+                                    </VStack>
                                 </VStack>
-                            </Flex>
-                            
+                            </Flex>        
                             <Box h={400} overflow='scroll' w='full'>
                                 <TableContainer w='full' p={2} >
                                     <Table size='sm' variant='striped'>
@@ -218,7 +310,7 @@ const AdminModalPrescription = (props) => {
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {/* {renderProductTable()} */}
+                                            {renderProductTable()}
                                         </Tbody>
                                     </Table>
                                 </TableContainer>

@@ -31,7 +31,7 @@ import SendOrderButton from '../../Button/SendOrderButton'
 
 const AdminModalCheckPayment = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { order_id, user_address_id, shipping_price, total_price } = props
+    const { order_id, user_address_id, shipping_price, total_price, btn_title } = props
     const [ paymentData, setPaymentData ] = useState()
     const [ detailOrder, setDetailOrder ] = useState([])
     const [ userAddress, setUserAddress ] = useState([])
@@ -96,7 +96,7 @@ const AdminModalCheckPayment = (props) => {
 
     return (
         <>
-            <Button onClick={onOpen} size='xs' color='white' colorScheme='orange'>Check Uploaded Payment</Button>
+            <Button onClick={onOpen} size='xs' color='white' colorScheme='orange'>{btn_title}</Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -113,7 +113,7 @@ const AdminModalCheckPayment = (props) => {
                                 height={500}
                             />
                             <Text>Uploaded At :  {moment(paymentData?.createdAt).format("LLL")}</Text>
-                            <Text>Order ID :  {paymentData?.order_id}</Text>
+                            <Text>Order ID :  {order_id}</Text>
                         </VStack>
 
                         <VStack w='60%'>
@@ -170,7 +170,7 @@ const AdminModalCheckPayment = (props) => {
                     <HStack>
                         <CancleButton size = 'md' order_id = {order_id}/>
                         <ConfirmButton size = 'md' order_id = {order_id}/>
-                        <SendOrderButton size = 'md' order_id = {order_id} />
+                        <SendOrderButton size = 'md' order_id = {order_id} daftar_product={detailOrder} />
                     </HStack>
                 </ModalFooter>
                 </ModalContent>
