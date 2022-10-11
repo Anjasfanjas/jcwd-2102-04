@@ -7,6 +7,7 @@ import AdminPrescriptionCard from "../Card/AdminPrescriptionCard"
 import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
 import { useRouter } from "next/router"
 import { useFormik } from "formik"
+import moment from "moment"
 
 
 const AdminUserOrder = () => {
@@ -23,12 +24,15 @@ const AdminUserOrder = () => {
 
     const formik = useFormik({
         initialValues: {
-            search: ""
+            search: "",
+            dateFrom: "" ,
+            dateTo: "" 
         }
     })
 
 
     const fetchAllOrder = async (filter) => {
+        console.log(formik.values)
         let order = ""
         let sort = ""
 
@@ -52,11 +56,13 @@ const AdminUserOrder = () => {
         try {
             await axiosInstance.get("/order/admin/order", {params : {
                 limit: 5,
-                page: 1,
+                page,
                 status: recentStatus,
                 sort,
                 orderBy : order,
-                search: search? search : ''
+                search: search? search : '',
+                dateFrom : formik.values.dateFrom ? formik.values.dateFrom : null,
+                dateTo : formik.values.dateTo ? formik.values.dateTo  : null,
             }}).then((res) => {
                 const data = res.data.result
                 setAllOrder([...data])
@@ -90,7 +96,7 @@ const AdminUserOrder = () => {
         try {
             await axiosInstance.get("/order/admin/prescription", {params : {
                 limit: 5,
-                page: 1,
+                page: page,
                 sort,
                 orderBy : order,
             }}).then((res) => {
@@ -175,7 +181,7 @@ const AdminUserOrder = () => {
         fetchAllOrder()
         fetchOrderStatus()
         fetchPrescriptionOrder()
-    }, [recentStatus, router?.isReady, search])
+    }, [recentStatus, router?.isReady, search, page, formik.values.dateFrom, formik.values.dateTo])
 
     return (
         <VStack
@@ -226,6 +232,37 @@ const AdminUserOrder = () => {
                 </Select>
             </HStack>
 
+            <Flex w='full'>
+                    <HStack flex={1} >
+                        <Text w='30%' textAlign='end'>From : </Text>
+                        <Input
+                            size="md"
+                            type="date"
+                            onChange = {(event) => {
+                                formik.setFieldValue('dateFrom', moment(event.target.value).format("YYYY-MM-DD")); 
+                                formik.values.dateTo ? fetchAllOrder()
+                                : null
+                            }}
+                        />
+                    </HStack>
+
+                    <HStack flex={1} mr={2}>
+                        <Text w='20%' textAlign='end'>To : </Text>
+                        <Input
+                            size="md"
+                            type="date"
+                            defaultValue=''
+                            onChange = {(event) => {
+                                formik.setFieldValue('dateTo', moment(event.target.value).format("YYYY-MM-DD"));
+                                formik.values.dateFrom ? fetchAllOrder() : null
+                            }}
+                        />
+                    </HStack>
+                    <Button onClick={() => {formik.setFieldValue('dateFrom', ''); formik.setFieldValue('dateTo', '') }}>
+                        Reset
+                    </Button>
+                </Flex>
+
             <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>
             
 
@@ -246,20 +283,22 @@ const AdminUserOrder = () => {
 
             <Center my={5}>
                 <HStack>
-                    <Button size='sm' 
+                    <Button 
+                        size='sm' 
                         bgColor='#005E9D' 
                         color='white'
                         _hover={{
                             backgroundColor: "#e3eeee",
                             color: "#005E9D"
                         }}
-                        
+                        onClick={() => {setPage(page-1)}}
+                        disabled ={page <= 1 ? true : false}
                     >
                         Prev
                     </Button>
                     
                     
-                    <Box sz='sm'>1</Box>
+                    <Box sz='sm'>{page}</Box>
                     
                     <Button size='sm'
                         bgColor='#005E9D' 
@@ -268,7 +307,8 @@ const AdminUserOrder = () => {
                             backgroundColor: "#e3eeee",
                             color: "#005E9D"
                         }}
-                        
+                        onClick={() => {setPage(page + 1)}}
+                        disabled = {allOrder.length < 5 ? true : false}
                     >
                         Next
                     </Button>

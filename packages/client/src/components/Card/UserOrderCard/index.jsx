@@ -1,9 +1,11 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, Button, Center, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Divider, Flex, Grid, HStack, Text, useToast, VStack } from "@chakra-ui/react"
 import moment from "moment/moment"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import QueryString from "qs"
 import { useState } from "react"
+import { axiosInstance } from "../../../lib/hoc/api"
 import ModalUploadPayment from "../../Modal/ModalUploadPayment"
 
 
@@ -14,6 +16,26 @@ const UserOrderCard = (props) => {
     const [ product, setProduct ] = useState(data_product)
 
     const router = useRouter()  
+    const toast = useToast()
+
+    console.log(order_id)
+
+    const changeOrderStatus = async() => {
+        try {
+            await axiosInstance.patch("/order/update/status", QueryString.stringify({
+                order_id, 
+                order_status_id : 6
+            })).then(() => {
+                toast({
+                    title: 'terimakasih sudah mengkonfirmasi',
+                    status: 'success',
+                    duration: 1000
+                })
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const renderOrderDetail = () => {
         return (
@@ -103,7 +125,7 @@ const UserOrderCard = (props) => {
                             size = 'xs'
                         />
                     ) : order_status === "Dikirim" ? (
-                        <Button size='xs' colorScheme="green">Konfirmasi</Button>
+                        <Button onClick={() => changeOrderStatus()} size='xs' colorScheme="green">Konfirmasi</Button>
                     ) : null
                 }
             </HStack>
