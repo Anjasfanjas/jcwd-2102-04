@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
 const bodyParser = require("body-parser")
-const { userRouter, productRouter, avatarRouter, cartRouter, prescriptionRouter, paymentRouter, orderRouter } = require('./routes')
+const { userRouter, productRouter, avatarRouter, cartRouter, prescriptionRouter, paymentRouter, orderRouter, stockRouter } = require('./routes')
 
 
 dotenv.config();
@@ -25,6 +25,7 @@ app.use("/prescription", prescriptionRouter)
 app.use("/payment", paymentRouter)
 app.use("/cart", cartRouter)
 app.use("/order", orderRouter)
+app.use("/stock", stockRouter)
 
 app.use("/avatar_images", express.static(`${__dirname}/public/avatar_images`));
 app.use("/prescription_images", express.static(`${__dirname}/public/prescription_images`));

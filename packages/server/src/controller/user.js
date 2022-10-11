@@ -203,7 +203,6 @@ const userController = {
                 user_id,
                 name, 
                 phone_number 
-                
             } = req.body
 
             await User_address.create({
@@ -245,6 +244,29 @@ const userController = {
         }
     },
 
+    getAddressById: async (req, res) => {
+        try {
+            const { id } = req.params
+            
+            const result = await User_address.findAll(
+                {
+                    where : {
+                        id
+                    }
+                }
+            )
+
+            res.status(200).json({
+                message: `addres from id : ${id} has been fetched`,
+                result: result,
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+    },
+
     editUserAddress : async (req, res) => {
         try {
             const { user_id } = req.params
@@ -258,7 +280,7 @@ const userController = {
 
             await User_address.update(
                 {
-                   where: { user_id}
+                   where: { user_id }
                 }, 
                 {
                     ...req.body
@@ -267,8 +289,8 @@ const userController = {
 
             res.status(200).json({
                 message: `user addres from user id : ${user_id} has been updated`,
-                user: user
             })
+            
         } catch (error) {
             console.log(error)
             res.status(500).json({
@@ -291,6 +313,43 @@ const userController = {
             res.status(200).json({
                 message: `address has been deleted`
             })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                message: error.toString()
+            })
+        }
+    },
+
+    changeUserDefault: async(req, res) => {
+        const { id, user_id } = req.body
+
+        try {
+            await User_address.update(
+                {
+                    isDefault: false
+                },
+                {
+                    where : {
+                        user_id
+                    }
+                }
+            )
+
+            await User_address.update(
+                {
+                    isDefault : true
+                }, {
+                    where: {
+                        id
+                    }
+                }
+            )
+
+            res.status(200).json({
+                message: `address has been updated`
+            })
+
         } catch (error) {
             console.log(error)
             res.status(500).json({

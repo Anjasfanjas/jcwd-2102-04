@@ -103,6 +103,24 @@ const productController = {
             })
         }
     },
+
+    getAllProductName: async (req, res) => {
+        try {
+            const result = await Product.findAll({
+                include: [ Product_stock ]
+            })
+
+            return res.status(200).json({
+                message: `fatched all category`,
+                result: result
+            })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                message: error.toString()
+            })
+        }
+    }
 }
 
 module.exports = productController

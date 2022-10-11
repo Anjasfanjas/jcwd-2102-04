@@ -10,8 +10,10 @@ router.get("/refresh-token", authorizedLoggedInUser, userController.keepLogin);
 router.get("/:id", userController.getUserById)
 router.get("/", userController.getAllUsers)
 
+router.patch('/address/update', userController.changeUserDefault)
 router.post('/address', userController.addUserAddress)
 router.get('/address/:user_id', userController.getAddressByUser)
+router.get('/address/byid/:id', userController.getAddressById)
 router.patch('/address/:user_id', userController.editUserAddress)
 router.delete('/address/:id', userController.deleteUserAddress)
 

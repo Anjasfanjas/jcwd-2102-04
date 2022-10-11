@@ -10,7 +10,7 @@ const stock_histories = (sequelize) => {
             type: DataTypes.STRING,
         },
 
-        remarks: {
+        desc: {
             type: DataTypes.STRING,
         }
     });

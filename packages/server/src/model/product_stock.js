@@ -26,6 +26,10 @@ const product_stock = (sequelize) => {
             type: DataTypes.INTEGER,
         },
 
+        converted_sell_price: {
+            type: DataTypes.INTEGER
+        },
+        
         total_item_sold: {
             type: DataTypes.INTEGER,
         },
