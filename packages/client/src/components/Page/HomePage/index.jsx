@@ -8,7 +8,7 @@ import { BsFileEarmarkMedical } from "react-icons/bs"
 import { MdOutlineFileUpload } from "react-icons/md"
 import { axiosInstance } from "../../../library/api"
 import Banner from "../../../public/Banner.png"
-import ProductCard from "../../Card/productCard"
+import ProductCard from "../../Card/ProductCard"
 import ModalUploadPrescription from "../../Modal/ModalUploadPrescription"
 
 const HomePage = () => {
