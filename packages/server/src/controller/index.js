@@ -6,6 +6,8 @@ const prescriptionController = require("./prescription")
 const paymentController = require("./payment")
 const orderController = require("./order")
 const stockController = require("./stock")
+const tokenController = require("./token")
+const categoriesController = require("./category")
 
 module.exports = {
     userController,
@@ -15,5 +17,7 @@ module.exports = {
     prescriptionController,
     paymentController,
     orderController,
-    stockController
+    stockController,
+    tokenController,
+    categoriesController
 }  

@@ -212,13 +212,18 @@ const orderController = {
     }, 
 
     getAllOrder: async (req, res) => {
-        const {page, limit , search, status, sort, orderBy } = req.query
+        const {page, limit , search, status, sort, orderBy, dateFrom, dateTo  } = req.query
         try {
             const result = await Order.findAll({
                 offset: (page - 1) * limit,
                 limit: limit ? parseInt(limit) : undefined,
-                where: search ? {
-                    no_invoice: search
+                where: search && dateFrom && dateTo ? {
+                    no_invoice: search,
+                    createdAt: {[Op.between] : [dateFrom, dateTo]}
+                } : dateFrom && dateTo ?  {
+                    createdAt: {[Op.between] : [dateFrom, dateTo]}
+                } : search ? {
+                    no_invoice: search,
                 } : {},
                 include: [ 
                     { 
@@ -236,7 +241,12 @@ const orderController = {
                             model: Product,
                             include: [Product_img, Product_stock]
                         },
-                    }]
+                    }
+                ],
+                order: orderBy ?
+                    orderBy == 'createdAt' && sort ? [[orderBy, sort]]
+                    : (orderBy == 'order_price' && sort ? [[orderBy, sort]] : null )
+                : [['createdAt', 'DESC']]
             })
 
             return res.status(200).json({
