@@ -157,6 +157,7 @@ const PaymentPage = () => {
                             <Button colorScheme="red">Batalkan Order</Button>
                             <ModalUploadPayment 
                                 order_id = {order_id}
+                                size = 'md'
                             />
                         </HStack>
                     </VStack>

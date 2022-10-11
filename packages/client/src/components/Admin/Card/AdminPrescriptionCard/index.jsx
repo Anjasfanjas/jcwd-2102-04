@@ -7,7 +7,8 @@ import { axiosInstance } from "../../../../library/api"
 import AdminModalPrescription from "../../Modal/AdminModalPrescription"
 
 const AdminPrescriptionCard = (props) => {
-    const {date, prescription_img, user_name, user_id, no_invoice, user_address_id, order_id } = props
+    
+    const { date, prescription_img, user_name, user_id, no_invoice, user_address_id, order_id, order_status } = props
     const [ userAddress, setUserAddress ] = useState([])
     
     const fetchUserAddress = async() => {
@@ -25,6 +26,7 @@ const AdminPrescriptionCard = (props) => {
     
     useEffect(() => {
         fetchUserAddress()
+
     }, [])
 
     return (
@@ -34,6 +36,7 @@ const AdminPrescriptionCard = (props) => {
                     <Flex fontSize={12} fontWeight='bold'>
                         <Text mr={2} pr={2} borderRight='1px' borderColor="black">Resep Docter</Text>
                         <Text ml={2} color='grey'>{moment(date).format("LLL")}</Text>
+                        <Text ml={2}>{order_status}</Text>
                     </Flex>
                 </Flex>
 

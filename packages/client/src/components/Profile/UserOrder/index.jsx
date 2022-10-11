@@ -99,7 +99,7 @@ const UserOrder = () => {
     }
     const renderOrderCard = () => {
         return userOrder.map((val, index) => {
-            if(val.order_details.length >= 1) {
+            if(val.order_details.length >= 1 && val.shipping_price != 0) {
                 return (
                     <>
                         <UserOrderCard
@@ -113,6 +113,7 @@ const UserOrder = () => {
                             no_invoice = {val.no_invoice}
                             date = {val.createdAt}
                             order_id = {val.id}
+                            data_product = {val.order_details}
                         />
                     </>
                 )
@@ -210,7 +211,7 @@ const UserOrder = () => {
                         {renderOrderStatus()}
                     </TabList>
 
-                    {renderOrderCard()} 
+                    {renderOrderCard()}
                 </Tabs>
             </Box>
 
