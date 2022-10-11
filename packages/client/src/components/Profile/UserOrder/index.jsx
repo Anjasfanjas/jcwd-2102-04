@@ -217,7 +217,8 @@ const UserOrder = () => {
 
             <Center my={5}>
                 <HStack>
-                    <Button onClick={() => {setPage(page-1)}} size='sm' 
+                    <Button 
+                        onClick={() => {setPage(page-1)}} size='sm' 
                         bgColor='#005E9D' 
                         color='white'
                         _hover={{
@@ -232,7 +233,8 @@ const UserOrder = () => {
                     
                     <Box sz='sm'>{page}</Box>
                     
-                    <Button onClick={() => {setPage(page + 1)}} size='sm'
+                    <Button 
+                        onClick={() => {setPage(page + 1)}} size='sm'
                         bgColor='#005E9D' 
                         color='white'
                         _hover={{

@@ -2,6 +2,7 @@ import { Button, Flex, Input, InputGroup, InputRightElement, Modal, ModalBody, M
 import { useState } from "react"
 import { IoMdEye, IoMdEyeOff } from "react-icons/io"
 import { RiLockPasswordLine } from "react-icons/ri"
+import M_changePassword from "../../GIO/modals/M_changePassword"
 
 const ModalPassword = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -22,43 +23,7 @@ const ModalPassword = () => {
                     <ModalCloseButton />
 
                     <ModalBody>
-                        <VStack>
-                            <Stack mb={5}>
-                                <Text>Put your current password</Text>
-                                <InputGroup borderRadius={5}>
-                                    <Input type={showPassword ? 'tetx' : 'password'} />
-                                    <InputRightElement bgColor='eee' borderEndRadius={5} onClick={() => {setShowPassword(!showPassword)}} cursor='pointer'>
-                                        {showPassword ? <IoMdEyeOff/> : <IoMdEye/>}
-                                    </InputRightElement>
-                                </InputGroup>
-                            </Stack>
-
-                            <VStack>
-                                <Stack>
-                                    <Text>Your new password</Text>
-                                    <InputGroup borderRadius={5}>
-                                        <Input type={showPassword ? 'tetx' : 'password'} />
-                                        <InputRightElement bgColor='eee' borderEndRadius={5} onClick={() => {setShowPassword(!showPassword)}} cursor='pointer'>
-                                            {showPassword ? <IoMdEyeOff/> : <IoMdEye/>}
-                                        </InputRightElement>
-                                    </InputGroup>
-                                </Stack>
-
-                                <Stack>
-                                    <Text>Confirm your new password</Text>
-                                    <InputGroup borderRadius={5}>
-                                        <Input type={showPassword ? 'tetx' : 'password'} />
-                                        <InputRightElement bgColor='eee' borderEndRadius={5} onClick={() => {setShowPassword(!showPassword)}} cursor='pointer'>
-                                            {showPassword ? <IoMdEyeOff/> : <IoMdEye/>}
-                                        </InputRightElement>
-                                    </InputGroup>
-                                </Stack>
-                            </VStack>
-
-                            <Stack>
-
-                            </Stack>
-                        </VStack>    
+                        <M_changePassword/>
                     </ModalBody>
 
                     <ModalFooter>
