@@ -10,7 +10,8 @@ export function userRegister(values, setSubmitting) {
         username: values.username,
         email: values.email,
         password: values.password,
-        full_name: values.full_name,
+        fullname: values.fullname,
+        phone_number: values.phone_number,
       };
 
       const bodyParsed = await qs.stringify(body);
@@ -18,7 +19,7 @@ export function userRegister(values, setSubmitting) {
       console.log(bodyParsed);
 
       const res = await axiosInstance.post("/user/register", bodyParsed);
-      console.log(res.data.result)
+      console.log(res.data.result);
 
       const userData = res.data.result.user;
       const token = res.data.result.token;
@@ -26,11 +27,10 @@ export function userRegister(values, setSubmitting) {
       jsCookie.set("auth_token", token);
       dispatch({
         type: auth_types.AUTH_LOGIN,
-        payload: userData
-      })
+        payload: userData,
+      });
 
       setSubmitting(false);
-
     } catch (err) {
       console.log(err);
       setSubmitting(false);

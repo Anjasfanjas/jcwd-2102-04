@@ -9,7 +9,8 @@ export function userProfile(values, setSubmitting){
                 username: values.username,
                 phone_number: phone_number,
                 gender: values.gender,
-                date_of_birth: values.date_of_birth
+                date_of_birth: values.date_of_birth,
+                gender: values.gender
             }
 
             const bodyParsed = await qs.stringify(body)

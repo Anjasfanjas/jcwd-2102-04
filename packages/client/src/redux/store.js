@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 import render_reducer from "./reducers/render";
 
 const rootReducer = combineReducers({
-  auth: auth_reducer, // si auth disini adalah key untuk memanggil si auth_reducer
+  auth: auth_reducer, // 
   render: render_reducer,
 });
 

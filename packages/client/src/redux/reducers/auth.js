@@ -9,6 +9,9 @@ const init_state = {
     is_verified: false,
     avatar_url: "",
     role: "",
+    oldpassword: "",
+    img_url: "",
+    category: "",
 };
 
 import auth_types from "./types/auth";
@@ -26,6 +29,9 @@ const auth_reducer = (state = init_state, action) => {
             avatar_url: action.payload.avatar_url,
             date_of_birth: action.payload.date_of_birth,
             role: action.payload.role,
+            oldpassword: action.payload.oldpassword,
+            img_url: action.payload.img_url,
+            category: action.payload.category,
         };
     } else if (action.type === auth_types.AUTH_LOGOUT) {
         return init_state;
