@@ -5,6 +5,7 @@ const cartRouter = require("./cart")
 const prescriptionRouter = require("./prescription")
 const paymentRouter = require("./payment")
 const orderRouter = require("./order")
+const stockRouter = require("./stock")
 
 module.exports = {
     userRouter,
@@ -14,4 +15,5 @@ module.exports = {
     prescriptionRouter,
     paymentRouter,
     orderRouter,
+    stockRouter
 }

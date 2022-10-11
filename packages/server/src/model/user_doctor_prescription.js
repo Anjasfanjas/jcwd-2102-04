@@ -8,9 +8,9 @@ const user_doctor_prescription = (sequelize) =>{
 
         is_confirm: {
             type: DataTypes.BOOLEAN,
-            defaultValue: true,
+            defaultValue: false,
         }
     })
 }
-
+    
 module.exports = user_doctor_prescription;

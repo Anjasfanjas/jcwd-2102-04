@@ -13,6 +13,15 @@ const order_detail = (sequelize) => {
         total_price: { // total harga product X quantity
             type: DataTypes.INTEGER,
         },
+
+        is_racikan: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+
+        nama_racikan: {
+            type: DataTypes.STRING
+        }
     });
 
 };
