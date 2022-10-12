@@ -9,18 +9,18 @@ const UserOrder = () => {
     const Router = useRouter()
 
     useEffect(() => {
-        if (!userSelector?.role === 'user') {
-            return (
-                <>
-                    <AdminUserOrder/>
-                </>
-            )
-          
-        } else {
+        if (userSelector?.role === 'user') {
+            
             Router.push("/");
         }
         
     }, [userSelector?.id]);
+    
+    return (
+        <>
+            <AdminUserOrder/>
+        </>
+    )
 }
 
 export default UserOrder
