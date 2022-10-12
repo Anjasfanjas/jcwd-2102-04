@@ -51,17 +51,17 @@ import {
 import { EditIcon } from "@chakra-ui/icons";
 // import MyChart from "../../../components/Chart/index";
 
-import Logo from "../../../public/NavbarLogoPink.gif";
-import Image from "next/image";
+// import Logo from "../../../public/NavbarLogoPink.gif";
+// import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import jsCoockie from "js-cookie";
 import { useRouter } from "next/router";
-import auth_types from "../../../redux/reducers/types/auth";
+import auth_types from "../../../../redux/reducers/types/auth";
 import M_editProduct from "../../modals/M_editProduct";
 import M_deleteProduct from "../../modals/M_deleteProduct";
 import M_addProduct from "../../modals/M_addProduct";
 import * as moment from "moment";
-import { axiosInstance } from "../../../library/api";
+import { axiosInstance } from "../../../../library/api";
 
 export default function NavbarA() {
   const [display, changeDisplay] = useState("hide");

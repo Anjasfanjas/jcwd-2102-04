@@ -88,7 +88,7 @@ const AdminOrderCard = (props) => {
     const ButtonContainer = () => {
         return (
             <>
-                { order_status === "Menunggu Pembayaran" ||  "Diproses" ? (
+                { order_status === "Menunggu Pembayaran" || order_status === "Diproses" ? (
                         <HStack>
                             <CancleButton size = {'xs'} order_id = {order_id}/>
                         </HStack>

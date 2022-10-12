@@ -22,9 +22,9 @@ import {
 
 import { useRef, useState } from "react";
 import { useFormik } from "formik";
-import { axiosInstance } from "../../../library/api";
+import { axiosInstance } from "../../../../library/api";
 import { useDispatch, useSelector } from "react-redux";
-import auth_types from "../../../redux/reducers/types/auth";
+// import auth_types from "../../../redux/reducers/types/auth";
 
 const m_editCategory = (props) => {
   const userSelector = useSelector((state) => {

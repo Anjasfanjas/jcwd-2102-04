@@ -69,6 +69,8 @@ const Login = (props) => {
   useEffect(() => {
     if (userSelector?.id && userSelector?.role === 'user') {
       router.push("/");
+    } else if (userSelector?.id && userSelector?.role === 'admin'){
+      router.push("/admin/category")
     }
   }, [userSelector?.id]);
 

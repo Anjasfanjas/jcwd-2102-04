@@ -17,7 +17,7 @@ import { FiDelete } from "react-icons/fi";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { axiosInstance } from "../../../library/api";
+import { axiosInstance } from "../../../../library/api";
 import { useRouter } from "next/router";
 
 const m_deleteProduct = (props) => {

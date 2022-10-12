@@ -23,7 +23,7 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
 import { useFormik } from "formik";
-import { axiosInstance } from "../../../library/api";
+import { axiosInstance } from "../../../../library/api";
 import { useDispatch, useSelector } from "react-redux";
 
 const M_addCategory = () => {

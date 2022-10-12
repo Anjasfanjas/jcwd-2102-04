@@ -16,7 +16,7 @@ import Register from "./Register";
 
 import LoginPic from "../../../public/LoginPharmacy.gif";
 
-const userAuth = () => {
+const UserAuth = () => {
   const [formChange, setFormChange] = useState("false");
   const change = () => {
     setFormChange(!formChange);
@@ -47,4 +47,4 @@ const userAuth = () => {
   );
 };
 
-export default userAuth;
+export default UserAuth;
