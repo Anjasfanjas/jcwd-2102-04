@@ -64,6 +64,7 @@ import M_deleteCategory from "../../modals/M_deleteCategory";
 import M_editCategory from "../../modals/M_editCategory";
 import * as moment from "moment";
 import { axiosInstance } from "../../../../library/api";
+import { addScaleCorrector } from "framer-motion";
 
 export default function NavbarA(props) {
   const [display, changeDisplay] = useState("hide");
@@ -109,8 +110,9 @@ export default function NavbarA(props) {
   const [contentList, setContentList] = useState([]);
 
   const fetchData = async () => {
+
     await axiosInstance
-      .get("/categories")
+      .get("/category")
       .then((res) => {
         const data = res.data.result;
         console.log(data);
@@ -130,7 +132,7 @@ export default function NavbarA(props) {
   const renderCategory = () => {
     return contentList.map((val, index) => {
       return (
-        <Tr>
+        <Tr key={index}>
           <Td>{val.category}</Td>
           <Td>
             <Img src={`http://${val.img_url}`} width={"90px"} height={"50px"} />

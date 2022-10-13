@@ -31,6 +31,7 @@ import {
   TableCaption,
   Tfoot,
   Image as Img,
+  HStack,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -103,16 +104,22 @@ export default function NavbarA() {
 
   const [loadPage, setLoadPage] = useState(1);
   const [contentList, setContentList] = useState([]);
+  console.log(contentList)
 
   const fetchData = async () => {
-    await axiosInstance
-      .get("/product")
+    alert("aaa")
+    await axiosInstance.get("/product", {params : {
+      limit : 20,
+      page: 1,
+    }})
       .then((res) => {
         const data = res.data.result;
         console.log(data);
         setContentList(res.data.result);
       })
-      .catch((err) => {});
+      .catch((err) => { 
+        console.log(err)
+      });
   };
 
   useEffect(() => {
@@ -126,23 +133,31 @@ export default function NavbarA() {
   const renderCategory = () => {
     return contentList.map((val, index) => {
       return (
-        <Tr>
+        <Tr key={index}>
           <Td>{val.product_code}</Td>
           <Td>{val.product_name}</Td>
           <Td>PRICE</Td>
-          <Td>{val.category}</Td>
-
-          <Td>DESCRIPTION</Td>
+          <Td>
+            {
+              val.product_categories.map((val, index) => {
+                return (
+                  <Text mb={2} key={index}>
+                    {val.category.category}
+                  </Text>
+                )
+              })
+            }
+          </Td>
           <Td>
             <Img
-              src={`http://${val.image_url}`}
+              src={`http://${val.product_imgs[0].img_url}`}
               width={"90px"}
               height={"50px"}
             />
           </Td>
-          <Td>DEFAULT UNIT</Td>
+          <Td>{val.product_stocks[0].main_unit}</Td>
           <Td>
-            <Flex justify="flex-end" ml="10">
+            <Flex justify="center">
               <M_editProduct key={index} id={val.id} />
               <M_deleteProduct key={index} id={val.id} />
             </Flex>
@@ -217,15 +232,14 @@ export default function NavbarA() {
           <Flex overflow="auto">
             <Table variant="unstyled" mt={4}>
               <Thead>
-                <Tr color="gray">
-                  <Th>Code</Th>
-                  <Th>Name</Th>
-                  <Th>Price</Th>
-                  <Th>Category</Th>
-                  <Th>Description</Th>
-                  <Th>Picture</Th>
-                  <Th>Default Unit</Th>
-                  <Th>Setting</Th>
+                <Tr>
+                  <Th  fontSize={14} fontWeight='bold'>Code</Th>
+                  <Th  fontSize={14} fontWeight='bold'>Name</Th>
+                  <Th  fontSize={14} fontWeight='bold'>Price</Th>
+                  <Th  fontSize={14} fontWeight='bold'>Category</Th>
+                  <Th  fontSize={14} fontWeight='bold'>Picture</Th>
+                  <Th  fontSize={14} fontWeight='bold'>Main Unit</Th>
+                  <Th  fontSize={14} fontWeight='bold' textAlign='center'>Setting</Th>
                 </Tr>
               </Thead>
               <Tbody>{renderCategory()}</Tbody>

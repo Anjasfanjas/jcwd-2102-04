@@ -1,6 +1,7 @@
 import { Box, Button, Flex, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import qs from "qs";
 import { useEffect } from "react";
 import { useRef, useState } from "react";
@@ -17,6 +18,7 @@ const ModalUploadPrescription = (props) => {
     const [ img, setImg ] = useState()
     const inputFileRef = useRef()
     const toast = useToast()
+    const router = useRouter()
 
     const userSelector = useSelector((state) => {return state.auth})
     const formData = new FormData()
@@ -99,7 +101,7 @@ const ModalUploadPrescription = (props) => {
                 color='#004776'
                 borderColor= {props.border}
                 leftIcon={<MdOutlineFileUpload/>}
-                onClick={onOpen}
+                onClick={() => {userSelector?.id ? onOpen() : router.push('/auth')}}
             >
                 <Text fontSize={14}>Upload Prescriptions</Text>
             </Button>

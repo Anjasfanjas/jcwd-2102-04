@@ -53,6 +53,7 @@ const AdminModalCheckPayment = (props) => {
             await axiosInstance.get(`/order/detail/${order_id}`).then((res) => {
                 const data = res.data.result
                 setDetailOrder([...data])
+                console.log(data)
             })
         } catch (error) {
             console.log(error)
@@ -80,8 +81,16 @@ const AdminModalCheckPayment = (props) => {
                         <Td>{index + 1}</Td>
                         <Td>{val.product.product_name}</Td>
                         <Td>{val.quantity}</Td>
-                        <Td>{val.product.product_stocks[0].main_stock}</Td>
-                        <Td>{Number(val.product.product_stocks[0].sell_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Td>
+                        <Td>
+                            <HStack>
+                                <Text>{val.is_racikan === true ? val.product.product_stocks[0].converted_stock : val.product.product_stocks[0].main_stock}</Text>
+                                <Text>{val.is_racikan === true ? "Stock Konversi" : ''}</Text>
+                            </HStack>
+                        </Td>
+                        <Td>{Number(val.is_racikan === true ? val.product.product_stocks[0].converted_sell_price : val.product.product_stocks[0].sell_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Td>
+                        <Td>
+                            <Text>{val.is_racikan === true ? val.nama_racikan : "Bukan"}</Text>
+                        </Td>
                     </Tr>
                 </>
             )
@@ -92,7 +101,7 @@ const AdminModalCheckPayment = (props) => {
         fetchPaymentData()
         fetchOrderDetail()
         fetchUserAddress()
-    }, [])
+    }, [order_id])
 
     return (
         <>
@@ -133,6 +142,7 @@ const AdminModalCheckPayment = (props) => {
                                                 <Th textAlign='center'>Quantity</Th>
                                                 <Th textAlign='center'>Stock</Th>
                                                 <Th textAlign='center'>Harga</Th>
+                                                <Th textAlign='center'>Resep Dokter</Th>
                                             </Tr>
                                         </Thead>
                                         <Tbody>

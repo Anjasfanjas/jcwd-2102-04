@@ -191,14 +191,14 @@ const AdminModalPrescription = (props) => {
         fetchOrderDetail()
         deliveryCost()
 
-    }, [])
+    }, [order_id])
    
     useEffect(() => {
         console.log(autoRender)
         fetchAllProductName()
         fetchOrderDetail()
         
-    }, [autoRender])
+    }, [autoRender, order_id])
     return (
         <>
             <Button colorScheme='blue' onClick={onOpen}>Buat Pesanan</Button>
