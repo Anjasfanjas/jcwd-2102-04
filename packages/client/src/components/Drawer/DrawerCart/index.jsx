@@ -88,6 +88,7 @@ const DrawerCart = () => {
                         product_stock = {val.product.product_stocks[0].main_stock}
                         product_id = {val.product.id}
                         user_id = {userSelector?.id}
+                        cart_id = {val.id}
                     />
                 </>
             )
@@ -106,10 +107,11 @@ const DrawerCart = () => {
                 justify='space-evenly'
                 align='center'
                 ref={btnRef} 
-            onClick={onOpen}
+                onClick={() => {userSelector?.id ? onOpen() : toast({ title: 'please log in to see your cart', status: 'warning', duration: 1000})}}
             >
-                <Icon as ={BiCartAlt} fontSize='2xl' bgColor="#eee" mr={2}/>
-                <Text fontSize={14}>Cart</Text>
+                <Button onClick={() => {userSelector?.id ? onOpen() : toast({ title: 'please log in to see your cart', status: 'warning', duration: 1000})}} leftIcon={<BiCartAlt fontSize={22}/>} _hover={{backgroundColor: "#eee"}} disabled={ userSelector?.id ? false : true } bgColor="#eee">Cart</Button>
+                {/* <Icon as ={BiCartAlt} fontSize='2xl' bgColor="#eee" mr={2}/>
+                <Text fontSize={14}>Cart</Text> */}
             </Flex>
 
             <Drawer

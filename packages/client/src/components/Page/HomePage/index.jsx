@@ -6,12 +6,15 @@ import { useEffect, useState } from "react"
 import { BiSearchAlt } from "react-icons/bi"
 import { BsFileEarmarkMedical } from "react-icons/bs"
 import { MdOutlineFileUpload } from "react-icons/md"
+import { useSelector } from "react-redux"
 import { axiosInstance } from "../../../library/api"
 import Banner from "../../../public/Banner.png"
 import ProductCard from "../../Card/ProductCard"
 import ModalUploadPrescription from "../../Modal/ModalUploadPrescription"
 
 const HomePage = () => {
+    const userSelector = useSelector((state) => {return state.auth})
+    console.log(userSelector)
     const [ allCategories, setAllCategories ] = useState([])
     const [ recProduct, setRecProduct ] = useState([])
     const router = useRouter()

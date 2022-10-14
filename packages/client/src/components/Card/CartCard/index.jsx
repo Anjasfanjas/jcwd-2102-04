@@ -1,6 +1,7 @@
 import { DeleteIcon } from "@chakra-ui/icons"
 import { Box, Button, HStack, Icon, IconButton, Input, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
+import QueryString from "qs"
 import { useEffect } from "react"
 import { useState } from "react"
 import { HiMinus, HiPlus } from "react-icons/hi"
@@ -17,14 +18,21 @@ const CartCard = (props) => {
     const autoRender = useSelector((state) => state.render)
     const dispatch = useDispatch()
 
-    const totalQuantity = async() => {
+    const updateQuantity = async() => {
+        alert(cart_id)
         try {
-            await axiosInstance.patch("/cart/quantity", {
-                params : {
-                    cart_id: cart_id,
-                    quantity: counter,
-                    user_id: user_id
-                }
+            await axiosInstance.patch("/cart/quantity", QueryString.stringify({
+                cart_id: cart_id,
+                quantity: counter,
+                user_id: user_id
+
+            })).then ((res) => {
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
+                })
             })
         } catch (error) {
             console.log(error)
@@ -61,6 +69,10 @@ const CartCard = (props) => {
         })
     } ,[counter])
 
+    useEffect(() => {
+        updateQuantity()
+    }, [counter])
+
     return (
         <HStack borderBottom='1px solid #B7B7B7' p={1}>
             <Image
@@ -85,17 +97,18 @@ const CartCard = (props) => {
                         <HStack>
                             <IconButton 
                                 icon={<HiMinus/>} 
-                                onClick={() => {setCounter( counter > 0 ? counter - 1 : 0); totalQuantity()}} 
+                                disabled={counter <= 1 ? true : false}
+                                onClick={() => {setCounter( counter > 0 ? counter - 1 : 0)}} 
                                 size='sm'
                             />
                             
-                            <Input value={counter} type='number'w={30} mx='auto' size='xs' justifySelf='center'/>
+                            <Text w={30} mx='auto' size='xs' justifySelf='center'>{counter}</Text>
                             { 
                                 counter < product_stock ? (
                                     <IconButton
                                         icon={<HiPlus/>} 
                                         size='sm' 
-                                        onClick={() => {setCounter(counter + 1); totalQuantity()}}
+                                        onClick={() => {setCounter(counter + 1)}}
                                     />
                                 ) :  (
                                     <Tooltip label='we out of stock' fontSize='md'>

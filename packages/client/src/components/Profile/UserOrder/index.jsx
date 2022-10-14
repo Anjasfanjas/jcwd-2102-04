@@ -114,6 +114,7 @@ const UserOrder = () => {
                             date = {val.createdAt}
                             order_id = {val.id}
                             data_product = {val.order_details}
+                            shipping_price = {val.shipping_price}
                         />
                     </>
                 )

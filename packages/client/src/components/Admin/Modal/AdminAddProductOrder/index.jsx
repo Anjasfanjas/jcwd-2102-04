@@ -35,6 +35,7 @@ function AdminAddProductOrder(props) {
 
     const [ mainQuantity, setMainQuantity ] = useState(0)
     const [ convQuantity, setConvQuantity ] = useState(0)
+    const [ btnSts, setBtnSts ] = useState(false)
     const [ racikan, setRacikan ] = useState([false, ""])
 
 
@@ -75,6 +76,11 @@ function AdminAddProductOrder(props) {
             })
         }
     }
+
+    useEffect(() => {
+        console.log(mainQuantity)
+        console.log(convQuantity)
+    }, [mainQuantity, convQuantity])
 
     return (
         <>
@@ -146,14 +152,14 @@ function AdminAddProductOrder(props) {
                                         <>
                                             <Text flex={1} fontWeight='bold' textAlign='end'>Main Quantity</Text>
                                             <Box flex={2} ml={5}>
-                                                <Input w='30%' type='number' defaultValue={mainQuantity} onClick={(event) => setMainQuantity(event.target.value)}/>
+                                                <Input w='30%' type='number' defaultValue={0} onChange={(event) => setMainQuantity(event.target.value)}/>
                                             </Box>
                                         </>
                                     ) : (
                                         <>
                                             <Text flex={1} fontWeight='bold' textAlign='end'>Converted Quantity</Text>
                                             <Box flex={2} ml={5}>
-                                                <Input w='30%' type='number' defaultValue={convQuantity} onChange={(event) => setConvQuantity(event.target.value)}/>
+                                                <Input w='30%' type='number' defaultValue={0} onChange={(event) => setConvQuantity(event.target.value)}/>
                                             </Box>
                                         </>
                                     )
@@ -166,7 +172,14 @@ function AdminAddProductOrder(props) {
                         <Button colorScheme="blue" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button colorScheme="green" onClick={createOrderDetail}>Add</Button>
+                        <VStack w='100px'>
+                            <Button w='full' colorScheme="green" disabled={mainQuantity > main_stock || convQuantity > converted_stock ? true : false} onClick={createOrderDetail}>Add</Button>
+                            {
+                                mainQuantity > main_stock || convQuantity > converted_stock ?
+                                    <Text color='red' fontSize={12}>Stock tidak cukup</Text>
+                                 : null
+                            }
+                        </VStack>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

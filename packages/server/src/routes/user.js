@@ -17,4 +17,14 @@ router.get('/address/byid/:id', userController.getAddressById)
 router.patch('/address/:user_id', userController.editUserAddress)
 router.delete('/address/:id', userController.deleteUserAddress)
 
+// bang GIO
+router.post("/sendResetPassword", userController.emailResetPassword);
+router.patch("/changePassword/:resetToken", userController.resetPassword);
+router.patch("/editchangePassword/:id", userController.editChangePassword);
+
+router.post("/register", userController.register);
+router.patch("/verify/:vertoken", userController.verifyUser);
+router.get("/refresh-token", authorizedLoggedInUser, userController.keepLogin);
+router.post("/new-link", userController.reVerifyLink);
+
 module.exports = router

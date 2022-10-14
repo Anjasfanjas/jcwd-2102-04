@@ -4,6 +4,7 @@ import moment from "moment/moment"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import QueryString from "qs"
+import { useEffect } from "react"
 import { useState } from "react"
 import { axiosInstance } from "../../../lib/hoc/api"
 import ModalUploadPayment from "../../Modal/ModalUploadPayment"
@@ -11,13 +12,25 @@ import ModalUploadPayment from "../../Modal/ModalUploadPayment"
 
 
 const UserOrderCard = (props) => {
-    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date, order_id, data_product } = props
+    const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date, order_id, data_product, shipping_price } = props
     const [ recentSeeMore, setRecentSeeMore ] = useState(false)
-    const [ product, setProduct ] = useState(data_product)
+    const [ product, setProduct ] = useState([])
 
     const router = useRouter()  
     const toast = useToast()
 
+    const fetchOrderDetail = async() => {
+        try {
+            await axiosInstance.get(`/order/detail/${order_id}`).then((res) => {
+                const data = res.data.result
+                console.log(data)
+                setProduct([...data])
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    console.log(data_product)
     console.log(order_id)
 
     const changeOrderStatus = async() => {
@@ -60,7 +73,7 @@ const UserOrderCard = (props) => {
                     
                     <VStack flex={3}>
                         <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
-                            <Text>{product_name}</Text>
+                            <Text>{product[0]?.product.product_name} {product[0]?.is_racikan === true ? `Racikan Obat : ${product[0]?.nama_racikan}` : ''}</Text>
                         </Flex>
                         <Text w='full' flex={1} align='left'>{quantity} X {Number(product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                     </VStack>
@@ -71,10 +84,12 @@ const UserOrderCard = (props) => {
                     </VStack>
                 </HStack>
             ) : (
-                product?.map((val) => {
+                product?.map((val, index) => {
+                    console.log(val)
+                    console.log(product)
                     return (
                         <>
-                            <HStack display='flex' px={2}> 
+                            <HStack key={index} display='flex' px={2}> 
                                 <Box alignItems='center' flex={1}>
                                     {
                                         product_img === "" ? (
@@ -89,12 +104,11 @@ const UserOrderCard = (props) => {
                                             />
                                         )
                                     }
-                                    
                                 </Box>
                     
                                 <VStack flex={3}>
                                     <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
-                                        <Text>{val.product.product_name}</Text>
+                                        <Text>{val.product.product_name} {val.is_racikan === true ? `Racikan Obat : ${val.nama_racikan}`: ''}</Text>
                                     </Flex>
                                     <Text w='full' flex={1} align='left'>{val.quantity} X {Number(val.product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                                 </VStack>
@@ -132,6 +146,10 @@ const UserOrderCard = (props) => {
         )
     }
 
+    useEffect(() => {
+        fetchOrderDetail()
+    }, [order_id])
+
     return (
         <Grid templateColumns = 'repeat(1, 1fr)' gap={3} mb={5}> 
             <Box p={3} boxShadow='dark-lg' borderRadius={5}>
@@ -150,14 +168,25 @@ const UserOrderCard = (props) => {
 
                 <HStack w='full' textAlign='center'>
                         <Divider borderColor='#005E9D'/>
-                        <Text w='50%' cursor='pointer' fontSize={16} onClick ={() => {setRecentSeeMore(!recentSeeMore)}}>{recentSeeMore === false ? "see more" : "see less"}</Text>
+                        <Text w='50%' cursor='pointer' fontSize={16} onClick ={() => {setRecentSeeMore(!recentSeeMore)}}>{recentSeeMore === false ? `see more ${order_id}` : `see less ${order_id}`}</Text>
                         <Divider borderColor='#005E9D'/>
                 </HStack> 
 
-                <Flex justify='center' fontWeight='bold' mt={2} px={2}>
-                    <Text mt={2} flex={8}>TOTAL ORDER</Text>
-                    <Text mt={2} flex={2} align='end'>{Number(total_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
-                </Flex>
+                <vStack w='full' spacing={0}>
+                    <Flex justify='center' w='full' py={0} px={2} fontSize={14}>
+                        <Text flex={8} ml={3}>Total Belanja</Text>
+                        <Text flex={2} align='end'>{Number(total_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                    </Flex>
+                    <Flex justify='center' w='full' py={0} px={2} fontSize={14}>
+                    <Text flex={8} ml={3}>Biaya Pengiriman</Text>
+                        <Text flex={2} align='end'>{Number(shipping_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                    </Flex>
+                    <Flex justify='center' w='full' fontWeight='bold' py={0} px={2}>
+                        <Text mt={2} flex={8}>TOTAL ORDER</Text>
+                        <Text mt={2} flex={2} align='end'>{(Number(total_price) + Number(shipping_price)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                    </Flex>
+                </vStack>
+
             </Box>
         </Grid>
     )   

@@ -144,7 +144,7 @@ const AdminUserOrder = () => {
                         product_order = {val.order_details}
                         total_price = {val.order_price}
                         no_invoice = {val.no_invoice}
-                        date= {val.createdAt}
+                        date= {val.updatedAt}
                         order_status = {val.order_status.status_name}
                         order_id = {val.id}
                         shipping_price = {val.shipping_price}
@@ -163,7 +163,7 @@ const AdminUserOrder = () => {
                 <>
                     <AdminPrescriptionCard
                         key = {index}
-                        date = {val.createdAt}
+                        date = {val.updatedAt}
                         user_name = {val.user_doctor_prescription.user.username}
                         prescription_img = {val.user_doctor_prescription.img_url}
                         user_id = {val.user_id}

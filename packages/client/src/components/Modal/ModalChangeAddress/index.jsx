@@ -14,13 +14,18 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import QueryString from "qs";
+import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../library/api";
 import AddressCard from "../../Card/AddressCard";
+import render_types from "../../../redux/reducers/types/render";
 
 const ModalChangeAddress = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { userAddress} = props;
     const toast = useToast()
+    const dispatch = useDispatch()
+
+    const autoRender = useSelector((state) => state.render)
 
     const changeAddress = async(user_id, address_id) => {
         try {
@@ -29,6 +34,13 @@ const ModalChangeAddress = (props) => {
                     title: "Your Address has been changed",
                     status: 'success',
                     duration: 1000
+                })
+
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
                 })
             })
         } catch (error) {

@@ -7,9 +7,11 @@ import { useRouter } from "next/router"
 import { useFormik } from "formik"
 import { useEffect, useState } from "react"
 import { axiosInstance } from "../../library/api"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import DrawerCart from "../Drawer/DrawerCart"
 import ModalUploadPrescription from "../Modal/ModalUploadPrescription"
+import jsCoockie from "js-cookie"
+import auth_types from "../../redux/reducers/types/auth"
 
 const Navbar = () => {
     const router = useRouter()
@@ -19,6 +21,18 @@ const Navbar = () => {
             search: ""
         }
     })
+
+    const dispatch = useDispatch()
+
+    const handleLogout = () =>{
+        jsCoockie.remove("auth_token")
+        
+        dispatch({
+            type: auth_types.AUTH_LOGOUT
+        })
+
+        router.push("/auth")
+    }
 
     return (        
         <Flex position='sticky' color= "#004776" cursor='pointer' top={0} bgColor='#eee' p={1} zIndex={3} boxShadow='xl' w='full' align='center' justify='center'>
@@ -81,22 +95,6 @@ const Navbar = () => {
                 <DrawerCart/>
                 {
                     userSelector?.id ? (
-                        <Flex 
-                            cursor='pointer'
-                            justify='space-evenly'
-                            align='center'
-                        >
-                            <Icon as={MdNotificationsNone} fontSize='2xl'mr={1}/>
-                            <Text fontSize={14}>Notification</Text>
-                        </Flex>
-                    ) : (
-                        null
-                    )
-                }
-                
-
-                {
-                    userSelector?.id ? (
                         <Flex justify='space-between' align='center'>
                             <Text fontSize={14} fontWeight='bold' mr={2}>{userSelector?.username}</Text>
                             <Menu 
@@ -126,7 +124,7 @@ const Navbar = () => {
                                     </Link>
                                     
                                     <MenuDivider/>
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Flex>
