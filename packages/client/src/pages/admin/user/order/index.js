@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import AdminUserOrder from "../../../../components/Admin/AdminUserOrder"
+import Auth from "../../../../components/GIO/Auth"
 
 
 const UserOrder = () => {
@@ -9,10 +10,10 @@ const UserOrder = () => {
     const Router = useRouter()
 
     useEffect(() => {
-        if (userSelector?.role === 'user') {
+        if (userSelector?.role === 'user' && userSelector?.id) {
             
             Router.push("/");
-        }
+        } 
         
     }, [userSelector?.id]);
     

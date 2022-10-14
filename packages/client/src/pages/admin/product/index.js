@@ -1,6 +1,6 @@
 import Product from "../../../components/GIO/Admin/Product";
 
-const register = () => {
+const AdminProduct = () => {
   return (
     <>
       <Product />
@@ -8,4 +8,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default AdminProduct;
