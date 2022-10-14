@@ -129,29 +129,33 @@ const cartController = {
     },
 
     addQuantity: async (req, res) => {
-        const { cart_id, quantity, user_id } = req.query
+        const { cart_id, quantity, user_id } = req.body
+        console.log(req.body)
         try {
-            // const getProduct = await Cart.findOne({
-            //     where: { 
-            //         id: cart_id
-            //     }
-            // })
+            const dataProduct = await Cart.findOne({
+                where: {
+                    id : cart_id
+                }
+            })
 
-            // let updateQty = parseInt(quantity) + parseInt(getProduct.dataValues.quantity)
-            await Cart.update(
+            const result = await Cart.update(
                 {
-                    quantity: quantity
+                    quantity: quantity,
+                    price_total: quantity * dataProduct.dataValues.product_price
                 },
                 {
                     where: {
-                        id : cart_id
+                        id : cart_id,
+                        user_id
                     }
                 }
             )
 
             res.status(200).json({
                 message: `product ${cart_id} form user's cart ${user_id} has been edited`,
+                result: result
             })  
+
         } catch (error) {
             res.status(500).json({
                 message: error.toString()

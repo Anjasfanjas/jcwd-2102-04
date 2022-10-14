@@ -17,10 +17,16 @@ const stockController = {
                 },
             )
 
+            const mainQty = main_unit_qty
+            const convQty = converted_unit_qty
+
+            console.log(mainQty)
+            console.log(convQty)
+
             const stock_history = await Stock_histories.create(
                 {
-                    quantity : main_unit_qty ? main_unit_qty : converted_unit_qty,
-                    type : main_unit_qty ? "main stock" : "converted stock",
+                    quantity : mainQty > 0 ? mainQty : convQty,
+                    type : mainQty > 0 ? "main stock" : "converted stock",
                     desc,
                     product_id,
                 },

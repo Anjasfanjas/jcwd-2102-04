@@ -5,7 +5,7 @@ const categoryController = {
             const findCat = await Categories.findAll({
                 limit: 5,
                 offset: 0,
-                include: [User],
+                // include: [User],
             });
 
             return res.status(200).json({
