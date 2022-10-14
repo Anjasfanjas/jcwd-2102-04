@@ -88,6 +88,7 @@ const DrawerCart = () => {
                         product_stock = {val.product.product_stocks[0].main_stock}
                         product_id = {val.product.id}
                         user_id = {userSelector?.id}
+                        cart_id = {val.id}
                     />
                 </>
             )

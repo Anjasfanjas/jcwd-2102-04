@@ -22,6 +22,7 @@ const OrderPage = () => {
     let totalPrice = 0
     const router = useRouter()
     const userSelector = useSelector((state) => state.auth)
+    const autoRender = useSelector((state) => state.render)
     console.log(shippingPrice)
 
     const fetchUserAddress = async() => {
@@ -39,6 +40,10 @@ const OrderPage = () => {
         }
     }
 
+    const checkIsiOrder = () => {
+        cart.length < 1 ? router.push('/') : null
+    }
+
     const fetchDataCart = async() => {
         try {
             await axiosInstance.get(`/cart/${userSelector?.id}`).then((res) => {
@@ -53,7 +58,7 @@ const OrderPage = () => {
 
     const renderDataCart = () => {
         return cart.map((val) => {
-            totalPrice += (val.product_price * val.quantity)
+            totalPrice += Number(val.price_total)
             return (
                 <>
                     <CartCard
@@ -61,7 +66,9 @@ const OrderPage = () => {
                         product_price = {val.product_price}
                         quantity = {val.quantity}
                         image_url = {val.product.product_imgs[0].img_url}
-                        product_stock = {val.product.product_stocks[0].stock}
+                        product_stock = {val.product.product_stocks[0].main_stock}
+                        product_id = {val.product_id}
+                        user_id = {userSelector?.id}
                     />
                 </>
             )
@@ -136,7 +143,12 @@ const OrderPage = () => {
         fetchDataCart()
         renderDataCart()
         deliveryCost()
-    }, [])
+
+    }, [autoRender])
+
+    useEffect(() => {
+        // checkIsiOrder()
+    }, [cart])
     
     return (
         <HStack

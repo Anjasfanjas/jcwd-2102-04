@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, HStack, Icon, Input, PinInput, PinInputField, Stack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, HStack, Icon, Input, PinInput, PinInputField, Stack, Text, useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 import { useCounter } from "@chakra-ui/counter"
 import { HiPlus, HiMinus } from "react-icons/hi"
@@ -6,25 +6,27 @@ import { BiCartAlt} from "react-icons/bi"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { axiosInstance } from "../../../library/api"
+import { useDispatch, useSelector } from "react-redux"
+import render_types from "../../../redux/reducers/types/render"
+import qs from "qs"
 
 const ProductDetail = () => {
     const router = useRouter()
     const [ counter, setCounter ] = useState(0)
     const [ product, setProduct ] = useState()
     const [ desc, setDesc ] = useState()
-    
+    const [ quantity, setQuantity ] = useState(1)
 
-    if(counter > 10){
-        setCounter(10)
-    } 
+    const userSelector = useSelector((state) => {return state.auth})
+    const autoRender = useSelector((state) => {return state.render})
 
-    if (counter < 0){
-        setCounter(0)
-    }
+    const dispatch = useDispatch()
+    const { product_id } = router.query
+
+    const toast = useToast()
 
     const fetchDataProduct = async () => {
         try {
-            const { product_id } = router.query
             console.log(product_id)
             await axiosInstance.get(`/product/${product_id}`).then((res) => {
                 const data = res.data.result
@@ -33,6 +35,34 @@ const ProductDetail = () => {
                 setDesc(data.product_description)
             })
 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const addToCart = async () => {
+        const body = {
+            product_price: product?.product_stocks[0].sell_price,
+            quantity: quantity,
+            user_id: userSelector?.id,
+            product_id: product_id,
+        }
+
+        try {
+            await axiosInstance.post('/cart', qs.stringify(body)).then((res) => {
+                toast({
+                    title: `${product?.product_name} has been added to your cart`,
+                    status: 'success',
+                    duration: 1000
+                })
+
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
+                })
+            })
         } catch (error) {
             console.log(error)
         }
@@ -79,21 +109,21 @@ const ProductDetail = () => {
                     </VStack>
 
                     <HStack>
-                        <Button onClick={() => {setCounter(counter - 1)}} size='sm'>
+                        <Button disabled={quantity < 1 ? true : false} onClick={() => {setQuantity(quantity - 1)}} size='sm'>
                             <Icon as={HiMinus}/>
                         </Button>
                         
-                        <Input value={counter} type='number'w={50} mx='auto' size='sm' justifySelf='center'/>
+                        <Input value={quantity} type='number'w={70} mx='auto' size='sm' justifySelf='center'/>
                         
-                        <Button onClick={() => {setCounter(counter + 1)}} size='sm'>
+                        <Button disabled={quantity >= product?.product_stocks[0].main_stock ? true : false } onClick={() => {setQuantity(quantity + 1)}} size='sm'>
                             <Icon as={HiPlus}/>
                         </Button>
-                        <Text w='full' fontSize={12}>Stock tersisa {product?.product_stocks[0].stock}</Text>
+                        <Text w='full' fontSize={12}>Stock tersisa {product?.product_stocks[0].main_stock}</Text>
                     </HStack>
 
                     <HStack>
-                        <Button colorScheme="green" justifyContent='space-evenly'>
-                            <Icon as={BiCartAlt} size='lg'/>
+                        <Button disabled={quantity <= 0 ? true : false} colorScheme="green" justifyContent='space-evenly' onClick={addToCart}>
+                            <Icon as={BiCartAlt} mr={2}/>
                             <Text>Add to Cart</Text>
                         </Button>
                     </HStack>
