@@ -26,7 +26,7 @@ import { axiosInstance } from "../../../../library/api";
 import { useDispatch, useSelector } from "react-redux";
 // import auth_types from "../../../redux/reducers/types/auth";
 
-const m_editProduct = (props) => {
+const M_editProduct = (props) => {
   const userSelector = useSelector((state) => {
     return state.auth;
   });
@@ -174,4 +174,4 @@ const m_editProduct = (props) => {
   );
 };
 
-export default m_editProduct;
+export default M_editProduct;

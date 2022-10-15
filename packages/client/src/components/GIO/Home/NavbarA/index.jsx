@@ -93,10 +93,6 @@ export default function NavbarA() {
     setIsLoading(false);
   }, [autoRender]);
 
-  // const current = new Date();
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
   const date = moment(new Date()).format("LLLL");
 
   const [loadPage, setLoadPage] = useState(1);
@@ -124,7 +120,7 @@ export default function NavbarA() {
   const renderCategory = () => {
     return contentList.map((val, index) => {
       return (
-        <Tr>
+        <Tr key={index}>
           <Td>{val.category}</Td>
           <Td>
             <Img src={`http://${val.img_url}`} width={"90px"} height={"50px"} />
@@ -545,8 +541,9 @@ export default function NavbarA() {
           >
             <InputLeftElement
               pointerEvents="none"
-              children={<FiSearch color="gray" />}
-            />
+            >
+              <FiSearch color="gray" />
+            </InputLeftElement>
             <Input type="number" placeholder="Search" borderRadius="10px" />
           </InputGroup>
           <IconButton

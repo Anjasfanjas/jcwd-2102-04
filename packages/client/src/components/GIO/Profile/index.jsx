@@ -81,14 +81,15 @@ const ProfilePage = () => {
   };
 
   const renderUserLiked = () => {
-    return likedPost?.map((val) => {
+    return likedPost?.map((val, index) => {
       if (val.Post?.id == val.post_id) {
         return (
-          <GridItem w={300} h={300}>
+          <GridItem key={index} w={300} h={300}>
             <Image
               src={"http://" + val.Post?.image_url}
               width={300}
               height={300}
+              alt=''
             />
           </GridItem>
         );

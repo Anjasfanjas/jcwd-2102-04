@@ -20,10 +20,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../../library/api";
 import { useRouter } from "next/router";
 
-const m_deleteCategory = (props) => {
+const M_deleteCategory = (props) => {
   const toast = useToast();
   const { id } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
   const autoRender = useSelector((state) => {
     return state.render;
   });
@@ -84,4 +85,4 @@ const m_deleteCategory = (props) => {
   );
 };
 
-export default m_deleteCategory;
+export default M_deleteCategory;

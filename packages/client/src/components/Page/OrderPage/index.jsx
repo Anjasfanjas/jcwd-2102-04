@@ -17,7 +17,7 @@ const OrderPage = () => {
     const [addressDefault, setAddressDefault ] = useState([])
     const [ cart, setCart ] = useState([])
     const [ deliveryOption, setDeliveryOption ] = useState()
-    const [ shippingPrice, setShippingPrice] = useState()
+    const [ shippingPrice, setShippingPrice] = useState(0)
     
     let totalPrice = 0
     const router = useRouter()
@@ -186,7 +186,7 @@ const OrderPage = () => {
                     <Text w='full' fontWeight='bold' borderBottom='1px solid #b41974' pb={1} mb={2}>Pilh jasa penigirman</Text>
 
                     <FormControl w='full'>
-                        <Select onChange={(event) => {deliveryCost(event.target.value)}}>
+                        <Select defaultValue={'jne'} onChange={(event) => {deliveryCost(event.target.value)}}>
                             <option value='jne'>JNE</option>
                             <option value='pos'>Post Indonesia</option>
                             <option value='tiki'>Tiki</option>

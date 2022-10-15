@@ -1,5 +1,6 @@
 import { Box, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
@@ -13,6 +14,8 @@ const ModalUploadPayment = (props) => {
 
     const userSelector = useSelector((state) => {return state.auth})
     const toast = useToast()
+
+    const router = useRouter()
 
     const formData = new FormData()
     formData.append('Payment', selectedFile)
@@ -34,6 +37,8 @@ const ModalUploadPayment = (props) => {
                     status: "success",
                     duration: 1000
                 })
+
+                router.push("/user/order")
             })
         } catch (error) {
             console.log(error)

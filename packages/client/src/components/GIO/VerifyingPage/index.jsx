@@ -18,7 +18,7 @@ import {
   import { BiError } from "react-icons/bi";
 import { CheckCircleIcon } from '@chakra-ui/icons';
 
-  export default function verifyAccount(props) {
+  export default function VerifyAccount(props) {
 
     const [ verified, setVerified ] = useState(false)
 

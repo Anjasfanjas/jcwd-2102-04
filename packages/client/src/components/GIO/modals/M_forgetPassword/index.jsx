@@ -72,7 +72,7 @@ const M_resetPassword = (props) => {
           <ModalHeader>Forget Password?</ModalHeader>
           <ModalBody>
             <Text mb={2}>
-              Please enter your account's email for resetting your password
+              Please enter your accounts email for resetting your password
             </Text>
             <Input
               onChange={async (event) => {

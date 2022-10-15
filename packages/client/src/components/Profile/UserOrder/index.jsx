@@ -1,5 +1,5 @@
 import { Avatar, border, Box, Button, Flex, Grid, HStack, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, Select, Center, Input, FormControl, InputGroup, InputRightElement } from "@chakra-ui/react"
-import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons"
+import { DeleteIcon, EditIcon, AddIcon, CloseIcon } from "@chakra-ui/icons"
 import obat_3 from "../../../public/gambar_obat/obat_3.png"
 import obat_2 from "../../../public/gambar_obat/obat_2.png"
 import Image from "next/image"
@@ -11,12 +11,15 @@ import { useEffect } from "react"
 import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
 import { useFormik } from "formik"
 import moment from "moment"
+import { useRouter } from "next/router"
 
 const UserOrder = () => {
     const [ userOrder, setUserOrder ] = useState([])
     const [ orderStatus, setOrderStatus ] = useState([])
     const [ recentStatus, setRecentStatus ] = useState("")
     const [ page, setPage ] = useState(1)
+    const router = useRouter()
+    const { search } = router.query
 
     const formik = useFormik({
         initialValues: {
@@ -59,11 +62,11 @@ const UserOrder = () => {
                 page,
                 dateFrom : formik.values.dateFrom ? formik.values.dateFrom : null,
                 dateTo : formik.values.dateTo ? formik.values.dateTo  : null,
-                search: formik.values.search ? formik.values.search : ''
+                search: search ? search : ''
             }}).then((res) => {
                 const data = res.data.result
                 setUserOrder([...data])
-                console.log(data)
+                console.log(search)
             })
         } catch (error) {
             console.log(error)
@@ -127,7 +130,7 @@ const UserOrder = () => {
     useEffect(() => {
         fetchUserOrder()
         fetchOrderStatus()
-    }, [page, recentStatus, formik.values.dateFrom, formik.values.dateTo ])
+    }, [page, recentStatus, formik.values.dateFrom, formik.values.dateTo, formik.values.search, router?.isReady, search ])
 
     return (
         <VStack w="54em" spacing={3} p={1}>
@@ -147,15 +150,16 @@ const UserOrder = () => {
                         <InputGroup>
                             <Input
                                 type={"text"}
-                                defaultValue={formik.values.search ? formik.values.search : null}
+                                value={formik.values.search}
                                 placeholder={"Search..."}
                                 bgColor={"white"}
                                 onChange = {(event) => {formik.setFieldValue('search', event.target.value)}}
+                                
                             />
-                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => {
-                                router.push(`/admin/user/order?search=${formik.values.search}`)
+                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => { search ? 
+                                (formik.setFieldValue('search', ""), router.push("/user/order")) : router.push(`/user/order?search=${formik.values.search}`)
                             }}>
-                                <BiSearchAlt />
+                                {search ? <CloseIcon fontSize={12}/> : <BiSearchAlt/>}                
                             </InputRightElement>
                         </InputGroup>
                     </FormControl>
@@ -165,12 +169,14 @@ const UserOrder = () => {
             <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>
             
             <Flex align='center' w='full'>
-                <Flex flex={7}>
+                <Flex flex={7} align='center'>
+                <Button hidden={formik.values.dateFrom && formik.values.dateTo ? false : true} colorScheme="yellow" size='sm' onClick={() => {(formik.setFieldValue('dateFrom', ""), formik.setFieldValue('dateTo', "") )}}>Reset</Button>
                     <HStack flex={1} >
                         <Text w='30%' textAlign='end'>From : </Text>
                         <Input
                             size="md"
                             type="date"
+                            value={formik.values.dateFrom}
                             onChange = {(event) => {
                                 formik.setFieldValue('dateFrom', moment(event.target.value).format("YYYY-MM-DD")); 
                                 formik.values.dateTo ? fetchUserOrder()
@@ -184,6 +190,7 @@ const UserOrder = () => {
                         <Input
                             size="md"
                             type="date"
+                            value={formik.values.dateTo}
                             onChange = {(event) => {
                                 formik.setFieldValue('dateTo', moment(event.target.value).format("YYYY-MM-DD"));
                                 formik.values.dateFrom ? fetchUserOrder() : null
@@ -191,7 +198,6 @@ const UserOrder = () => {
                         />
                     </HStack>
                 </Flex>
-                
 
                 <Select onChange={(event) => {fetchUserOrder(event.target.value)}} flex={2}>
                     <option value=''>Urutkan</option>
