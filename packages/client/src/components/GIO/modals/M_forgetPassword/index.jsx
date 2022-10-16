@@ -63,7 +63,7 @@ const M_resetPassword = (props) => {
         variant="link"
         style={{ textDecoration: "none" }}
       >
-        <Text color={"#5DBA7D"}>Forget Password?</Text>
+        <Text color={"#004776"}>Forget Password?</Text>
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>

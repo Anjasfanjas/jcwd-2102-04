@@ -12,7 +12,7 @@ import {
     Box,
     Link,
   } from '@chakra-ui/react';
-  import { axiosInstance } from '../../library/api';
+  import { axiosInstance } from '../../../library/api';
   import { useRouter } from 'next/router'
   import { useEffect, useState } from 'react';
   import { BiError } from "react-icons/bi";
