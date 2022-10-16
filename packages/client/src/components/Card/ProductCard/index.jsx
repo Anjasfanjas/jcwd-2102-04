@@ -16,7 +16,8 @@ const ProductCard = (props) => {
         product_image, 
         product_id, 
         product_category, 
-        product_price 
+        product_price ,
+        color
     } = props
 
     const body = {
@@ -52,14 +53,14 @@ const ProductCard = (props) => {
 
     return (
         <GridItem>
-            <Stack w='full' h='full' borderRadius='.5em' className='product-card' cursor='pointer'>
+            <Stack w='full' h='full' borderRadius='.5em' className='product-card' cursor='pointer' bgColor='white'>
                 <VStack>
                     <Link href={`/product/${product_id}`} _hover={{textDecoration: 'none'}} w='full' align='center'>
                         <Image
                             alt=''
                             src={product_image}
-                            width='120px'
-                            height='120px'
+                            width='100px'
+                            height='100px'
                             layout='fixed'
                         />
 
@@ -81,13 +82,13 @@ const ProductCard = (props) => {
 
                     <Button 
                         w='full' 
-                        borderBottomRadius={10} 
+                        borderBottomRadius={'.5em'} 
                         borderTopRadius={0} 
-                        bgColor='#005E9D' 
+                        bgColor= {color} 
                         color='white'
                         _hover={{
                             backgroundColor: "#e3eeee",
-                            color: "#005E9D"
+                            color: color
                         }}
                         onClick={() => {addToCart()}}
                     >

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../../library/api";
 import { useRouter } from "next/router";
 
-const m_deleteProduct = (props) => {
+const M_deleteProduct = (props) => {
   const toast = useToast();
   const { id } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,4 +84,4 @@ const m_deleteProduct = (props) => {
   );
 };
 
-export default m_deleteProduct;
+export default M_deleteProduct;

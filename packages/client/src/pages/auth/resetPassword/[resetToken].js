@@ -1,4 +1,4 @@
-import ForgetPassword from "../../../components/ForgetPassword"
+import ForgetPassword from "../../../components/GIO/ForgetPassword"
 
 
 const ResetPassword = () =>{

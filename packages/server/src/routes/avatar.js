@@ -9,7 +9,7 @@ router.patch(
     fileUploader({
         destinationFolder: process.env.PATH_AVATAR,
         fileType: "image",
-        preflix: "POST",
+        preflix: "avatar",
     }).single("avatar"),
     avatarController.updateAvatar
 )

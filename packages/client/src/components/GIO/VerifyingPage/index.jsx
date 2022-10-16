@@ -12,13 +12,13 @@ import {
     Box,
     Link,
   } from '@chakra-ui/react';
-  import { axiosInstance } from '../../library/api';
+  import { axiosInstance } from '../../../library/api';
   import { useRouter } from 'next/router'
   import { useEffect, useState } from 'react';
   import { BiError } from "react-icons/bi";
 import { CheckCircleIcon } from '@chakra-ui/icons';
 
-  export default function verifyAccount(props) {
+  export default function VerifyAccount(props) {
 
     const [ verified, setVerified ] = useState(false)
 

@@ -63,7 +63,7 @@ const M_resetPassword = (props) => {
         variant="link"
         style={{ textDecoration: "none" }}
       >
-        <Text color={"#5DBA7D"}>Forget Password?</Text>
+        <Text color={"#004776"}>Forget Password?</Text>
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -72,7 +72,7 @@ const M_resetPassword = (props) => {
           <ModalHeader>Forget Password?</ModalHeader>
           <ModalBody>
             <Text mb={2}>
-              Please enter your account's email for resetting your password
+              Please enter your accounts email for resetting your password
             </Text>
             <Input
               onChange={async (event) => {

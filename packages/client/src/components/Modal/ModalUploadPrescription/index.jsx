@@ -29,7 +29,6 @@ const ModalUploadPrescription = (props) => {
         setImg(URL.createObjectURL(event.target.files[0]))
     }
 
-
     const fetchUserAddress = async() => {
         try {
             await axiosInstance.get(`/user/address/${userSelector?.id}`).then((res) => {

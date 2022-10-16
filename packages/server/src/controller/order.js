@@ -157,9 +157,11 @@ const orderController = {
                 } : dateFrom && dateTo ?  {
                     user_id,
                     createdAt: {[Op.between] : [dateFrom, dateTo]}
-                } : { 
+                } : search ?  { 
+                    no_invoice: search,
                     user_id,
-                    // no_invoice: search
+                } : {
+                    user_id
                 },
                 include : [
                     {

@@ -35,8 +35,8 @@ import { useState, useEffect } from "react";
 import M_forgetPassword from "../../modals/M_forgetPassword";
 import { useRouter } from "next/router";
 import Image from "next/image";
-// import Logo from "../../../public/Logo_white_1_loop.gif";
-import Logo from "../../../../public/LoginLogo4.gif";
+
+import Logo from "../../../../public/logo/Logo_navbar.png";
 import M_resetPassword from "../../modals/M_forgetPassword";
 
 const Login = (props) => {
@@ -102,9 +102,9 @@ const Login = (props) => {
             // borderColor={"grey"}
             // boxShadow="dark-lg"
             >
-              <Image width={280} height={190} src={Logo} alt="" />
+              <Image width={200} height={50} src={Logo} alt="" />
             </Heading>
-            {/* <Text>This is the portal to access your account</Text> */}
+            <Text>This is the portal to access your account</Text>
           </VStack>
 
           <FormControl id="username" isInvalid={formik.errors.account}>
@@ -162,10 +162,10 @@ const Login = (props) => {
           </HStack>
 
           <Button
-            bgColor="#FF8AAE"
+            bgColor="#004776"
             color="white"
             _hover={{
-              color: "#FF8AAE",
+              color: "#004776",
               border: "2px",
               borderCollapse: "#FF8AAE",
               bgColor: "white",
@@ -195,9 +195,9 @@ const Login = (props) => {
         >
           <h3>You don't have an account?</h3>
           <Link
-            color={"#5DBA7D"}
+            color={"#004776"}
             onClick={props.formStatus}
-            fontWeight="bold"
+            fontWeight={500}
             style={{ textDecoration: "none" }}
           >
             Register Now!

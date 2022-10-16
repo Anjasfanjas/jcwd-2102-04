@@ -125,7 +125,7 @@ const ProductDetail = () => {
 
                         <HStack w='full' align='start'>
                             <Text flex={1} fontWeight='bold'>Butuh resep</Text>
-                            <Text flex={1}>{String(desc?.need_prescription)}</Text>
+                            <Text flex={1}>{desc?.need_prescription === false ? "Tidak" : "Iya"}</Text>
                         </HStack> 
 
                         <HStack w='full' align='start'>

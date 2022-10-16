@@ -215,8 +215,9 @@ export default function NavbarA() {
             >
               <InputLeftElement
                 pointerEvents="none"
-                children={<FiSearch color="gray" />}
-              />
+              >
+                <FiSearch color="gray" />
+              </InputLeftElement>
               <Input type="number" placeholder="Search" borderRadius="10px" />
             </InputGroup>
           </FormControl>

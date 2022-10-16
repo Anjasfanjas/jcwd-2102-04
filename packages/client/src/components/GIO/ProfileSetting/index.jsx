@@ -326,7 +326,7 @@ const ProfileSetting = () => {
               defaultValue={userData?.email}
             />
             <Text fontSize={14} color={"red.500"}>
-              * Email can't be changed
+              * Email cant be changed
             </Text>
           </Box>
         </FormControl>

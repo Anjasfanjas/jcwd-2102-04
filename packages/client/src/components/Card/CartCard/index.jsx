@@ -19,7 +19,6 @@ const CartCard = (props) => {
     const dispatch = useDispatch()
 
     const updateQuantity = async() => {
-        alert(cart_id)
         try {
             await axiosInstance.patch("/cart/quantity", QueryString.stringify({
                 cart_id: cart_id,

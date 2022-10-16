@@ -104,7 +104,7 @@ const AdminUserOrder = () => {
                 setPrescriptionOrder([...data])
             })
         } catch (error) {
-            
+            console.log(error)
         }
     }
 

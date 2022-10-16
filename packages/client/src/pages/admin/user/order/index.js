@@ -10,8 +10,9 @@ const UserOrder = () => {
     const Router = useRouter()
 
     useEffect(() => {
-        if (userSelector?.role === 'user' && userSelector?.id) {
-            
+        if (!userSelector?.id){
+            Router.push('/auth')
+        } else if (userSelector?.role === 'user' && userSelector?.id) {
             Router.push("/");
         } 
         

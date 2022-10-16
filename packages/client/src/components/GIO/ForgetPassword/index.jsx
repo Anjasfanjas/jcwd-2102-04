@@ -28,10 +28,10 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@chakra-ui/react";
 import Image from "next/image";
-// import Logo from "../../public/Logo_white_1_Loop.gif"
-import Logo from "../../public/LoginLogo4.gif";
+
+import Logo from "../../../public/logo/Logo_navbar.png";
 import axios from "axios";
-import { axiosInstance } from "../../library/api";
+import { axiosInstance } from "../../../library/api";
 import qs from "qs";
 
 const ForgetPassword = () => {
@@ -117,10 +117,12 @@ const ForgetPassword = () => {
             justify="center"
           >
             <Heading>
-              <Image src={Logo} alt="Logo" width={170} height={80} />
+              <Image 
+                src={Logo} 
+                alt="Logo" width={170} height={20} />
             </Heading>
             <Text textAlign={"center"}>
-              Make sure you'll never forget the password again
+              Make sure you will never forget the password again
             </Text>
           </VStack>
 

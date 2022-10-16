@@ -31,6 +31,9 @@ const UserProfile = () => {
     const userSelector = useSelector((state) => {return state.auth})
     const autoRender = useSelector((state) => {return state.render})
 
+    const formData = new FormData()
+    formData.append('avatar', selectedFile)
+
     const fetchDataUser = async () => {
         try {
             await axiosInstance.get(`/user/${userSelector?.id}`).then((res) => {
@@ -40,6 +43,11 @@ const UserProfile = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleFile = (event) =>{
+        setSelectedFile(event.target.files[0])
+        console.log(selectedFile)
     }
 
     const fetchUserAddress = async () => {
@@ -97,7 +105,8 @@ const UserProfile = () => {
             email : userSelector?.email,
             phone_number : userSelector?.phone_number,
             gender : userSelector?.gender,
-            avatar_url : userSelector?.avatar_url
+            avatar_url : userSelector?.avatar_url,
+            date_of_birth: userSelector?.date_of_birth
         },
 
         validationSchema: Yup.object().shape({
@@ -162,6 +171,7 @@ const UserProfile = () => {
                 phone_number,
                 gender,
                 id,
+                date_of_birth
 
             } = formik.values
 
@@ -171,6 +181,7 @@ const UserProfile = () => {
                 email,
                 phone_number,
                 gender,
+                date_of_birth
             }
             
             try {
@@ -207,19 +218,36 @@ const UserProfile = () => {
             formik.setSubmitting(false)
         }
     })
+
+    const changeAvatar = async() => {
+        try {
+            await axiosInstance.patch(`/avatar/${userSelector?.id}`, formData).then((res) => {
+                dispatch({
+                    type: auth_types.AUTH_LOGIN,
+                    payload: res.data.user
+                })
+
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
     
     useEffect(() => {
         fetchingDataUnique()
-    }, [])
+    }, [autoRender])
 
     useEffect(() => {
         fetchDataUser()
         fetchUserAddress()
-    }, [userSelector?.id])
+        console.log()
+    }, [userSelector?.id, autoRender])
 
-    const handleFile = (event) =>{
-        setSelectedFile(event.target.files[0])
-    }
+    useEffect(() => {
+        changeAvatar()
+    }, [selectedFile])
+
 
     return (
         <VStack w="54em" spacing={3} p={1}>

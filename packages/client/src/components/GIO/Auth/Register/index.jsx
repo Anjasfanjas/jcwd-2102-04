@@ -31,7 +31,7 @@ import { userRegister } from "../../../../redux/action/userRegister";
 import { useToast } from "@chakra-ui/react";
 import Image from "next/image";
 // import Logo from "../../../public/Logo_white_1_Loop.gif"
-import Logo from "../../../../public/LoginLogo4.gif";
+import Logo from "../../../../public/logo/Logo_navbar.png";
 import axios from "axios";
 import { axiosInstance } from "../../../../library/api";
 
@@ -199,7 +199,7 @@ const Register = (props) => {
             mb={"1vh"}
           >
             <Heading>
-              <Image src={Logo} alt="Logo" width={200} height={110} />
+              <Image src={Logo} alt="Logo" width={200} height={50} />
             </Heading>
             <Text>Sign up to see more products.</Text>
           </VStack>
@@ -420,10 +420,10 @@ const Register = (props) => {
           </FormControl>
 
           <Button
-            bgColor="#FF8AAE"
+            bgColor="#004776"
             color="white"
             _hover={{
-              color: "#FF8AAE",
+              color: "#004776",
               border: "2px",
               borderCollapse: "#FF8AAE",
               bgColor: "white",
@@ -464,9 +464,9 @@ const Register = (props) => {
         >
           <h3>Have an account?</h3>
           <Link
-            color={"#5DBA7D"}
+            color={"#004776"}
             onClick={props.formStatus}
-            fontWeight="bold"
+            fontWeight={500}
             style={{ textDecoration: "none" }}
           >
             Login Now!
