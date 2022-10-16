@@ -28,7 +28,7 @@ const Footer = () => {
 
                     <HStack spacing={3}>
                         <Icon as={HiOutlineMail} fontSize={20}/>
-                        <Text>tokoobat@gmail.com</Text>
+                        <Text>medbox.cs@gmail.com</Text>
                     </HStack>
 
                     <HStack spacing={3}>
@@ -86,17 +86,17 @@ const Footer = () => {
 
                     <HStack spacing={3}>
                         <Icon as={BsInstagram} fontSize={20}/>
-                        <Text>@tokoobat_ind</Text>
+                        <Text>@medbox.id</Text>
                     </HStack>
 
                     <HStack spacing={3}>
                         <Icon as={BsFacebook} fontSize={20}/>
-                        <Text>Tokoobat Indonesia</Text>
+                        <Text>Medbox Indonesia</Text>
                     </HStack>
 
                     <HStack spacing={3}>
                         <Icon as={FaTwitter} fontSize={20}/>
-                        <Text>Tokoobat Indonesia</Text>
+                        <Text>Medbox Indonesia</Text>
                     </HStack>
                 </Stack>
             </VStack>

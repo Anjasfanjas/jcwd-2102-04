@@ -61,8 +61,8 @@ const ProductStore = (props) => {
                 page: page,
                 sort : sort,
                 orderBy : order,
-                min: (sliderValue[0] ? sliderValue[0]*1000 : 0),
-                max: (sliderValue[1] ? sliderValue[1]*1000 : 200*1000 ),
+                min: (sliderValue[0] ? sliderValue[0] : 0),
+                max: (sliderValue[1] ? sliderValue[1] : 200*1000 ),
                 search: props.search
             }}).then((res) => {
                 const data = res.data.result
@@ -101,6 +101,7 @@ const ProductStore = (props) => {
                         product_name = {val.product_name}
                         product_category = {val.product_categories}
                         product_price = {Number(val.product_stocks[0].sell_price)}
+                        color = {'#005E9D'}
                     />
                 </>
             )
@@ -149,7 +150,7 @@ const ProductStore = (props) => {
                         {/* menu list */}
                         <Accordion defaultIndex={[0]} allowMultiple>
                             <AccordionItem>
-                                <AccordionButton bgColor='#005E9D' color='white' _hover={{bgColor: 'white', color: 'black'}}>
+                                <AccordionButton bgColor='#005E9D' color='white' _hover={{bgColor: '#005e9d', color: 'white'}}>
                                     <Box flex='1' textAlign='left'>
                                         <Text>Category</Text>
                                     </Box>
@@ -166,8 +167,8 @@ const ProductStore = (props) => {
 
                         <Accordion defaultIndex={[0]} allowMultiple>
                             <AccordionItem>
-                                <AccordionButton bgColor='#005E9D' color='white' _hover={{bgColor: 'white', color: 'black'}}>
-                                    <Box flex='1' textAlign='left'>
+                                <AccordionButton bgColor='#005E9D' color='white' _hover={{bgColor: '#005e9d', color: 'white'}}>
+                                    <Box flex='1' textAlign='left' display='flex' alignItems='center'>
                                         <Text>Harga</Text>
                                     </Box>
                                     <AccordionIcon />
@@ -180,7 +181,7 @@ const ProductStore = (props) => {
                                             min={0} 
                                             max={200} 
                                             step={50}
-                                            onChangeEnd={(val) => setSliderValue(val)}
+                                            onChangeEnd={(val) => setSliderValue(val * 1000)}
                                             w='87%'
                                             alignSelf='center'
                                             mt={5}
@@ -201,13 +202,16 @@ const ProductStore = (props) => {
                                             <Text flex={1} pl={1}>200</Text>
                                         </Flex>
 
-                                        <Input type={'number'} placeholder='min' value={sliderValue[0]}/>
-                                        <Input type={'number'} placeholder='max' value={sliderValue[1]}/>
+                                        <Flex align='center'>
+                                            <Text flex={3}>MIN</Text>
+                                            <Input flex={7} type={'number'} defaultValue={0} value={sliderValue[0]} onChange = {(event) => setSliderValue([event.target.value, sliderValue[1]])}/>
+                                        </Flex>
 
-                                        <HStack justify='center' align='center' spacing={5}>
-                                            <Button size='sm' onClick={() => {setSliderValue(0)}}>Reset</Button>
-                                            <Button size='sm' >Save</Button>
-                                        </HStack>
+                                        <Flex align='center'>
+                                            <Text flex={3}>MAX</Text>
+                                            <Input flex={7} type='number' defaultValue={0} value={sliderValue[1]} onChange = {(event) => setSliderValue([sliderValue[0], event.target.value])}/>
+                                        </Flex>
+                                        <Button hidden={sliderValue[0] && sliderValue[1] > 0 ? false : true} colorScheme="yellow" ml={3} size='xs' onClick={() => {setSliderValue([0,0])}}>Reset</Button>
                                     </Stack>
                                 </AccordionPanel>
                             </AccordionItem>
