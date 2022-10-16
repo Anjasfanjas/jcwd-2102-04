@@ -86,3 +86,31 @@ a {
   }
   
 }
+
+.labelPlaceholder {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  color: rgb(109, 109, 109);
+  text-transform: capitalize;
+  transition: top 0.3s;
+  padding: 0;
+}
+
+.inputPlaceholder:focus + .labelPlaceholder,
+.inputPlaceholder:valid + .labelPlaceholder {
+  top: -10px;
+  background-color: #f7fafc;
+  z-index: 100;
+  font-size: small;
+}
+
+.sidebar-items:not(:last-child) {
+  margin-bottom: 1.5em;
+}
+
+@media only screen and (max-width: 767px) {
+  .sidebar-items {
+    margin-bottom: 0 !important;
+  }
+}
