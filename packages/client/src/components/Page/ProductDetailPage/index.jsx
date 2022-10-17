@@ -122,7 +122,7 @@ const ProductDetail = () => {
                     </HStack>
 
                     <HStack>
-                        <Button disabled={quantity <= 0 ? true : false} colorScheme="green" justifyContent='space-evenly' onClick={addToCart}>
+                        <Button disabled={quantity <= 0 || !userSelector?.id ? true : false} colorScheme="green" justifyContent='space-evenly' onClick={addToCart}>
                             <Icon as={BiCartAlt} mr={2}/>
                             <Text>Add to Cart</Text>
                         </Button>

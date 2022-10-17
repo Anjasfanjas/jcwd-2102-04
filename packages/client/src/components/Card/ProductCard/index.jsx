@@ -1,4 +1,4 @@
-import { Button, GridItem, HStack, Link, Stack, Text, useToast, VStack } from "@chakra-ui/react"
+import { Button, GridItem, HStack, Link, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
@@ -11,6 +11,7 @@ const ProductCard = (props) => {
     const userSelector = useSelector((state) => {return state.auth})
     const autoRender = useSelector((state) => state.render)
     const dispatch = useDispatch()
+    const [ onHover, setOnHover ] = useState(false)
     const { 
         product_name, 
         product_image, 
@@ -51,6 +52,16 @@ const ProductCard = (props) => {
         }
     }
 
+    const hoverWhenNotLogin = () => {
+        return (
+            toast({
+                title: `you need to loggin`,
+                status: 'warning',
+                duration: 1000
+            })
+        )
+    }
+
     return (
         <GridItem>
             <Stack w='full' h='full' borderRadius='.5em' className='product-card' cursor='pointer' bgColor='white'>
@@ -79,21 +90,23 @@ const ProductCard = (props) => {
                             <Text fontWeight='bold'>{Number(product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Stack>
                     </Link>
-
-                    <Button 
-                        w='full' 
-                        borderBottomRadius={'.5em'} 
-                        borderTopRadius={0} 
-                        bgColor= {color} 
-                        color='white'
-                        _hover={{
-                            backgroundColor: "#e3eeee",
-                            color: color
-                        }}
-                        onClick={() => {addToCart()}}
-                    >
-                        Add to Cart
-                    </Button>
+                    <Tooltip label={"you need to login"}>
+                        <Button 
+                            w='full' 
+                            borderBottomRadius={'.5em'} 
+                            borderTopRadius={0} 
+                            bgColor= {color} 
+                            color='white'
+                            _hover={{
+                                backgroundColor: "#e3eeee",
+                                color: color,
+                            }}
+                            disabled={ userSelector?.id ? false : true}
+                            onClick={() => {addToCart()}}
+                        >
+                            Add to Cart
+                        </Button>
+                    </Tooltip>
                 </VStack>
             </Stack>
         </GridItem>

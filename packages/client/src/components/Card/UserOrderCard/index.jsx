@@ -172,7 +172,7 @@ const UserOrderCard = (props) => {
                         <Divider borderColor='#005E9D'/>
                 </HStack> 
 
-                <vStack w='full' spacing={0}>
+                <VStack w='full' spacing={0}>
                     <Flex justify='center' w='full' py={0} px={2} fontSize={14}>
                         <Text flex={8} ml={3}>Total Belanja</Text>
                         <Text flex={2} align='end'>{Number(total_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
@@ -185,7 +185,7 @@ const UserOrderCard = (props) => {
                         <Text mt={2} flex={8}>TOTAL ORDER</Text>
                         <Text mt={2} flex={2} align='end'>{(Number(total_price) + Number(shipping_price)).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                     </Flex>
-                </vStack>
+                </VStack>
 
             </Box>
         </Grid>
