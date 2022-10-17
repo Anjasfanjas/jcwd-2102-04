@@ -482,6 +482,7 @@ const userController = {
 
             await User_address.create({
                 ...req.body,
+                isDefault: 0
             });
 
             res.status(200).json({
