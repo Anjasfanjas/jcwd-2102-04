@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { axiosInstance } from "../../../library/api";
+import render_types from "../../../redux/reducers/types/render";
 import qs from "qs";
 import axios from "axios";
 import * as Yup from 'yup'
@@ -15,13 +16,13 @@ const ModalEditAddress = (props) => {
     const [ dataProvince, setDataProvince ] = useState([])
     const [ provinceName, setProvinceName ] = useState()
     const [ cityName, setCityName ] = useState()
+
     const dispatch = useDispatch()
     const toast = useToast()
-
     const userSelector = useSelector((state) => {return state.auth})
     const autoRender = useSelector((state) => {return state.render})
 
-    const { name, phone_number, address_line, province, city, post_code, is_default } = props
+    const { name, phone_number, address_line, province, city, post_code, is_default, province_id, city_id } = props
     
     const render_city_name = async () => {
         try {
@@ -46,21 +47,26 @@ const ModalEditAddress = (props) => {
 
     const optionCity = () => {
         return dataCity?.map((val) => {
-            return (
-                <>
-                    <option value={val.id}>{val.city_name}</option>
-                </>
-            )
+            if(val.province_id == formik.values.province_id){
+                return (
+                    <>
+                        <option value={val.city_id}>{val.city_name}</option>
+                    </>
+                )
+            }
         })
     }
 
     const optionCodePost = () => {
         return dataCity?.map((val) => {
-            return (
-                <>
-                    <option value={val.postal_code}>{val.postal_code}</option>
-                </>
-            )
+            if (val.city_id == formik.values.city_id){
+                return (
+                    <>
+                        <option value={val.postal_code}>{val.postal_code}</option>
+                    </>
+                )
+            } 
+            
         })
     }
     
@@ -77,7 +83,7 @@ const ModalEditAddress = (props) => {
 
     const province_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
                 setProvinceName(val.data.rajaongkir.results.province)
             }) 
 
@@ -88,45 +94,43 @@ const ModalEditAddress = (props) => {
 
     const city_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
-                setCityName(val.data.rajaongkir.results.city)
+            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+                setCityName(val.data.rajaongkir.results.city_name)
             }) 
 
         } catch (error) {
             console.log(error)
         }
     }
+
     
     const formik = useFormik({
         initialValues: {
-            phone_number : '',
-            name: '',
-            province: '',
-            province_id: '',
-            city: '',
-            city_id: '',
-            post_code: '',
-            address_line: '',
+            phone_number : phone_number,
+            name: name,
+            province: province,
+            province_id: province_id,
+            city: city,
+            city_id: city_id,
+            post_code: post_code,
+            address_line: address_line,
         },
 
         validationSchema: Yup.object().shape({
             name: Yup.string()
-            .required("Your full name can not be empty ")
-            .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
+            .required("Your full name can not be empty "),
 
             phone_number: Yup.string()
             .required('Phone number is required')
-            .max(12, 'too long! caannot be more than 12 number')
         }),
 
         validateOnChange: false,
+
         onSubmit: async () => {
             const {
                 phone_number,
                 name,
-                province,
                 province_id,
-                city,
                 city_id,
                 post_code,
                 address_line,
@@ -134,18 +138,20 @@ const ModalEditAddress = (props) => {
 
             const body ={
                 phone_number,
-                name,
+                city: cityName,
                 province: provinceName,
+                name,
                 province_id,
                 city_id,
-                city: cityName,
                 post_code,
                 address_line,
                 user_id: userSelector?.id,
             }
 
+            console.log(body)
+
             try {
-                await axiosInstance.patch(`/user/address/${userSelector?.id}`, qs.stringify(body)).then((res) => {
+                await axiosInstance.patch(`/user/address/${userSelector?.id}`, qs.stringify(body)).then(() => {
                     toast({
                         title: 'Your address has been added',
                         status: 'success',
@@ -185,8 +191,7 @@ const ModalEditAddress = (props) => {
         render_province()
         province_name()
         city_name()
-
-    }, [formik.values.province])
+    }, [formik.values.province_id, formik.values.city_id])
 
 
     return (

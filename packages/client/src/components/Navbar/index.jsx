@@ -111,13 +111,13 @@ const Navbar = () => {
                                 </MenuButton>
 
                                 <MenuList>
-                                    <Link href='user/profile' _hover={{textDecoration: 'none'}}>
+                                    <Link onClick={() => router.push("/user/profile")} _hover={{textDecoration: 'none'}}>
                                         <MenuItem>
                                             Profile
                                         </MenuItem>
                                     </Link>
 
-                                    <Link href='user/order' _hover={{textDecoration: 'none'}}>
+                                    <Link onClick={() => router.push("/user/order")} _hover={{textDecoration: 'none'}}>
                                         <MenuItem>
                                             Order Histories
                                         </MenuItem>

@@ -81,6 +81,8 @@ const UserProfile = () => {
                         post_code = {val.post_code}
                         is_default = {val.isDefault}
                         address_id = {val.id}
+                        city_id = {val.city_id}
+                        province_id = {val.province_id}
                     />
                 </>
             )

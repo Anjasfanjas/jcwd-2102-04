@@ -4,6 +4,7 @@ import moment from "moment/moment"
 import Image from "next/image"
 import { useEffect } from "react"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 import { axiosInstance } from "../../../../lib/hoc/api"
 import CancleButton from "../../Button/CancleButton"
 import AdminModalCheckPayment from "../../Modal/AdminCheckUploadPayment"
@@ -13,6 +14,7 @@ const AdminOrderCard = (props) => {
     const {order_status, date, total_price, no_invoice, product_order, order_id, shipping_price, user_address_id, user_prescription, user_prescription_url } = props
     const [ product, setProduct ] = useState(product_order)
     const [ recentSeeMore, setRecentSeeMore ] = useState(false)
+    const autoRender = useSelector((state) => state.render)
 
     const renderBoxProduct = () => {
         return (
@@ -22,7 +24,7 @@ const AdminOrderCard = (props) => {
                         <Center flex={1}>
                         { user_prescription === false ? (
                             <Image
-                                src={product ? `http:/${product[0].product.product_imgs[0].img_url}` : ""}
+                                src={product ? `http:/${product[0]?.product.product_imgs[0].img_url}` : ""}
                                 alt=""
                                 width={120}
                                 height={120}
@@ -40,15 +42,15 @@ const AdminOrderCard = (props) => {
                         <VStack flex={3}>
                             <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
                                 <Text>{ user_prescription === false ?
-                                    product[0].product.product_name : 'RESEP DOKTER'
+                                    product[0]?.product.product_name : 'RESEP DOKTER'
                                 }</Text>
                             </Flex>
-                            <Text hidden={user_prescription === false ? false : true} w='full' flex={1} align='left'>{product[0].quantity} X {Number(product[0].product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text hidden={user_prescription === false ? false : true} w='full' flex={1} align='left'>{product[0]?.quantity} X {Number(product[0]?.product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </VStack>
     
                         <VStack align='start' fontWeight='bold' hidden={user_prescription === false ? false : true}>
                             <Text w='full' mt={2} flex={8}>TOTAL HARGA</Text>
-                            <Text w='full' mt={2} flex={2}>{Number(product[0].quantity * product[0].product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
+                            <Text w='full' mt={2} flex={2}>{Number(product[0]?.quantity * product[0]?.product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </VStack>
                     </HStack>
                 </>

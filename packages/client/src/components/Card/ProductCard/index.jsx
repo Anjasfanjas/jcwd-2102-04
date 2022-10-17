@@ -90,7 +90,7 @@ const ProductCard = (props) => {
                             <Text fontWeight='bold'>{Number(product_price).toLocaleString('id', { style: 'currency', currency: 'IDR' })}</Text>
                         </Stack>
                     </Link>
-                    <Tooltip label={"you need to login"}>
+                    <Tooltip label={"you need to login"} hidden={userSelector?.id ? true : false}>
                         <Button 
                             w='full' 
                             borderBottomRadius={'.5em'} 

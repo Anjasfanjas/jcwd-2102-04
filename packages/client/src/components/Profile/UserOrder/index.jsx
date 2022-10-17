@@ -30,6 +30,7 @@ const UserOrder = () => {
     })
 
     const userSelector = useSelector((state) => {return state.auth})
+    const autoRender = useSelector((state) => {return state.render})
 
     const fetchUserOrder = async(filter) => {
         let order = ""
@@ -92,7 +93,7 @@ const UserOrder = () => {
                     <Tab 
                         _selected={{ color: "#005E9D", p: "5px", borderTop: "solid 2px #005E9D"}} 
                         fontSize={14}
-                        onClick ={() => {setRecentStatus(val.status_name)}}
+                        onClick ={() => {(setRecentStatus(val.status_name), setPage(1))}}
                     >
                         {val.status_name}
                     </Tab>
@@ -130,7 +131,7 @@ const UserOrder = () => {
     useEffect(() => {
         fetchUserOrder()
         fetchOrderStatus()
-    }, [page, recentStatus, formik.values.dateFrom, formik.values.dateTo, formik.values.search, router?.isReady, search ])
+    }, [autoRender , page, recentStatus, formik.values.dateFrom, formik.values.dateTo, formik.values.search, router?.isReady, search ])
 
     return (
         <VStack w="54em" spacing={3} p={1}>

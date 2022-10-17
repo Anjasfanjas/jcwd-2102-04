@@ -5,7 +5,7 @@ import ModalEditAddress from "../../Modal/ModalEditAddress"
 
 
 const AddressCard = (props) => {
-    const { name, phone_number, address_line, province, city, post_code, is_default, address_id } = props
+    const { name, phone_number, address_line, province, city, post_code, is_default, address_id, province_id, city_id } = props
     return (
         <Box p={3} boxShadow='xl' borderRadius={5} minW='full' >
             <VStack minW='full'>
@@ -38,6 +38,8 @@ const AddressCard = (props) => {
                                     city = {city}
                                     post_code = {post_code}
                                     address_line = {address_line}
+                                    city_id = {city_id}
+                                    province_id = {province_id}
                                 />
                             </Tooltip>
                             <ModalDeleteAddress 

@@ -8,6 +8,8 @@ import { BiSearchAlt, BiCartAlt, BiLogIn } from 'react-icons/bi'
 import { useRouter } from "next/router"
 import { useFormik } from "formik"
 import moment from "moment"
+import { useSelector } from "react-redux"
+import { CloseIcon } from "@chakra-ui/icons"
 
 
 const AdminUserOrder = () => {
@@ -19,6 +21,7 @@ const AdminUserOrder = () => {
     const router = useRouter()
 
     const { search } = router.query
+    const autoRender = useSelector((state) => state.render)
     console.log(search)
 
 
@@ -84,10 +87,10 @@ const AdminUserOrder = () => {
             order = 'createdAt';
             sort = "DESC"
         } else if (filter == 'price_desc') {
-            order = 'sell_price';
+            order = 'order_price';
             sort = "DESC"
         } else if (filter == 'price_asc') {
-            order = 'sell_price';
+            order = 'order_price';
             sort = "ASC"
         } else {
             order = '';
@@ -177,11 +180,13 @@ const AdminUserOrder = () => {
         })
     }
 
+    console.log(formik.values)
+
     useEffect(() => {
         fetchAllOrder()
         fetchOrderStatus()
         fetchPrescriptionOrder()
-    }, [recentStatus, router?.isReady, search, page, formik.values.dateFrom, formik.values.dateTo])
+    }, [recentStatus, router?.isReady, search, page, formik.values.dateFrom, formik.values.dateTo, autoRender])
 
     return (
         <VStack
@@ -209,15 +214,15 @@ const AdminUserOrder = () => {
                         <InputGroup>
                             <Input
                                 type={"text"}
-                                defaultValue={formik.values.search ? formik.values.search : null}
+                                value={formik.values.search}
                                 placeholder={"Search..."}
                                 bgColor={"white"}
                                 onChange = {(event) => {formik.setFieldValue('search', event.target.value)}}
                             />
-                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => {
-                                router.push(`/admin/user/order?search=${formik.values.search}`)
+                            <InputRightElement cursor='pointer' bgColor='#F0BB62' borderEndRadius={5} onClick={() => { search ? 
+                                (formik.setFieldValue('search', ""), router.push("/admin/user/order")) : router.push(`/admin/user/order?search=${formik.values.search}`)
                             }}>
-                                <BiSearchAlt />
+                                {search ? <CloseIcon fontSize={12}/> : <BiSearchAlt/>}
                             </InputRightElement>
                         </InputGroup>
                     </FormControl>
@@ -238,6 +243,7 @@ const AdminUserOrder = () => {
                         <Input
                             size="md"
                             type="date"
+                            value={formik.values.dateFrom}
                             onChange = {(event) => {
                                 formik.setFieldValue('dateFrom', moment(event.target.value).format("YYYY-MM-DD")); 
                                 formik.values.dateTo ? fetchAllOrder()
@@ -251,14 +257,14 @@ const AdminUserOrder = () => {
                         <Input
                             size="md"
                             type="date"
-                            defaultValue=''
+                            value={formik.values.dateTo}
                             onChange = {(event) => {
                                 formik.setFieldValue('dateTo', moment(event.target.value).format("YYYY-MM-DD"));
                                 formik.values.dateFrom ? fetchAllOrder() : null
                             }}
                         />
                     </HStack>
-                    <Button onClick={() => {formik.setFieldValue('dateFrom', ''); formik.setFieldValue('dateTo', '') }}>
+                    <Button hidden={formik.values.dateFrom && formik.values.dateTo ? false : true} onClick={() => {formik.setFieldValue('dateFrom', ''); formik.setFieldValue('dateTo', '') }}>
                         Reset
                     </Button>
                 </Flex>

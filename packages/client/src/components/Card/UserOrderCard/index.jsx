@@ -8,16 +8,20 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { axiosInstance } from "../../../lib/hoc/api"
 import ModalUploadPayment from "../../Modal/ModalUploadPayment"
-
-
+import render_types from "../../../redux/reducers/types/render"
+import { useDispatch, useSelector } from "react-redux"
 
 const UserOrderCard = (props) => {
     const { product_name, product_price, quantity, order_status, total_price, no_invoice, product_img, date, order_id, data_product, shipping_price } = props
     const [ recentSeeMore, setRecentSeeMore ] = useState(false)
     const [ product, setProduct ] = useState([])
 
+    const autoRender = useSelector((state) => state.render)
+
+
     const router = useRouter()  
     const toast = useToast()
+    const dispatch = useDispatch()
 
     const fetchOrderDetail = async() => {
         try {
@@ -33,16 +37,23 @@ const UserOrderCard = (props) => {
     console.log(data_product)
     console.log(order_id)
 
-    const changeOrderStatus = async() => {
+    const changeOrderStatus = async(order_status_id) => {
         try {
             await axiosInstance.patch("/order/update/status", QueryString.stringify({
                 order_id, 
-                order_status_id : 6
+                order_status_id : order_status_id
             })).then(() => {
                 toast({
-                    title: 'terimakasih sudah mengkonfirmasi',
-                    status: 'success',
+                    title: order_status_id === 6 ?'terimakasih sudah mengkonfirmasi' : "order anda sudah di cancle",
+                    status: order_status_id === 6 ? 'success' : 'error',
                     duration: 1000
+                })
+
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
                 })
             })
         } catch (error) {
@@ -129,7 +140,7 @@ const UserOrderCard = (props) => {
         return (
             <HStack>
                 { order_status === "Menunggu Pembayaran" ? (
-                        <Button size='xs' colorScheme="red">Cancle Order</Button>
+                        <Button onClick={() => changeOrderStatus(4)} size='xs' colorScheme="red">Cancle Order</Button>
                     ) : null
                 }
 
@@ -139,7 +150,7 @@ const UserOrderCard = (props) => {
                             size = 'xs'
                         />
                     ) : order_status === "Dikirim" ? (
-                        <Button onClick={() => changeOrderStatus()} size='xs' colorScheme="green">Konfirmasi</Button>
+                        <Button onClick={() => changeOrderStatus(6)} size='xs' colorScheme="green">Konfirmasi</Button>
                     ) : null
                 }
             </HStack>
@@ -148,7 +159,7 @@ const UserOrderCard = (props) => {
 
     useEffect(() => {
         fetchOrderDetail()
-    }, [order_id])
+    }, [order_id, autoRender])
 
     return (
         <Grid templateColumns = 'repeat(1, 1fr)' gap={3} mb={5}> 
@@ -168,7 +179,7 @@ const UserOrderCard = (props) => {
 
                 <HStack w='full' textAlign='center'>
                         <Divider borderColor='#005E9D'/>
-                        <Text w='50%' cursor='pointer' fontSize={16} onClick ={() => {setRecentSeeMore(!recentSeeMore)}}>{recentSeeMore === false ? `see more ${order_id}` : `see less ${order_id}`}</Text>
+                        <Text w='50%' cursor='pointer' fontSize={16} onClick ={() => {setRecentSeeMore(!recentSeeMore)}}>{recentSeeMore === false ? `see more` : `see less`}</Text>
                         <Divider borderColor='#005E9D'/>
                 </HStack> 
 

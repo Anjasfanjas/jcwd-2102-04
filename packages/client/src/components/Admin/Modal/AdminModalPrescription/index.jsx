@@ -21,7 +21,7 @@ import { axiosInstance } from "../../../../library/api";
 import AdminAddProductOrder from "../AdminAddProductOrder";
 import { GiCardExchange } from "react-icons/gi"
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const AdminModalPrescription = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,6 +33,7 @@ const AdminModalPrescription = (props) => {
 
     const autoRender = useSelector((state) => {return state.render})
     const toast = useToast()
+    const dispatch = useDispatch()
 
     const fetchAllProductName = async () => {
         try {
@@ -72,6 +73,27 @@ const AdminModalPrescription = (props) => {
                 console.log(res)
                 const data = res.data.rajaongkir.results[0]
                 setDeliveryOption(data.costs)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteOrderDetail = async(id) => {
+        try {
+            await axiosInstance.delete(`/order/delete/${id}`).then((res) => {
+                toast({
+                    title: `product ${id}, has been deleted`,
+                    status: "warning",
+                    duration: 1000
+                })
+
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
+                })
             })
         } catch (error) {
             console.log(error)
@@ -161,8 +183,7 @@ const AdminModalPrescription = (props) => {
                                                     return (
                                                         <Tr key={index}>
                                                             <Td>
-                                                                <Button size='sm' leftIcon = {<EditIcon size='sm'/>}></Button>
-                                                                <Button size='sm' leftIcon = {<DeleteIcon size='sm'/>}></Button>
+                                                                <Button onClick={() =>  deleteOrderDetail(val2.id)} size='sm' leftIcon = {<DeleteIcon size='sm'/>} m='auto'></Button>
                                                             </Td>
 
                                                             <Td>{val2.product.product_name}</Td>
@@ -194,7 +215,6 @@ const AdminModalPrescription = (props) => {
     }, [order_id])
    
     useEffect(() => {
-        console.log(autoRender)
         fetchAllProductName()
         fetchOrderDetail()
         

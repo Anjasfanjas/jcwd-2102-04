@@ -63,17 +63,15 @@ function AdminAddProductOrder(props) {
 
                 dispatch({
                     type: render_types.AUTO_RENDER,
-                    payload: res.data.user
+                    payload: {
+                        value : !autoRender.value
+                    }
                 })
 
+                onclose()
             })
         } catch (error) {
             console.log(error)
-            toast({
-                title: `something is not right, please check your input`,
-                status: 'error',
-                duration: 1000,
-            })
         }
     }
 
