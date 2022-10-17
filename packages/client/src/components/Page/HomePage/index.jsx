@@ -40,6 +40,7 @@ const HomePage = () => {
             await axiosInstance.get('/product/categories').then((res) => {
                 const data = res.data.result
                 setAllCategories(data)
+                console.log(data)
             })
         } catch (error) {
             console.log(error)
@@ -83,7 +84,7 @@ const HomePage = () => {
                     <Flex justify='space-between' w='75%' align='center' onClick={() => {router.push(`/store?category=${val.category}`)}} cursor='pointer'>
                         <Image
                             alt=""
-                            src={`http://${val.img_url}`}
+                            src={`https://${val.img_url}`}
                             width={50}
                             height={50}
                         />
@@ -120,7 +121,7 @@ const HomePage = () => {
                 <Box flex={ recProduct.length <= 1 ? 0 : 1} minW={ recProduct.length <= 1 ? "35%" : ""} mr={1}>
                     <ProductCard key={index}
                         product_id = {val.id}
-                        product_image = {`http://${val.product_imgs[0].img_url}`}
+                        product_image = {`https://${val.product_imgs[0].img_url}`}
                         product_name = {val.product_name}
                         product_category = {val.product_categories}
                         product_price = {Number(val.product_stocks[0].sell_price)}

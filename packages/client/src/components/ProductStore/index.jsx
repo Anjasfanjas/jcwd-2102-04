@@ -97,7 +97,7 @@ const ProductStore = (props) => {
                 <>
                     <ProductCard key={index}
                         product_id = {val.id}
-                        product_image = {`http://${val.product_imgs[0].img_url}`}
+                        product_image = {`https://${val.product_imgs[0].img_url}`}
                         product_name = {val.product_name}
                         product_category = {val.product_categories[0]?.category.category}
                         product_price = {Number(val.product_stocks[0].sell_price)}

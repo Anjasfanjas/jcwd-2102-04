@@ -148,6 +148,8 @@ const ModalAddress = () => {
                 user_id: userSelector?.id,
             }
 
+            console.log(body)
+
             try {
                 await axiosInstance.post(`/user/address`, qs.stringify(body)).then(() => {
                     toast({
@@ -189,7 +191,7 @@ const ModalAddress = () => {
         render_province()
         province_name()
         city_name()
-    }, [formik.values.province_id])
+    }, [formik.values.province_id, formik.values.city_id])
 
 
     return (

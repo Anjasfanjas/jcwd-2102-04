@@ -40,10 +40,6 @@ const OrderPage = () => {
         }
     }
 
-    const checkIsiOrder = () => {
-        cart.length < 1 ? router.push('/') : null
-    }
-
     const fetchDataCart = async() => {
         try {
             await axiosInstance.get(`/cart/${userSelector?.id}`).then((res) => {
@@ -57,7 +53,7 @@ const OrderPage = () => {
     }
 
     const renderDataCart = () => {
-        return cart.map((val) => {
+        return cart?.map((val) => {
             totalPrice += Number(val.price_total)
             return (
                 <>
@@ -143,7 +139,6 @@ const OrderPage = () => {
         fetchDataCart()
         renderDataCart()
         deliveryCost()
-
     }, [autoRender])
 
     useEffect(() => {

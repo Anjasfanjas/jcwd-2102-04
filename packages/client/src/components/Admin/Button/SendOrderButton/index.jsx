@@ -1,6 +1,6 @@
 import { Button, useToast } from "@chakra-ui/react"
 import QueryString from "qs"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { axiosInstance } from "../../../../lib/hoc/api"
 import render_types from "../../../../redux/reducers/types/render"
 
@@ -8,6 +8,7 @@ const SendOrderButton = (props) => {
     const  { size, order_id, daftar_product } = props
     const toast = useToast()
     const dispatch = useDispatch()
+    const autoRender = useSelector((state) => state.render)
     
     const updateStock = () => {
         daftar_product?.map( async (val) => {
@@ -35,6 +36,13 @@ const SendOrderButton = (props) => {
                     title: `order ${order_id} has ben send to user`,
                     status: 'success',
                     duration: 1000
+                })
+
+                dispatch({
+                    type: render_types.AUTO_RENDER,
+                    payload: {
+                        value : !autoRender.value
+                    }
                 })
             })
 

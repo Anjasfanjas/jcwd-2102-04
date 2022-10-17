@@ -13,5 +13,6 @@ router.patch("/update/status", orderController.changeOrderStatus)
 router.patch("/update/:order_id", orderController.updateOrder)
 router.get("/:order_id", orderController.getOrder)
 router.get("/detail/:order_id", orderController.getOrderDetail)
+router.delete("/delete/:id", orderController.adminDeleteOrderDetail)
 
 module.exports = router

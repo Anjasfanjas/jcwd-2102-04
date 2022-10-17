@@ -247,7 +247,7 @@ const orderController = {
                 ],
                 order: orderBy ?
                     orderBy == 'createdAt' && sort ? [[orderBy, sort]]
-                    : (orderBy == 'order_price' && sort ? [[orderBy, sort]] : null )
+                    : (orderBy == 'sell_price' && sort ? [[orderBy, sort]] : null )
                 : [['createdAt', 'DESC']]
             })
 
@@ -333,6 +333,26 @@ const orderController = {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
+                message: error.toString()
+            })
+        }
+    },
+
+    adminDeleteOrderDetail: async(req, res) => {
+        const { id } = req.params
+        console.log(req.query)
+        try {
+            const cartData = await Order_detail.destroy({
+                where: {
+                    id
+                }
+            })
+    
+            res.status(200).json({
+                message: `product ${id} has been deleted from cart}`,
+            })   
+        } catch (error) {
+            res.status(500).json({
                 message: error.toString()
             })
         }

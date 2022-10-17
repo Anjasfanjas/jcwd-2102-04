@@ -2,6 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
     Box,
     Button,
+    HStack,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -9,6 +10,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Text,
     useDisclosure,
     useToast,
     VStack,
@@ -18,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../library/api";
 import AddressCard from "../../Card/AddressCard";
 import render_types from "../../../redux/reducers/types/render";
+import ModalAddress from "../ModalAddress";
 
 const ModalChangeAddress = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -86,14 +89,10 @@ const ModalChangeAddress = (props) => {
                             })}
 
                             {userAddress.length < 3 ? (
-                                <Button
-                                    w='full'
-                                    leftIcon={<AddIcon />}
-                                    colorScheme="green"
-                                    
-                                >
-                                    Tambah Alamat
-                                </Button>
+                                <HStack bgColor='lightGrey' p={3} borderRadius='.5em' boxShadow='2xl'>
+                                    <Text>Tambah Alamat</Text>
+                                    <ModalAddress/>
+                                </HStack>
                             ) : null}
                         </VStack>
                     </ModalBody>

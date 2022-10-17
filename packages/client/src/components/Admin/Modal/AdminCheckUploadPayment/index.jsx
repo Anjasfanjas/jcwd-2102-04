@@ -179,8 +179,11 @@ const AdminModalCheckPayment = (props) => {
                 <ModalFooter>
                     <HStack>
                         <CancleButton size = 'md' order_id = {order_id}/>
-                        <ConfirmButton size = 'md' order_id = {order_id}/>
-                        <SendOrderButton size = 'md' order_id = {order_id} daftar_product={detailOrder} />
+
+                        {
+                            btn_title === "Buat Order" ? null : <ConfirmButton size = 'md' order_id = {order_id}/>
+                        }
+                        <SendOrderButton size = 'md' order_id = {order_id} daftar_product={detailOrder}/>
                     </HStack>
                 </ModalFooter>
                 </ModalContent>
