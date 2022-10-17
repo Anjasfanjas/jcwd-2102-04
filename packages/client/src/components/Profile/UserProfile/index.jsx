@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons"
+import { DeleteIcon, EditIcon, AddIcon, WarningTwoIcon } from "@chakra-ui/icons"
 import { Avatar, Box, Button, useToast, Flex, FormControl, FormHelperText, Grid, GridItem, HStack, Icon, Input, InputGroup, InputRightElement, MenuDivider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, Tooltip, useDisclosure, VStack } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import { GrUserSettings } from "react-icons/gr"
@@ -232,6 +232,29 @@ const UserProfile = () => {
             console.log(error)
         }
     }
+
+    const reLink = async () => {
+        // ini buat ngirim ulang link jwt kalo udah expired
+        try {
+          let body = {
+            id: userSelector?.id,
+            username: userSelector?.username,
+            email: userSelector?.email,
+            fullname: userSelector?.fullname,
+            // phone_number: userSelector?.phone_number,
+          };
+    
+          await axiosInstance.post("/user/new-link", qs.stringify(body));
+          toast({
+            tittle: "new link sending successfully",
+            description: "please check your email",
+            status: "success",
+            duration: 1000,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
     
     
     useEffect(() => {
@@ -265,6 +288,26 @@ const UserProfile = () => {
                         <Text mr={1}>Setting</Text>
                         <RiSettings2Line/>
                     </Flex>
+
+                    {!userSelector.is_verified ? (
+                        <Button
+                        ml={2}
+                        color="white"
+                        fontSize={14}
+                        onClick={() => reLink()}
+                        bgColor={"orange.500"}
+                        _hover={{
+                            color: "orange",
+                            bgColor: "white",
+                            border: "2px solid orange",
+                        }}
+                        leftIcon={<WarningTwoIcon boxSize={4} />}
+                        >
+                        {" "}
+                        Send Verification Link
+                        {userSelector.is_verified} {/* // masih menjadi misteri */}
+                        </Button>
+                    ) : null}
                 </HStack>
             </Box>
             <Box w='full' h={1} borderBottom="2px" borderColor='#005E9D' mt={2} boxShadow='dark-lg'></Box>

@@ -33,7 +33,6 @@ import { useEffect } from "react";
 import { axiosInstance } from "../../library/api";
 import { useState } from "react";
 import qs from "qs";
-import M_avatar from "../modals/M_avatar";
 import auth_types from "../../redux/reducers/types/auth";
 import { WarningIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -226,7 +225,6 @@ const ProfileSetting = () => {
           <Text mb={1}>{formik.values.username}</Text>
 
           {/* mengganti avatar di Modals */}
-          <M_avatar />
         </Box>
 
         {!userSelector.is_verified ? (

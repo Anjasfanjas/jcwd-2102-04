@@ -98,10 +98,10 @@ const ProfilePage = () => {
   };
 
   const renderUserPost = () => {
-    return allPost?.map((val) => {
+    return allPost?.map((val, index) => {
       if (val.user_id == user_id) {
         return (
-          <GridItem w={300} h={300}>
+          <GridItem w={300} h={300} key={index}>
             <Image src={"http://" + val.image_url} width={300} height={300} />
           </GridItem>
         );
