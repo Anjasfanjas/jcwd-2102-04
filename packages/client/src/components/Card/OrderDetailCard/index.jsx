@@ -9,7 +9,7 @@ const OrderDetailCard = (props) => {
                 <HStack>
                     <Text mr={3} p={1} my={1} fontWeight='bold' fontSize={14} borderBottom='1px solid #b41974' borderEnd='1px solid #b41974' borderRadius={4}>{nomor}</Text>
                     <Image
-                        src={`http://${image_url}`}
+                        src={`https://${image_url}`}
                         alt=""
                         width={120}
                         height={120}

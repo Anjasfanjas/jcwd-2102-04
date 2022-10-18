@@ -30,6 +30,7 @@ import CartCard from "../../Card/CartCard";
 import { DeleteIcon } from "@chakra-ui/icons";
 import render_types from "../../../redux/reducers/types/render";
 import qs from "qs";
+import { useRouter } from "next/router";
 
 const DrawerCart = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,6 +38,7 @@ const DrawerCart = () => {
     const [ totalCartPrice, setTotalCartPrice ] = useState(0)
     const btnRef = React.useRef();
     const toast = useToast()
+    const router = useRouter()
     
     const userSelector = useSelector((state) =>  state.auth)
     const autoRender = useSelector((state) => state.render)

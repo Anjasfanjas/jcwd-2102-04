@@ -44,7 +44,7 @@ const AdminPrescriptionCard = (props) => {
                 <HStack display='flex' px={2} spacing={5}> 
                     <Box alignItems='center'>
                         <Image
-                            src={prescription_img ? `http:/${prescription_img}` : ""}
+                            src={prescription_img ? `https:/${prescription_img}` : ""}
                             alt=""
                             width={120}
                             height={120}

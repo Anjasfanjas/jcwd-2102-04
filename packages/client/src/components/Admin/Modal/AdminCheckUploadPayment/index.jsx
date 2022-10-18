@@ -116,7 +116,7 @@ const AdminModalCheckPayment = (props) => {
                     <HStack align='start'>
                         <VStack align='start'>
                             <Image
-                                src={ paymentData ? "http:/" + paymentData?.payment_reciep_url : ''}
+                                src={ paymentData ? "https:/" + paymentData?.payment_reciep_url : ''}
                                 alt=''
                                 width={350}
                                 height={500}

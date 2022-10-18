@@ -35,16 +35,16 @@ function AuthProvider({ children }) {
         //  setTimeout(()=> { fetchData() } , 1500)
     }, []);
 
-    if (!isAuthChecked) {
+    if (!isAuthChecked)
         return
         (
             <Center>
                 <Spinner />
             </Center>
         )
-    }
+    
 
-    return children;
+    return (children);
 }
 
 export default AuthProvider;
