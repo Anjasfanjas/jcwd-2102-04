@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
 
   images: {
-    domains: ['localhost', "", '']
+    domains: ['localhost', "", 'jcwd210204api.purwadhikabootcamp.com', '']
   }
 }
 
