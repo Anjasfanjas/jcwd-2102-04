@@ -1,5 +1,4 @@
-import { Box, Button, Center, Flex, HStack, Icon, Input, PinInput, PinInputField, Stack, Text, useToast, VStack } from "@chakra-ui/react"
-import Image from "next/image"
+import { Box, Button, Center, Flex, HStack, Icon, Input, PinInput, PinInputField, Stack, Text, useToast, VStack, Image } from "@chakra-ui/react"
 import { useCounter } from "@chakra-ui/counter"
 import { HiPlus, HiMinus } from "react-icons/hi"
 import { BiCartAlt} from "react-icons/bi"
@@ -88,7 +87,7 @@ const ProductDetail = () => {
                 <VStack flex={1} p={5}>
                     <Image
                         alt='gambar product'
-                        src={product ?  `http://${product?.product_imgs[0]?.img_url}` : ""}
+                        src={product ?  `https://${product?.product_imgs[0]?.img_url}` : ""}
                         width={200}
                         height={200}
                     />
