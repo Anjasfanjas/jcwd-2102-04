@@ -115,7 +115,7 @@ const UserOrderCard = (props) => {
                                     }
                                 </Box>
 
-                                    <Text>{`https://${val.product.product_imgs[0]?.img_url}`}</Text>
+//                                     <Text>{`https://${val.product.product_imgs[0]?.img_url}`}</Text>
 
                                 <VStack flex={3}>
                                     <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
