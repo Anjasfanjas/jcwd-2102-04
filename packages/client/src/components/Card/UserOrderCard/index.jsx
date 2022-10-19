@@ -1,7 +1,6 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, Button, Center, Divider, Flex, Grid, HStack, Text, useToast, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Divider, Flex, Grid, HStack, Text, useToast, VStack, Image } from "@chakra-ui/react"
 import moment from "moment/moment"
-import Image from "next/image"
 import { useRouter } from "next/router"
 import QueryString from "qs"
 import { useEffect } from "react"

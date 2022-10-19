@@ -122,7 +122,7 @@ const OrderPage = () => {
         }
 
         try {
-            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${addressDefault?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}, qs.stringify(body)).then((res) => {
+            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${addressDefault?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}, qs.stringify(body)).then((res) => {
                 console.log(res)
                 const data = res.data.rajaongkir.results[0]
                 setDeliveryOption(data.costs)

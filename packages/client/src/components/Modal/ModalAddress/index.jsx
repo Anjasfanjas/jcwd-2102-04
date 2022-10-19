@@ -24,7 +24,7 @@ const ModalAddress = () => {
     
     const render_city_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/city?province=${formik.values.province}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/city?province=${formik.values.province}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setDataCity([...val.data.rajaongkir.results])
             }) 
 
@@ -70,7 +70,7 @@ const ModalAddress = () => {
     
     const render_province = async () => {
         try {
-            await axios.get('https://api.rajaongkir.com/starter/province' , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get('https://api.rajaongkir.com/starter/province' , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setDataProvince([...val.data.rajaongkir.results])
             }) 
 
@@ -81,7 +81,7 @@ const ModalAddress = () => {
 
     const province_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province_id}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setProvinceName(val.data.rajaongkir.results.province)
             }) 
 
@@ -92,7 +92,7 @@ const ModalAddress = () => {
 
     const city_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setCityName(val.data.rajaongkir.results.city_name)
             }) 
 

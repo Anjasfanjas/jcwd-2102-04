@@ -1,5 +1,4 @@
-import { Button, GridItem, HStack, Link, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
-import Image from "next/image"
+import { Button, GridItem, HStack, Link, Stack, Text, Tooltip, useToast, VStack, Image } from "@chakra-ui/react"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
 import { useDispatch, useSelector } from "react-redux"

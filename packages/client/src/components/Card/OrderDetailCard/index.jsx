@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from "@chakra-ui/react"
-import Image from "next/image"
+import { Image } from "@chakra-ui/react"
 
 const OrderDetailCard = (props) => {
     const { product_name, nomor, product_price, quantity, image_url, product_unit, total_price, user_id, cart_id } = props
