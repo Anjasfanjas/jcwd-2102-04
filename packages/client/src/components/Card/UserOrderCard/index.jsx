@@ -72,7 +72,7 @@ const UserOrderCard = (props) => {
                             ) : 
                             (
                                 <Image
-                                    src={ product_img ? `http:/${product_img}` : ""}
+                                    src={ product_img ? `https:/${product_img}` : ""}
                                     alt=""
                                     width={120}
                                     height={120}
@@ -108,7 +108,7 @@ const UserOrderCard = (props) => {
                                         ) : 
                                         (
                                             <Image
-                                                src={`http:/${val.product.product_imgs[0].img_url}`}
+                                                src={`https:/${val.product.product_imgs[0].img_url}`}
                                                 alt=""
                                                 width={120}
                                                 height={120}

@@ -22,12 +22,13 @@ const ModalEditAddress = (props) => {
     const userSelector = useSelector((state) => {return state.auth})
     const autoRender = useSelector((state) => {return state.render})
 
-    const { name, phone_number, address_line, province, city, post_code, is_default, province_id, city_id } = props
+    const { name, phone_number, address_line, province, city, post_code, is_default, province_id, city_id, address_id } = props
     
     const render_city_name = async () => {
         try {
             await axios.get(`https://api.rajaongkir.com/starter/city?province=${formik.values.province}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}).then ((val) => {
                 setDataCity([...val.data.rajaongkir.results])
+                console.log(dataCity)
             }) 
 
         } catch (error) {
@@ -74,6 +75,7 @@ const ModalEditAddress = (props) => {
         try {
             await axios.get('https://api.rajaongkir.com/starter/province' , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
                 setDataProvince([...val.data.rajaongkir.results])
+                console.log(dataProvince)
             }) 
 
         } catch (error) {
@@ -106,23 +108,23 @@ const ModalEditAddress = (props) => {
     
     const formik = useFormik({
         initialValues: {
-            phone_number : phone_number,
-            name: name,
-            province: province,
-            province_id: province_id,
-            city: city,
-            city_id: city_id,
-            post_code: post_code,
-            address_line: address_line,
+            phone_number : '',
+            name: '',
+            province: '',
+            province_id: '',
+            city: '',
+            city_id: '',
+            post_code: '',
+            address_line: '',
         },
 
-        validationSchema: Yup.object().shape({
-            name: Yup.string()
-            .required("Your full name can not be empty "),
+        // validationSchema: Yup.object().shape({
+        //     name: Yup.string()
+        //     .required("Your full name can not be empty "),
 
-            phone_number: Yup.string()
-            .required('Phone number is required')
-        }),
+        //     phone_number: Yup.string()
+        //     .required('Phone number is required')
+        // }),
 
         validateOnChange: false,
 
@@ -151,9 +153,9 @@ const ModalEditAddress = (props) => {
             console.log(body)
 
             try {
-                await axiosInstance.patch(`/user/address/${userSelector?.id}`, qs.stringify(body)).then(() => {
+                await axiosInstance.patch(`/user/address/${address_id}`, qs.stringify(body)).then(() => {
                     toast({
-                        title: 'Your address has been added',
+                        title: 'Your address has been edited',
                         status: 'success',
                         duration: 1000
                     })
@@ -210,7 +212,7 @@ const ModalEditAddress = (props) => {
                             <HStack w='full' spacing={3}>
                                 <FormControl>
                                     <FormLabel w='full'>
-                                        <Input defaultValue={name} type='text' onChange={(event) => formik.setFieldValue('fullname', event.target.value)} />
+                                        <Input defaultValue={name} type='text' onChange={(event) => formik.setFieldValue('name', event.target.value)} />
                                     </FormLabel>
                                 </FormControl>
 

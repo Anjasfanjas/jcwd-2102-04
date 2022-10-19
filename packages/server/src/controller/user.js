@@ -540,7 +540,7 @@ const userController = {
 
     editUserAddress: async (req, res) => {
         try {
-            const { user_id } = req.params;
+            const { id } = req.params;
             const {
                 address_line,
                 province,
@@ -552,15 +552,15 @@ const userController = {
 
             await User_address.update(
                 {
-                    where: { user_id },
+                    ...req.body,
                 },
                 {
-                    ...req.body,
-                }
+                    where: { id },
+                },
             );
 
             res.status(200).json({
-                message: `user addres from user id : ${user_id} has been updated`,
+                message: `user addres from user id : ${id} has been updated`,
             });
         } catch (error) {
             console.log(error);

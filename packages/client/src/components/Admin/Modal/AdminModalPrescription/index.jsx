@@ -234,7 +234,7 @@ const AdminModalPrescription = (props) => {
                                 <Stack flex={2} align='left' borderRight='1px solid black' p={3} pr={6} mr={3}>
                                     <Text p={2} fontWeight='bold' mb={5}>Resep Docter</Text>
                                     <Image
-                                        src= {`http:/${img_url}`}
+                                        src= {`https:/${img_url}`}
                                         alt=""
                                         width="400em"
                                         height="400em"

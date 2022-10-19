@@ -13,6 +13,7 @@ import render_types from "../../../redux/reducers/types/render"
 const CartCard = (props) => {
     const { product_name, product_price, product_category, quantity, image_url, product_stock, product_id, user_id, cart_id } = props
     const [ counter, setCounter ] = useState(quantity)
+    const [ change, setChange ] = useState(false)
     const toast = useToast()
 
     const autoRender = useSelector((state) => state.render)
@@ -60,22 +61,14 @@ const CartCard = (props) => {
     }
 
     useEffect(() => {
-        dispatch({
-            type: render_types.AUTO_RENDER,
-            payload: {
-                value : !autoRender.value
-            }
-        })
-    } ,[counter])
-
-    useEffect(() => {
         updateQuantity()
-    }, [counter])
+
+    }, [change])
 
     return (
         <HStack borderBottom='1px solid #B7B7B7' p={1}>
             <Image
-                src={`http://${image_url}`}
+                src={`https://${image_url}`}
                 alt=""
                 width={150}
                 height={150}
@@ -97,7 +90,7 @@ const CartCard = (props) => {
                             <IconButton 
                                 icon={<HiMinus/>} 
                                 disabled={counter <= 1 ? true : false}
-                                onClick={() => {setCounter( counter > 0 ? counter - 1 : 0)}} 
+                                onClick={() => {setCounter( counter > 0 ? counter - 1 : 0); setChange(!change)}} 
                                 size='sm'
                             />
                             
@@ -107,7 +100,7 @@ const CartCard = (props) => {
                                     <IconButton
                                         icon={<HiPlus/>} 
                                         size='sm' 
-                                        onClick={() => {setCounter(counter + 1)}}
+                                        onClick={() => {setCounter(counter + 1); setChange(!change)}}
                                     />
                                 ) :  (
                                     <Tooltip label='we out of stock' fontSize='md'>

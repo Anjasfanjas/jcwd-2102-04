@@ -1,4 +1,3 @@
-import { AddIcon } from "@chakra-ui/icons"
 import { Divider, Flex, FormControl, HStack, Text, VStack, Select, Button, Box, IconButton, Link } from "@chakra-ui/react"
 import axios from "axios"
 import { useRouter } from "next/router"
@@ -6,7 +5,6 @@ import qs from "qs"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { axiosInstance } from "../../../library/api"
-import AddressCard from "../../Card/AddressCard"
 import CartCard from "../../Card/CartCard"
 import ModalAddress from "../../Modal/ModalAddress"
 import ModalChangeAddress from "../../Modal/ModalChangeAddress"
@@ -21,9 +19,10 @@ const OrderPage = () => {
     
     let totalPrice = 0
     const router = useRouter()
+    const { user_id } = router.query
     const userSelector = useSelector((state) => state.auth)
     const autoRender = useSelector((state) => state.render)
-    console.log(shippingPrice)
+    console.log(autoRender)
 
     const fetchUserAddress = async() => {
         try {
@@ -44,7 +43,6 @@ const OrderPage = () => {
         try {
             await axiosInstance.get(`/cart/${userSelector?.id}`).then((res) => {
                 const data = res.data.result
-                console.log(data)
                 setCart([...data])
             })
         } catch (error) {
@@ -53,8 +51,8 @@ const OrderPage = () => {
     }
 
     const renderDataCart = () => {
-        return cart?.map((val) => {
-            totalPrice += Number(val.price_total)
+        return cart ? cart?.map((val) => {
+            totalPrice += (val.product_price * val.quantity)
             return (
                 <>
                     <CartCard
@@ -65,10 +63,11 @@ const OrderPage = () => {
                         product_stock = {val.product.product_stocks[0].main_stock}
                         product_id = {val.product_id}
                         user_id = {userSelector?.id}
+                        cart_id = {val.id}
                     />
                 </>
             )
-        })
+        }) : <div></div>
     }
 
     const selectedAddress = () => {
@@ -139,11 +138,7 @@ const OrderPage = () => {
         fetchDataCart()
         renderDataCart()
         deliveryCost()
-    }, [autoRender])
-
-    useEffect(() => {
-        // checkIsiOrder()
-    }, [cart])
+    }, [autoRender, router?.isReady])
     
     return (
         <HStack
