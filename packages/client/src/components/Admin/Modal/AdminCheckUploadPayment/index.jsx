@@ -20,9 +20,9 @@ import {
   Tbody,
   Td,
   Flex,
+  Image
 } from '@chakra-ui/react';
 import moment from 'moment';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../lib/hoc/api';
 import CancleButton from '../../Button/CancleButton';
@@ -116,7 +116,7 @@ const AdminModalCheckPayment = (props) => {
                     <HStack align='start'>
                         <VStack align='start'>
                             <Image
-                                src={ paymentData ? "https:/" + paymentData?.payment_reciep_url : ''}
+                                src={ paymentData ? "https://" + paymentData?.payment_reciep_url : ''}
                                 alt=''
                                 width={350}
                                 height={500}
