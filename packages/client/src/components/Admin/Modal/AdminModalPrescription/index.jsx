@@ -236,8 +236,8 @@ const AdminModalPrescription = (props) => {
                                     <Image
                                         src= {`https://${img_url}`}
                                         alt=""
-                                        width="400em"
-                                        height="400em"
+                                        width="180px"
+                                        height="210px"
                                     />
 
                                 <VStack w='full' align='left' p={5}>
