@@ -1,6 +1,6 @@
-import { Box, Button, Center, color, Flex, FormControl, Grid, GridItem, Heading, HStack, Icon, Input, InputGroup, InputRightElement, Stack, Text, textDecoration, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, color, Flex, FormControl, Grid, GridItem, Heading, HStack, Icon, Input, InputGroup, InputRightElement, Stack, Text, textDecoration, VStack, Image } from "@chakra-ui/react"
 import { useFormik } from "formik"
-import Image from "next/image"
+import NextImage from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BiSearchAlt } from "react-icons/bi"
@@ -102,7 +102,7 @@ const HomePage = () => {
                 <Box flex={ recProduct.length <= 1 ? 0 : 1} minW={ recProduct.length <= 1 ? "35%" : ""} mr={1}>
                     <ProductCard key={index}
                         product_id = {val.id}
-                        product_image = {`http://${val.product_imgs[0].img_url}`}
+                        product_image = {`https://${val.product_imgs[0].img_url}`}
                         product_name = {val.product_name}
                         product_category = {val.product_categories}
                         product_price = {Number(val.product_stocks[0].sell_price)}
@@ -155,7 +155,7 @@ const HomePage = () => {
                 mb={5}
                 position='relative'
             >
-                <Image
+                <NextImage
                     alt=""
                     src={Banner}
                 />
@@ -227,7 +227,7 @@ const HomePage = () => {
 
                     <Stack spacing={3} mb={5} position='relative' mt={5}>
                         <Center w='25%' p={0} boxShadow='dark-lg'>
-                            <Image
+                            <NextImage
                                 alt=""
                                 src={BannerVer1}
                                 width={220}
@@ -256,7 +256,7 @@ const HomePage = () => {
 
                     <Stack spacing={3} mb={5} position='relative' mt={5}>
                         <Center w='25%' boxShadow='dark-lg'>
-                            <Image
+                            <NextImage
                                 alt=""
                                 src={BannerVer2}
                                 width={220}
@@ -287,7 +287,7 @@ const HomePage = () => {
                         <Heading as='h4' size='md' mb={2} color='#213360'>Mau mengurus vaksin atau check-up?</Heading>
                         <Grid templateColumns='repeat(2, 1fr)' gap={6}>
                             <GridItem w='100%' h='180' bg='blue.500' boxShadow='2xl' >
-                                <Image
+                                <NextImage
                                     alt=""
                                     src={promotion1}
                                     height={181}
@@ -296,7 +296,7 @@ const HomePage = () => {
                             </GridItem>
 
                             <GridItem w='100%' h='180' bg='blue.500' boxShadow='2xl'>
-                                <Image
+                                <NextImage
                                     alt=""
                                     src={promotion2}
                                     height={181}
@@ -311,7 +311,7 @@ const HomePage = () => {
                         <VStack w='full'>
                             <HStack w='full' justify='center'>
                                 <Box boxShadow='2xl'>
-                                    <Image
+                                    <NextImage
                                         alt=""
                                         src={jaminan1}
                                         height={181}
@@ -320,7 +320,7 @@ const HomePage = () => {
                                 </Box>
 
                                 <Box boxShadow='2xl'>
-                                    <Image
+                                    <NextImage
                                         alt=""
                                         src={jaminan2}
                                         height={181}
@@ -330,7 +330,7 @@ const HomePage = () => {
                             </HStack>
 
                             <Box boxShadow='2xl'>
-                                <Image
+                                <NextImage
                                     alt=""
                                     src={jaminan3}
                                     height={181}
