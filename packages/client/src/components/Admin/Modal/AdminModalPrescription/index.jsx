@@ -12,8 +12,8 @@ import { Box, Button, Center, Divider, Flex, FormControl, FormLabel, HStack, Ico
     TableCaption,
     TableContainer,
     useToast,
+    Image
 } from "@chakra-ui/react";
-import Image from "next/image";
 import qs from "qs";
 import { useEffect } from "react";
 import { useRef, useState } from "react";

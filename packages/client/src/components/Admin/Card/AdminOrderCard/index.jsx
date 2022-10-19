@@ -23,13 +23,13 @@ const AdminOrderCard = (props) => {
                         <Center flex={1}>
                         { user_prescription === false ? (
                             <Image
-                                src={product ? `https:/${product[0]?.product.product_imgs[0].img_url}` : ""}
+                                src={product ? `https://${product[0]?.product.product_imgs[0].img_url}` : ""}
                                 alt=""
                                 width={120}
                                 height={120}
                             /> ) : (
                                 <Image
-                                    src={ product ? `https:/${user_prescription_url}` : ''}
+                                    src={ product ? `https://${user_prescription_url}` : ''}
                                     alt=""
                                     width={120}
                                     height={120}
@@ -60,7 +60,7 @@ const AdminOrderCard = (props) => {
                             <HStack display='flex' px={2}> 
                                 <Center alignItems='center' flex={1}>
                                     <Image
-                                        src={val ? `https:/${val.product.product_imgs[0].img_url}` : ""}
+                                        src={val ? `https://${val.product.product_imgs[0].img_url}` : ""}
                                         alt=""
                                         width={120}
                                         height={120}

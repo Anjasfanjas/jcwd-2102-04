@@ -1,7 +1,6 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, Button, Divider, Flex, Grid, HStack, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, Grid, HStack, Text, VStack, Image } from "@chakra-ui/react"
 import moment from "moment/moment"
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import { axiosInstance } from "../../../../library/api"
 import AdminModalPrescription from "../../Modal/AdminModalPrescription"
@@ -44,7 +43,7 @@ const AdminPrescriptionCard = (props) => {
                 <HStack display='flex' px={2} spacing={5}> 
                     <Box alignItems='center'>
                         <Image
-                            src={prescription_img ? `https:/${prescription_img}` : ""}
+                            src={prescription_img ? `https://${prescription_img}` : ""}
                             alt=""
                             width={120}
                             height={120}
