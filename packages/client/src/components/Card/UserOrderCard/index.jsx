@@ -71,7 +71,7 @@ const UserOrderCard = (props) => {
                             ) : 
                             (
                                 <Image
-                                    src={`https:/${product_img}`}
+                                    src={`https://${product_img}`}
                                     alt=""
                                     width={120}
                                     height={120}
@@ -106,7 +106,7 @@ const UserOrderCard = (props) => {
                                         ) : 
                                         (
                                             <Image
-                                                src={`https:/${val.product.product_imgs[0].img_url}`}
+                                                src={`https://${val.product.product_imgs[0]?.img_url}`}
                                                 alt=""
                                                 width={120}
                                                 height={120}
@@ -114,7 +114,9 @@ const UserOrderCard = (props) => {
                                         )
                                     }
                                 </Box>
-                    
+
+                                    <Text>{`https://${val.product.product_imgs[0]?.img_url}`}</Text>
+
                                 <VStack flex={3}>
                                     <Flex align='center' justify='left' w='100%' fontSize={16} fontWeight='bold'>
                                         <Text>{val.product.product_name} {val.is_racikan === true ? `Racikan Obat : ${val.nama_racikan}`: ''}</Text>
