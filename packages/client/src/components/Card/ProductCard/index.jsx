@@ -1,4 +1,4 @@
-import { Button, GridItem, HStack, Link, Stack, Text, Tooltip, useToast, VStack, Image } from "@chakra-ui/react"
+import { Button, GridItem, HStack, Link, Stack, Text, Tooltip, useToast, VStack, Image, Center } from "@chakra-ui/react"
 import { useState } from "react"
 import { axiosInstance } from "../../../library/api"
 import { useDispatch, useSelector } from "react-redux"
@@ -66,13 +66,14 @@ const ProductCard = (props) => {
             <Stack w='full' h='full' borderRadius='.5em' className='product-card' cursor='pointer' bgColor='white'>
                 <VStack>
                     <Link href={`/product/${product_id}`} _hover={{textDecoration: 'none'}} w='full' align='center'>
-                        <Image
-                            alt=''
-                            src={product_image}
-                            width='100px'
-                            height='100px'
-                            layout='fixed'
-                        />
+                        <Center>
+                            <Image
+                                alt=''
+                                src={product_image}
+                                width='120px'
+                                height='120px'
+                            />
+                        </Center>
 
                         <Stack align='center' justify='center' w='full' spacing={2} textAlign='center'>
                             <Text fontWeight='bold' fontSize={14}>{product_name}</Text>
