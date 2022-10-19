@@ -71,14 +71,13 @@ const UserOrderCard = (props) => {
                             ) : 
                             (
                                 <Image
-                                    src={ product_img ? `https:/${product_img}` : ""}
+                                    src={`https:/${product_img}`}
                                     alt=""
                                     width={120}
                                     height={120}
                                 />
                             )
                         }
-                        
                     </Box>
                     
                     <VStack flex={3}>
