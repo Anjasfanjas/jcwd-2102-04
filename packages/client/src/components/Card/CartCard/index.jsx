@@ -1,6 +1,6 @@
 import { DeleteIcon } from "@chakra-ui/icons"
-import { Box, Button, HStack, Icon, IconButton, Input, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
-import Image from "next/image"
+import { Box, Button, HStack, Icon, IconButton, Image, Input, Stack, Text, Tooltip, useToast, VStack } from "@chakra-ui/react"
+// import Image from "next/image"
 import QueryString from "qs"
 import { useEffect } from "react"
 import { useState } from "react"
@@ -67,12 +67,20 @@ const CartCard = (props) => {
 
     return (
         <HStack borderBottom='1px solid #B7B7B7' p={1}>
-            <Image
+            {/* <Image
                 src={`https://${image_url}`}
                 alt=""
                 width={150}
                 height={150}
+            /> */}
+
+            <Image
+                src={`https://${image_url}`}
+                width={120}
+                height={120}
+                alt=''
             />
+
             <VStack w='full' h='full'>
                 <HStack  w='full' justify='space-between'>
                     <Text fontWeight='bold' fontSize={18}>{product_name}</Text>

@@ -26,7 +26,7 @@ const ModalEditAddress = (props) => {
     
     const render_city_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/city?province=${formik.values.province}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/city?province=${formik.values.province}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setDataCity([...val.data.rajaongkir.results])
                 console.log(dataCity)
             }) 
@@ -73,7 +73,7 @@ const ModalEditAddress = (props) => {
     
     const render_province = async () => {
         try {
-            await axios.get('https://api.rajaongkir.com/starter/province' , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get('https://api.rajaongkir.com/starter/province' , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setDataProvince([...val.data.rajaongkir.results])
                 console.log(dataProvince)
             }) 
@@ -85,7 +85,7 @@ const ModalEditAddress = (props) => {
 
     const province_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/province?id=${formik.values.province_id}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}).then ((val) => {
                 setProvinceName(val.data.rajaongkir.results.province)
             }) 
 
@@ -96,7 +96,7 @@ const ModalEditAddress = (props) => {
 
     const city_name = async () => {
         try {
-            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91 "}}).then ((val) => {
+            await axios.get(`https://api.rajaongkir.com/starter/city?id=${formik.values.city_id}` , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e "}}).then ((val) => {
                 setCityName(val.data.rajaongkir.results.city_name)
             }) 
 
@@ -108,14 +108,14 @@ const ModalEditAddress = (props) => {
     
     const formik = useFormik({
         initialValues: {
-            phone_number : '',
-            name: '',
-            province: '',
-            province_id: '',
-            city: '',
-            city_id: '',
-            post_code: '',
-            address_line: '',
+            phone_number : phone_number,
+            name: name,
+            province: province,
+            province_id: province_id,
+            city: city,
+            city_id: city_id,
+            post_code: post_code,
+            address_line: address_line,
         },
 
         // validationSchema: Yup.object().shape({
@@ -166,6 +166,8 @@ const ModalEditAddress = (props) => {
                             value : !autoRender.value
                         }
                     })
+
+                    onClose()
                 })
 
             } catch (error) {

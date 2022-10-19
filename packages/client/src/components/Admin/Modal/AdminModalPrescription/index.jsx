@@ -69,7 +69,7 @@ const AdminModalPrescription = (props) => {
         }
 
         try {
-            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${user_address[0]?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "d2bbf841ca82c43bf952e17f16213b91"}}, qs.stringify(body)).then((res) => {
+            await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${user_address[0]?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}, qs.stringify(body)).then((res) => {
                 console.log(res)
                 const data = res.data.rajaongkir.results[0]
                 setDeliveryOption(data.costs)
@@ -234,7 +234,7 @@ const AdminModalPrescription = (props) => {
                                 <Stack flex={2} align='left' borderRight='1px solid black' p={3} pr={6} mr={3}>
                                     <Text p={2} fontWeight='bold' mb={5}>Resep Docter</Text>
                                     <Image
-                                        src= {`https:/${img_url}`}
+                                        src= {`https://${img_url}`}
                                         alt=""
                                         width="400em"
                                         height="400em"

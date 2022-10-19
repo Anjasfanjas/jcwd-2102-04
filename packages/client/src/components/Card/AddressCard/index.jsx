@@ -40,6 +40,7 @@ const AddressCard = (props) => {
                                     address_line = {address_line}
                                     city_id = {city_id}
                                     province_id = {province_id}
+                                    address_id = {address_id}
                                 />
                             </Tooltip>
                             <ModalDeleteAddress 
